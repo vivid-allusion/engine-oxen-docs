@@ -1,0 +1,197 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/openai-gpt-oss-20b
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# OpenAI/GPT-OSS-20B
+
+> Open MoE, runs on consumer hardware
+
+> [card] [Try OpenAI/GPT-OSS-20B in the Workbench](https://www.oxen.ai/ai/workbench?model=openai-gpt-oss-20b)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `openai-gpt-oss-20b`
+
+OpenAI GPT OSS 20B is an LLM designed for efficient reasoning, agentic tasks, and flexible deployment, particularly on consumer hardware and specialized local environments.
+
+It excels in delivering high-quality reasoning and chain-of-thought outputs while operating within modest hardware constraints, thanks to its Mixture-of-Experts architecture with only 3.6 billion active parameters at a time, and native MXFP4 (4-bit) quantization. The model supports a context length of up to 131,000 tokens, is fully fine-tunable, and natively supports agentic capabilities such as function calling, web browsing, Python execution, and structured output. Its multilingual capabilities have also been demonstrated in professional evaluations across 14 languages.
+
+Some other noteworthy features of OpenAI GPT OSS 20B include configurable reasoning effort (allowing users to balance latency and output quality) and full chain-of-thought visibility for enhanced debugging and trust.
+
+| Metric | Value |
+| - | - |
+| Parameter Count | 21 billion |
+| Mixture of Experts | Yes |
+| Active Parameter Count | 3.6 billion |
+| Context Length | 131,000 tokens |
+| Multilingual | Yes |
+| Quantized\* | Yes |
+| Precision\* | MXFP4 |
+
+\**Quantization is specific to the inference provider and the model may be offered with different quantization levels by other providers.*
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=openai-gpt-oss-20b) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "openai-gpt-oss-20b",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ]
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "openai-gpt-oss-20b",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ]
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] Basic parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "openai-gpt-oss-20b",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "openai-gpt-oss-20b",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] All parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "openai-gpt-oss-20b",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false,
+>   "top_p": 1.0,
+>   "frequency_penalty": 0,
+>   "presence_penalty": 0
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "openai-gpt-oss-20b",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false,
+>         "top_p": 1.0,
+>         "frequency_penalty": 0,
+>         "presence_penalty": 0
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/openai-gpt-oss-20b
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

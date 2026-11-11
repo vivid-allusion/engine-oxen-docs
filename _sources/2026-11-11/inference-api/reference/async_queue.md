@@ -1,0 +1,846 @@
+---
+title: "Async Queue"
+source: https://docs.oxen.ai/inference-api/reference/async_queue
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Async Queue
+
+> Enqueue image and video generation jobs that process in the background
+
+## Why Use the Async Queue
+
+The synchronous endpoints (`/ai/images/generate`, `/ai/videos/generate`) block until the result is ready. For video generation, this can be 1-10+ minutes. The async queue returns immediately with generation IDs so you can:
+
+* Run many generations in parallel (up to 4 per request, no limit on total queued)
+* Avoid long-lived HTTP connections
+* Build progress-tracking UIs
+* Query completed generations and their output URLs at any time
+
+## Workflow
+
+```
+1. POST /ai/queue                       → Get generation IDs (status: queued)
+2. GET  /ai/queue  or  /ai/queue/:id    → Poll until status is succeeded or failed
+3. Read result_url from the completed generation
+```
+
+Generations persist after reaching a terminal state (`succeeded`, `failed`, or `cancelled`), and you can fetch them at any time. See [Output Files](#output-files) for more information about where the outputs are saved.
+
+A Server-Sent Events stream at `GET /api/events` can also deliver completion notifications with the output file URL. See [Completion Events](#completion-events).
+
+***
+
+## Enqueue
+
+```
+POST /api/ai/queue
+```
+
+Submit an async image or video generation job.
+
+### Required Parameters
+
+| Parameter | Type | Description |
+| - | - | - |
+| `model` | string | Must be an image, video, or audio model. Text-only models are rejected. |
+
+### Additional Parameters
+
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `num_generations` | integer | `1` | How many generations to enqueue per request. Range: 1-4. Call the endpoint multiple times to queue more. |
+| `target_namespace` | string | your username | Namespace to store results and bill to. |
+| `target_repo` | string | `playground` | Repository the output file is written to. Created on first use. |
+| `target_directory` | string | repository root | Directory inside that repository. |
+| `workbench_session_id` | string (UUID) | none | Session to file the generation under. See [Sessions](#sessions). |
+
+All other parameters (e.g. `prompt`, `multi_prompt`, `input_image`, `input_video`, `aspect_ratio`, `duration`, `seed`, `generate_audio`) are passed through to the model. Consult the model's `request_schema` via `GET /api/ai/models/:id` for supported parameters and their constraints.
+
+### Response
+
+```json theme={null}
+{
+  "generations": [
+    {"generation_id": "bb8f5eb7-361e-4e13-ab73-67457bc8057e", "status": "queued"},
+    {"generation_id": "e9bede09-cd0e-46cf-bbcd-cb1a50099351", "status": "queued"}
+  ]
+}
+```
+
+### Validation
+
+The API validates at enqueue time that:
+
+* The model exists and produces image, video, or audio output
+* `num_generations` is 1-4
+* The user is authenticated with sufficient credits
+
+Model-specific parameter validation (prompt content, duration ranges, aspect ratio values) happens **when the generation runs**, not at enqueue time. If a parameter is invalid, the generation transitions to `failed` status with an `error_message`. To validate parameters and get immediate error feedback, use `/ai/images/generate` or `/ai/videos/generate` instead.
+
+***
+
+## Billing an Organization
+
+A generation bills the target namespace and saves its file there. That's your own account unless you pass `target_namespace`. Pass an organization's name to use its credits and storage with your own API key, as long as you're an admin or editor of that organization. Only the organization's balance counts, and a request fails with a 402 when the organization is out of credit, even if your own account has plenty.
+
+***
+
+## Output Files
+
+A generation writes its output file into a repository in the target namespace. The repository is `playground` unless you pass `target_repo`, and it's created the first time it's used. The file goes at the repository's root unless you pass `target_directory`. The workbench also saves your uploads and generations to `playground`. Give an application its own `target_repo` to keep its files separate.
+
+`result_url` is a signed link to that file which expires after one hour. [Get Generation](#get-generation) and [List Generations](#list-generations) sign it again on every call, which means you can keep the `generation_id` and fetch a fresh link whenever you need the file. The `url` in a [completion event](#completion-events) is signed when the generation completes and expires an hour later.
+
+***
+
+## List Generations
+
+```
+GET /api/ai/queue
+```
+
+Lists generations for the authenticated user's namespace. By default, only active generations (`queued` or `processing`) are returned. Pass an explicit `status` filter to include terminal states.
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `namespace` | string | no | Namespace to query. Defaults to the authenticated user. |
+| `model` | string | no | Filter by model name. |
+| `status` | string | no | Filter by status: `queued`, `processing`, `succeeded`, `failed`, or `cancelled`. When omitted, only active generations are returned. |
+| `media_type` | string | no | Filter by `image`, `video`, or `audio`. |
+| `repo` | string | no | Filter by target repository name. |
+| `folder` | string | no | Filter by target directory. |
+
+### Response
+
+```json theme={null}
+{
+  "count": 2,
+  "generations": [
+    {
+      "generation_id": "7cf9b23a-1234-5678-9abc-def012345678",
+      "model_name": "kling-video-o3-pro-reference-to-video",
+      "prompt": "An astronaut walking on Mars",
+      "media_type": "video",
+      "status": "processing",
+      "result_url": null,
+      "error_message": null,
+      "enqueued_at": 1775091431,
+      "started_at": 1775091432,
+      "completed_at": null,
+      "aspect_ratio": "16:9",
+      "duration": 10
+    },
+    {
+      "generation_id": "bb8f5eb7-361e-4e13-ab73-67457bc8057e",
+      "model_name": "black-forest-labs-flux-2-klein-4b",
+      "prompt": "Abstract geometric pattern in blue and gold",
+      "media_type": "image",
+      "status": "queued",
+      "result_url": null,
+      "error_message": null,
+      "enqueued_at": 1775091440,
+      "started_at": null,
+      "completed_at": null
+    }
+  ]
+}
+```
+
+| Field | Always Present | Description |
+| - | - | - |
+| `count` | yes | Number of generations in the response |
+| `generation_id` | yes | Unique ID for this generation |
+| `model_name` | yes | Model name |
+| `prompt` | yes | Text prompt (from original request parameters) |
+| `media_type` | yes | `"image"`, `"video"`, or `"audio"` |
+| `status` | yes | `"queued"`, `"processing"`, `"succeeded"`, `"failed"`, or `"cancelled"` |
+| `result_url` | yes | Output file URL when succeeded, otherwise `null` |
+| `error_message` | yes | Error details when failed, otherwise `null` |
+| `enqueued_at` | yes | Unix timestamp when the job was enqueued |
+| `started_at` | yes | Unix timestamp when processing began, or `null` |
+| `completed_at` | yes | Unix timestamp when the job reached a terminal state, or `null` |
+| `seed` | if submitted | Random seed |
+| `aspect_ratio` | if submitted | Aspect ratio |
+| `duration` | if submitted | Video duration |
+
+Any additional parameters from the original enqueue request (e.g. `seed`, `aspect_ratio`, `duration`, `input_image`) are included in the response alongside the fields above.
+
+### Polling Strategy
+
+* **Image generation** (FLUX, etc.): typically completes in 5-30 seconds. Poll every 2-5 seconds.
+* **Video generation** (Kling, etc.): typically takes 1-5 minutes. Poll every 10-30 seconds.
+
+Poll until every generation's `status` is a terminal value (`succeeded`, `failed`, or `cancelled`), or until `count` reaches 0 when using the default active-only filter.
+
+***
+
+## Get Generation
+
+```
+GET /api/ai/queue/:generation_id
+```
+
+Retrieves metadata for a single generation. Includes `result_url` when the generation has succeeded and `error_message` when it has failed.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `generation_id` | string (UUID) | **yes** | The generation ID returned by the enqueue endpoint. |
+
+### Response (in progress)
+
+```json theme={null}
+{
+  "generation_id": "7cf9b23a-1234-5678-9abc-def012345678",
+  "model_name": "kling-video-o3-pro-reference-to-video",
+  "prompt": "An astronaut walking on Mars",
+  "media_type": "video",
+  "status": "processing",
+  "result_url": null,
+  "error_message": null,
+  "enqueued_at": 1775091431,
+  "started_at": 1775091432,
+  "completed_at": null,
+  "aspect_ratio": "16:9",
+  "duration": 10
+}
+```
+
+### Response (succeeded)
+
+```json theme={null}
+{
+  "generation_id": "7cf9b23a-1234-5678-9abc-def012345678",
+  "model_name": "kling-video-o3-pro-reference-to-video",
+  "prompt": "An astronaut walking on Mars",
+  "media_type": "video",
+  "status": "succeeded",
+  "result_url": "https://hub.oxen.ai/api/repos/...",
+  "error_message": null,
+  "enqueued_at": 1775091431,
+  "started_at": 1775091432,
+  "completed_at": 1775091590,
+  "aspect_ratio": "16:9",
+  "duration": 10
+}
+```
+
+### Response (failed)
+
+```json theme={null}
+{
+  "generation_id": "7cf9b23a-1234-5678-9abc-def012345678",
+  "model_name": "kling-video-o3-pro-reference-to-video",
+  "prompt": "An astronaut walking on Mars",
+  "media_type": "video",
+  "status": "failed",
+  "result_url": null,
+  "error_message": "Insufficient credits",
+  "enqueued_at": 1775091431,
+  "started_at": 1775091432,
+  "completed_at": 1775091435
+}
+```
+
+### Response (not found)
+
+Returns 404 when the generation ID does not exist:
+
+```json theme={null}
+{
+  "error": {
+    "type": "resource_not_found",
+    "title": "The requested resource could not be found"
+  },
+  "status": "error",
+  "status_message": "resource_not_found"
+}
+```
+
+***
+
+## Cancel Generation
+
+```
+DELETE /api/ai/queue/:generation_id
+```
+
+Cancels a queued or in-progress generation.
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `generation_id` | string (UUID) | **yes** | The generation ID to cancel. |
+
+### Response (success)
+
+```json theme={null}
+{
+  "status": "success",
+  "generation_id": "bb8f5eb7-361e-4e13-ab73-67457bc8057e"
+}
+```
+
+### Response (not found)
+
+Returns 404 when the generation ID does not exist:
+
+```json theme={null}
+{
+  "error": {
+    "type": "resource_not_found",
+    "title": "The requested resource could not be found"
+  },
+  "status": "error",
+  "status_message": "resource_not_found"
+}
+```
+
+You can only cancel generations that are still active (`queued` or `processing`). Cancelling a generation that has already reached a terminal state (`succeeded`, `failed`, or `cancelled`) has no effect.
+
+***
+
+## Completion Events
+
+```
+GET /api/events
+```
+
+Server-Sent Events stream that emits `media_generation_completed` events when generations reach a terminal state.
+
+### Connect
+
+```
+GET /api/events
+Authorization: Bearer $OXEN_API_KEY
+```
+
+Response is `Content-Type: text/event-stream`. The server sends `: keep-alive\n\n` every 15 seconds when idle.
+
+Events are broadcast to currently-connected subscribers with no buffering. Anything that fires before you connect is lost. Subscribe before calling `POST /ai/queue` to avoid missing events.
+
+### Event: media\_generation\_completed
+
+Fires once per generation on terminal state.
+
+Success wire format:
+
+```
+event: media_generation_completed
+data: {"generation_id":"bb8f5eb7-...","status":"succeeded","media_type":"video","model":"kling-video-o3-pro-reference-to-video","url":"https://hub.oxen.ai/api/repos/..."}
+
+```
+
+Failure:
+
+```
+event: media_generation_completed
+data: {"generation_id":"bb8f5eb7-...","status":"failed","media_type":"video","error":"Insufficient credits"}
+
+```
+
+### Fields
+
+| Field | succeeded | failed | Description |
+| - | - | - | - |
+| `generation_id` | yes | yes | Matches the ID returned by `POST /ai/queue` |
+| `status` | `"succeeded"` | `"failed"` | |
+| `media_type` | yes | yes | `"image"`, `"video"`, or `"audio"` |
+| `model` | yes | no | Model name |
+| `url` | yes | no | Signed link to the output file, good for one hour. |
+| `error` | no | yes | Human-readable failure reason |
+
+### Other events on this stream
+
+`GET /api/events` is a user-scoped stream that may carry unrelated event types (e.g. deployment events). Filter on the `event:` line and ignore anything other than `media_generation_completed`.
+
+### Example
+
+```python Python theme={null}
+import json
+import requests
+import threading
+import time
+
+API_KEY = "YOUR_API_KEY"
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+
+def listen(results):
+    with requests.get(
+        "https://hub.oxen.ai/api/events",
+        headers=HEADERS,
+        stream=True,
+    ) as resp:
+        event_name = None
+        for line in resp.iter_lines(decode_unicode=True):
+            if line is None or line == "":
+                event_name = None
+                continue
+            if line.startswith(":"):
+                continue  # keep-alive comment
+            if line.startswith("event:"):
+                event_name = line[6:].strip()
+            elif line.startswith("data:") and event_name == "media_generation_completed":
+                payload = json.loads(line[5:].strip())
+                results[payload["generation_id"]] = payload
+
+# Start listening BEFORE enqueuing
+results = {}
+threading.Thread(target=listen, args=(results,), daemon=True).start()
+print("SSE listener connected, waiting for events...")
+
+# Enqueue
+prompt = "A red cube"
+model = "black-forest-labs-flux-2-klein-4b"
+print(f"\nEnqueuing {model}")
+print(f"  prompt: \"{prompt}\"")
+resp = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={**HEADERS, "Content-Type": "application/json"},
+    json={
+        "model": model,
+        "prompt": prompt,
+    },
+)
+gen_id = resp.json()["generations"][0]["generation_id"]
+print(f"  generation_id: {gen_id}")
+
+# Wait for completion event
+start = time.time()
+while gen_id not in results:
+    elapsed = time.time() - start
+    print(f"  Waiting for SSE completion event... ({elapsed:.1f}s)")
+    time.sleep(2)
+
+elapsed = time.time() - start
+event = results[gen_id]
+if event["status"] == "succeeded":
+    print(f"\nGeneration succeeded in {elapsed:.1f}s")
+    print(f"  URL: {event['url']}")
+elif event["status"] == "failed":
+    print(f"\nGeneration failed after {elapsed:.1f}s")
+    print(f"  Error: {event['error']}")
+else:
+    print(f"\nGeneration cancelled after {elapsed:.1f}s")
+```
+
+```bash cURL theme={null}
+curl -N -H "Authorization: Bearer $OXEN_API_KEY" \
+  https://hub.oxen.ai/api/events
+```
+
+### Cancellation
+
+Cancelling a generation fires the same event with `status: "cancelled"`:
+
+```
+event: media_generation_completed
+data: {"generation_id":"bb8f5eb7-...","status":"cancelled","media_type":"video","model":"kling-video-o3-pro-reference-to-video"}
+
+```
+
+A cancelled event carries only the identifying fields, so branch on `status` when you handle one.
+
+***
+
+## Sessions
+
+A session groups related generations, such as one task, one agent run, or one storyboard. Each session appears as a tab in the workbench. Sessions belong to you and to one repository, which is the `target_repo` your generations write to (`playground` by default). Another user can't add to your sessions or read them.
+
+![Workbench session tabs named Locations, Cars, and People](https://mintcdn.com/oxenai/SMcdXgg9ELwbZJLr/images/workbench-session-tabs.png?fit=max\&auto=format\&n=SMcdXgg9ELwbZJLr\&q=85\&s=5cc68b01e114997e71a11bbb0cd59368)
+
+### Default session
+
+**A generation sent without `workbench_session_id` goes into your default session.** Your default session is the first one you create on a repository, so if you never pass a session ID, all of your generations land in that first session.
+
+To be precise, a generation with no session ID isn't tagged with any session. Reads filtered to your default session also return your untagged generations, which is why they appear there. This has two consequences:
+
+* Untagged generations appear in whichever session is your default when you read them, including generations you made before you created any session.
+* If you delete your default session, the next session you create becomes the default and the untagged generations move to it.
+
+To keep an agent's work separate from everything else, create a session for it and pass that session's ID on every request.
+
+### Session lifecycle
+
+All session endpoints are scoped to a repository:
+
+```
+/api/repos/:namespace/:repo_name/workbench/sessions
+```
+
+| Method | Path | Description |
+| - | - | - |
+| `POST` | `/sessions` | Create a session. Returns 201 with the new session. |
+| `GET` | `/sessions` | List your sessions on the repository, oldest first. |
+| `GET` | `/sessions/:id` | Get one session. |
+| `PATCH` | `/sessions/:id` | Replace the session's `payload`. |
+| `DELETE` | `/sessions/:id` | Delete the session. Its generations and output files are kept. |
+
+The optional JSON `payload` on create and update is yours to use. A session has no name field, so store a label or any other metadata in `payload` (up to 1 MB). A `PATCH` replaces the whole payload rather than merging into it.
+
+A session object looks like this:
+
+```json theme={null}
+{
+  "id": "3f2b8c1e-5d6a-4e7f-9a0b-1c2d3e4f5a6b",
+  "payload": {"name": "Product shots"},
+  "repository_id": "...",
+  "user_id": "...",
+  "default": false,
+  "last_activity_at": "2026-10-19T17:02:11Z",
+  "inserted_at": "2026-10-19T16:58:40Z",
+  "updated_at": "2026-10-19T17:02:11Z"
+}
+```
+
+`default` is `true` on the session that untagged generations appear in. Create returns it under `workbench_session`, and list returns an array under `workbench_sessions`.
+
+### Example: group an agent's work into a session
+
+Create a session, pass its ID when you enqueue, read the session's generations back, and delete the session when the task is done.
+
+```python Python theme={null}
+import requests
+
+API_KEY = "YOUR_API_KEY"
+NAMESPACE = "YOUR_USERNAME"
+REPO = "playground"  # the target_repo your generations write to
+HEADERS = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+SESSIONS_URL = f"https://hub.oxen.ai/api/repos/{NAMESPACE}/{REPO}/workbench/sessions"
+
+# 1. Start a session for this task
+session = requests.post(
+    SESSIONS_URL,
+    headers=HEADERS,
+    json={"payload": {"name": "Product shots"}},
+).json()["workbench_session"]
+session_id = session["id"]
+
+# 2. Tag every generation in the task with the session ID
+for prompt in ["A red sneaker on white", "A blue sneaker on white"]:
+    requests.post(
+        "https://hub.oxen.ai/api/ai/queue",
+        headers=HEADERS,
+        json={
+            "model": "black-forest-labs-flux-2-klein-4b",
+            "prompt": prompt,
+            "target_repo": REPO,
+            "workbench_session_id": session_id,
+        },
+    ).raise_for_status()
+
+# 3. Read back everything in the session, including generations still in the queue
+history = requests.get(
+    f"https://hub.oxen.ai/api/repos/{NAMESPACE}/{REPO}/workbench/history",
+    headers=HEADERS,
+    params={"filter[workbench_session_id]": session_id},
+).json()
+for row in history["data_frame"]["view"]["data"]:
+    print(row["uuid"], row["status"], row["prompt"])
+
+# 4. Find a session again later
+for s in requests.get(SESSIONS_URL, headers=HEADERS).json()["workbench_sessions"]:
+    print(s["id"], s["default"], s["payload"].get("name"))
+
+# 5. Delete the session when you're done. The generations are kept.
+requests.delete(f"{SESSIONS_URL}/{session_id}", headers=HEADERS)
+```
+
+```bash cURL theme={null}
+# Create a session
+curl -X POST "https://hub.oxen.ai/api/repos/$NAMESPACE/playground/workbench/sessions" \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"payload": {"name": "Product shots"}}'
+
+# Enqueue into it
+curl -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "black-forest-labs-flux-2-klein-4b",
+    "prompt": "A red sneaker on white",
+    "workbench_session_id": "'"$SESSION_ID"'"
+  }'
+
+# List the session's generations
+curl -G -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/repos/$NAMESPACE/playground/workbench/history" \
+  --data-urlencode "filter[workbench_session_id]=$SESSION_ID"
+
+# Delete the session
+curl -X DELETE -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/repos/$NAMESPACE/playground/workbench/sessions/$SESSION_ID"
+```
+
+### Rules
+
+* **The session must be on the target repository.** Create the session on the same `target_namespace`/`target_repo` you enqueue into. If `workbench_session_id` names a session that doesn't exist, has been deleted, is on a different repository, or belongs to someone else, `POST /ai/queue` returns 422 with code `workbench_session_invalid`.
+* **Filter history by session to see a session's generations.** `GET /ai/queue` has no session filter. Use `filter[workbench_session_id]` on the repository's `workbench/history` endpoint. [Get Generation](#get-generation) does return `workbench_session_id` for a tagged generation, along with the other request parameters.
+* **Deleting a session keeps its generations.** The generations and output files stay in the repository and still carry the session ID. They no longer appear under any tab.
+
+***
+
+## Examples
+
+### Batch image generation with polling
+
+```python Python theme={null}
+import requests
+import time
+
+API_KEY = "YOUR_API_KEY"
+HEADERS = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json",
+}
+
+# Enqueue 4 images
+model = "black-forest-labs-flux-2-klein-4b"
+prompt = "Abstract geometric pattern in blue and gold"
+print(f"Enqueuing 4 generations of {model}")
+print(f"  prompt: \"{prompt}\"")
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers=HEADERS,
+    json={
+        "model": model,
+        "prompt": prompt,
+        "num_generations": 4,
+    },
+)
+gen_ids = [g["generation_id"] for g in response.json()["generations"]]
+for gid in gen_ids:
+    print(f"  generation_id: {gid}")
+
+# Poll individual generations until all reach a terminal status
+terminal = {"succeeded", "failed", "cancelled"}
+start = time.time()
+while True:
+    statuses = {}
+    for gid in gen_ids:
+        resp = requests.get(
+            f"https://hub.oxen.ai/api/ai/queue/{gid}",
+            headers=HEADERS,
+        ).json()
+        statuses[gid] = resp["status"]
+    done = sum(1 for s in statuses.values() if s in terminal)
+    elapsed = time.time() - start
+    print(f"  [{elapsed:5.1f}s] {done}/{len(gen_ids)} complete")
+    if done == len(gen_ids):
+        break
+    time.sleep(5)
+
+elapsed = time.time() - start
+print(f"\nAll {len(gen_ids)} images generated in {elapsed:.1f}s!")
+for gid, s in statuses.items():
+    print(f"  {gid}: {s}")
+```
+
+```bash cURL theme={null}
+# Enqueue 4 images
+curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "black-forest-labs-flux-2-klein-4b",
+    "prompt": "Abstract geometric pattern in blue and gold",
+    "num_generations": 4
+  }'
+
+# Poll until all active generations are done
+while true; do
+  STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+    "https://hub.oxen.ai/api/ai/queue?model=black-forest-labs-flux-2-klein-4b")
+  COUNT=$(echo "$STATUS" | python3 -c "import json,sys; print(json.load(sys.stdin)['count'])")
+  echo "Active: $COUNT"
+  [ "$COUNT" -eq 0 ] && break
+  sleep 5
+done
+
+echo "All images generated!"
+```
+
+### Async video generation
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-reference-to-video",
+        "multi_prompt": [
+            {"prompt": "Aerial view of waves crashing on a rocky shore", "duration": 5},
+            {"prompt": "Camera pulls back to reveal the full coastline", "duration": 5},
+        ],
+        "aspect_ratio": "16:9",
+    },
+)
+
+print(response.json())
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-reference-to-video",
+    "multi_prompt": [
+      {"prompt": "Aerial view of waves crashing on a rocky shore", "duration": 5},
+      {"prompt": "Camera pulls back to reveal the full coastline", "duration": 5}
+    ],
+    "aspect_ratio": "16:9"
+  }'
+```
+
+### Poll a single generation by ID
+
+```python Python theme={null}
+import requests
+import time
+
+API_KEY = "YOUR_API_KEY"
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+
+# After enqueuing, grab a generation ID
+generation_id = "YOUR_GENERATION_ID"
+print(f"Polling generation {generation_id}")
+
+terminal = {"succeeded", "failed", "cancelled"}
+start = time.time()
+poll_count = 0
+while True:
+    poll_count += 1
+    data = requests.get(
+        f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+        headers=HEADERS,
+    ).json()
+    elapsed = time.time() - start
+    status = data["status"]
+    if status in terminal:
+        print(f"  [{elapsed:5.1f}s] Generation {status}")
+        if status == "succeeded":
+            print(f"  result_url: {data['result_url']}")
+        elif status == "failed":
+            print(f"  error: {data['error_message']}")
+        break
+    print(f"  [{elapsed:5.1f}s] Poll #{poll_count} — {status} ({data['model_name']}, {data['media_type']})")
+    time.sleep(10)
+```
+
+```bash cURL theme={null}
+# Check a specific generation
+curl -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/$GENERATION_ID"
+
+# Cancel a generation
+curl -X DELETE -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/$GENERATION_ID"
+```
+
+### End-to-end: enqueue, wait for SSE, download
+
+```python Python theme={null}
+import json
+import queue
+import requests
+import threading
+import time
+
+API_KEY = "YOUR_API_KEY"
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+
+def listen(events):
+    with requests.get(
+        "https://hub.oxen.ai/api/events",
+        headers=HEADERS,
+        stream=True,
+    ) as resp:
+        event_name = None
+        for line in resp.iter_lines(decode_unicode=True):
+            if not line:
+                event_name = None
+                continue
+            if line.startswith(":"):
+                continue
+            if line.startswith("event:"):
+                event_name = line[6:].strip()
+            elif line.startswith("data:") and event_name == "media_generation_completed":
+                events.put(json.loads(line[5:]))
+
+# Subscribe before enqueuing so no events are missed
+events = queue.Queue()
+threading.Thread(target=listen, args=(events,), daemon=True).start()
+print("SSE listener connected, waiting for events...")
+
+# Enqueue
+model = "black-forest-labs-flux-2-klein-4b"
+prompt = "A cathedral in the clouds"
+print(f"\nEnqueuing {model}")
+print(f"  prompt: \"{prompt}\"")
+resp = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={**HEADERS, "Content-Type": "application/json"},
+    json={
+        "model": model,
+        "prompt": prompt,
+    },
+).json()
+gen_id = resp["generations"][0]["generation_id"]
+print(f"  generation_id: {gen_id}")
+
+# Wait for the matching completion event
+start = time.time()
+print(f"\nWaiting for SSE completion event...")
+while True:
+    try:
+        event = events.get(timeout=3)
+        if event["generation_id"] == gen_id:
+            break
+        print(f"  [{time.time() - start:5.1f}s] Received event for different generation, skipping...")
+    except queue.Empty:
+        print(f"  [{time.time() - start:5.1f}s] Still waiting...")
+
+elapsed = time.time() - start
+if event["status"] == "succeeded":
+    print(f"\nGeneration succeeded in {elapsed:.1f}s")
+    print(f"  Downloading {event['url']}")
+    with open("output.png", "wb") as f:
+        f.write(requests.get(event["url"]).content)
+    print("  Saved output.png")
+elif event["status"] == "failed":
+    print(f"\nGeneration failed after {elapsed:.1f}s")
+    print(f"  Error: {event['error']}")
+else:
+    print(f"\nGeneration cancelled after {elapsed:.1f}s")
+```
+
+## Errors
+
+| Condition | Error |
+| - | - |
+| Not enough credit left after what's already queued | 402 `insufficient_credits`, with `required`, `available`, `amount_short`, and `pending_count` |
+| `num_generations` out of range | 400, with a message naming the range the API accepts |
+| Model not found | `"Model not found: <name>"` |
+| Text-only model | `":unsupported_media_type"` |
+| 404 on GET/DELETE | Generation ID does not exist |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

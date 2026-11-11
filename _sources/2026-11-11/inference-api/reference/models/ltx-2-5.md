@@ -1,0 +1,614 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/ltx-2-5
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# LTX 2.5
+
+> Text, image, and audio to video, up to 4K
+
+> [card] [Try LTX 2.5 in the Workbench](https://www.oxen.ai/ai/workbench?model=ltx-2-5)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `ltx-2-5`
+
+LTX 2.5 generates video from a text prompt, a first-frame image, or an audio track. A single model covers all three modes.
+
+Two tiers are offered: Fast reaches 4K and 20-second clips; Pro trades resolution (up to 1080p, 10 seconds) for higher fidelity. Both tiers support native multi-shot generation that keeps characters, lighting, and voices consistent across cuts, camera motion effects, and synchronized audio (turn Generate Audio off for silent output).
+
+The open 22B dev checkpoint supports LoRA fine-tuning on video clips with audio.
+
+| Metric | Value |
+| - | - |
+| Parameter Count | 22 billion |
+| Mixture of Experts | No |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=ltx-2-5) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Sync
+>
+> This blocks until the video is ready (typically 5-15 minutes). Prefer **Async** or **Async with SSE** for anything beyond quick experimentation.
+>
+> See the [video generation reference](https://docs.oxen.ai/inference-api/reference/video_generation.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3",
+> >   "generate_audio": true,
+> >   "aspect_ratio": "16:9",
+> >   "resolution": "1080p",
+> >   "duration": 6,
+> >   "fps": 24,
+> >   "camera_motion": "none"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3",
+> >         "generate_audio": true,
+> >         "aspect_ratio": "16:9",
+> >         "resolution": "1080p",
+> >         "duration": 6,
+> >         "fps": 24,
+> >         "camera_motion": "none"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+
+> [tab] Async
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3",
+> >   "generate_audio": true,
+> >   "aspect_ratio": "16:9",
+> >   "resolution": "1080p",
+> >   "duration": 6,
+> >   "fps": 24,
+> >   "camera_motion": "none"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3",
+> >         "generate_audio": true,
+> >         "aspect_ratio": "16:9",
+> >         "resolution": "1080p",
+> >         "duration": 6,
+> >         "fps": 24,
+> >         "camera_motion": "none"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+
+> [tab] Async with SSE
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ltx-2-5",
+> >   "prompt": "<prompt>",
+> >   "video_mode": "fast",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_audio": "https://example.com/audio.mp3",
+> >   "generate_audio": true,
+> >   "aspect_ratio": "16:9",
+> >   "resolution": "1080p",
+> >   "duration": 6,
+> >   "fps": 24,
+> >   "camera_motion": "none"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ltx-2-5",
+> >         "prompt": "<prompt>",
+> >         "video_mode": "fast",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_audio": "https://example.com/audio.mp3",
+> >         "generate_audio": true,
+> >         "aspect_ratio": "16:9",
+> >         "resolution": "1080p",
+> >         "duration": 6,
+> >         "fps": 24,
+> >         "camera_motion": "none"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/ltx-2-5
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | Text description of the video to generate, or how to animate the input image. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `video_mode` | `string` | `"fast"` | Fast is quicker and cheaper, with 4K and up to 20 seconds. Pro is higher fidelity, capped at 1080p and 10 seconds. One of: fast, pro. |
+| `input_image` | `string` | — | Optional first-frame image to animate (image-to-video). Leave empty to generate from the prompt alone. Format: uri. |
+| `input_audio` | `string` | — | Optional audio track (2-20 seconds) to drive an audio-to-video generation. Output length and lip sync follow the audio; 1080p only. Format: uri. |
+| `tail_image_url` | `string` | — | Optional last frame for image-to-video; the model interpolates between the input image and this frame. Format: uri. |
+| `generate_audio` | `boolean` | `true` | Generate synchronized audio for the video. |
+| `aspect_ratio` | `string` | `"16:9"` | Aspect Ratio One of: 16:9, 9:16. |
+| `resolution` | `string` | `"1080p"` | Resolution One of: 720p, 1080p, 1440p, 4k. |
+| `duration` | `integer` | `6` | Duration (seconds) Range: 6 – 20. |
+| `fps` | `integer` | `24` | Frame rate. 48 and 50 FPS shorten the maximum duration; Pro supports 24, 25, and 50 only. One of: 24, 25, 48, 50. |
+| `camera_motion` | `string` | `"none"` | Camera motion effect to apply to the generated video. One of: none, dolly\_in, dolly\_out, dolly\_left, dolly\_right, jib\_up, jib\_down, static, focus\_shift. |
+| `guidance_scale` | `number` | — | Audio-to-video only: how strictly the video follows the prompt. Defaults to 5 with a prompt, 9 with an input image. Range: 1 – 15. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

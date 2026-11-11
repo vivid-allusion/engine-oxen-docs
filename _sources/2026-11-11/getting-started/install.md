@@ -1,0 +1,279 @@
+---
+title: "\u2692\ufe0f Installation"
+source: https://docs.oxen.ai/getting-started/install
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# ⚒️ Installation
+
+> How to install the Oxen client, server, or python package.
+
+## Command Line Tools
+
+The Oxen client can be installed on MacOS via [homebrew](https://brew.sh/) or by downloading the relevant binaries for Linux or Windows.
+
+You can find the source code for the client [here](https://github.com/Oxen-AI/Oxen) and can also build from source for your platform.
+
+All binaries for MacOS, Linux, Windows and Docker are available on [GitHub Releases](https://github.com/Oxen-AI/Oxen/releases).
+
+### Mac
+
+```bash theme={null}
+brew install oxen
+```
+
+### Linux
+
+#### Ubuntu
+
+We provide .deb packages that can be installed directly on Debian-based systems such as Ubuntu.
+
+First, download the release for your system's architecture.
+
+For x86-64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-linux-x86_64.deb
+```
+
+For ARM64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-linux-arm64.deb
+```
+
+Then run
+
+```bash theme={null}
+sudo dpkg -i oxen-linux-*.deb
+```
+
+#### Other distributions
+
+We also provide distributions-agnostic binaries that can be installed on any Linux system.
+
+First, download the release for your system's architecture.
+
+For x86-64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-linux-x86_64.tar.gz
+```
+
+For ARM64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-linux-arm64.tar.gz
+```
+
+```bash theme={null}
+tar -xzvf oxen-linux-*.tar.gz
+chmod +x oxen
+mv oxen /usr/local/bin
+```
+
+### Windows
+
+We provide Windows binaries as a .exe.
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-windows-x86_64.exe.zip
+```
+
+## Python Package
+
+The easiest way to get started with the Oxen Python library is to use `uv`. [Install uv](https://docs.astral.sh/uv/getting-started/installation/).
+
+Install a supported Python version
+
+```bash theme={null}
+uv python install 3.13
+```
+
+Then, create and init a new uv project.
+
+```bash theme={null}
+mkdir my-python-script/ && cd my-python-script/
+uv init
+```
+
+This will create a virtual environment with the latest installed Python version.
+
+Next, add the oxen library to the project
+
+```bash theme={null}
+uv add oxenai
+```
+
+Then, to test that everything is working, update `main.py` with the following code.
+
+```python theme={null}
+import oxen
+oxen.clone("ox/SpanishToEnglish")
+```
+
+Then run the script with `uv run` so it executes in the virtual environment.
+
+```bash theme={null}
+uv run main.py
+```
+
+Note that this will only install the Python library and not the command line tool.
+
+### Installing Oxen through Jupyter Notebooks or Google Colab
+
+Create and run this cell:
+
+```python theme={null}
+!pip install oxenai
+```
+
+### Docker
+
+We build many binary wheels for the Python library (and we're working on adding more), but if your container image doesn't work with one of our binary wheels, pip will have to build it from source. Here is a minimal Dockerfile for a Debian-based image that installs the prerequisites for building the Oxen library from source:
+
+```Dockerfile theme={null}
+FROM python:3.12-slim-bookworm
+
+RUN apt update
+RUN apt install -y clang pkg-config libssl-dev curl
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN pip install oxenai
+```
+
+## Server Install
+
+The Oxen server binary can be deployed where ever you want to store and backup your data. It is an HTTP server that the client communicates with to enable collaboration.
+
+### Mac
+
+```bash theme={null}
+brew tap Oxen-AI/oxen-server
+brew install oxen-server
+```
+
+### Docker
+
+First, download the Docker image based on the host architecture.
+
+For x86-64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-docker-x86_64.tar
+```
+
+For ARM64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-docker-arm64.tar
+```
+
+Then, load the image into Docker.
+
+```bash theme={null}
+docker load < oxen-server-docker-*.tar
+```
+
+Finally, run a new container.
+
+```bash theme={null}
+docker run -d -v /var/oxen/data:/var/oxen/data -p 80:3001 oxen/oxen-server:latest
+```
+
+### Linux
+
+#### Ubuntu
+
+We provide .deb packages that can be installed directly on Debian-based systems such as Ubuntu.
+
+First, download the release for your system's architecture.
+
+For x86-64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-linux-x86_64.deb
+```
+
+For ARM64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-linux-arm64.deb
+```
+
+Then run
+
+```bash theme={null}
+sudo dpkg -i oxen-server-linux-*.deb
+```
+
+#### Other distributions
+
+First, download the release for your system's architecture.
+
+For x86-64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-linux-x86_64.tar.gz
+```
+
+For ARM64
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-linux-arm64.tar.gz
+```
+
+```bash theme={null}
+tar -xzvf oxen-server-linux-*.tar.gz
+chmod +x oxen-server
+mv oxen-server /usr/local/bin
+```
+
+### Windows
+
+> [!WARNING]
+>
+> `oxen-server` is **not supported on Windows**. Host the server on Linux, macOS, or Docker (see the sections above). The Windows `oxen` CLI and the Python package still work as clients against a server running on a supported platform.
+
+To get up and running using the client and server, you can follow the [getting started docs](https://github.com/Oxen-AI/oxen).
+
+## Building from Source
+
+To build the command line tool from source, you can follow these steps.
+
+1. Install rustup via the instructions at [https://rustup.rs/](https://rustup.rs/)
+2. Clone the repository [https://github.com/Oxen-AI/Oxen](https://github.com/Oxen-AI/Oxen)
+   ```bash theme={null}
+   git clone git@github.com:Oxen-AI/Oxen.git
+   ```
+3. `cd` into the cloned repository
+   ```bash theme={null}
+   cd Oxen/oxen-rust
+   ```
+4. Run this command (the release flag is recommended but not necessary):
+   ```bash theme={null}
+   cargo build --release
+   ```
+5. After the build has finished, the `oxen` binary will be in `Oxen/oxen-rust/target/release` (or, if you did not use the --release flag, `Oxen/oxen-rust/target/debug`).
+
+   Now, to make it usable from a terminal window, you have the option to add it to create a symlink or to add it to your `PATH`.
+6. To add oxen to your `PATH`:
+
+   Add this line to your `.bashrc` (or equivalent, e.g. `.zshrc`)
+
+   ```bash theme={null}
+   export PATH="$PATH:/path/to/Oxen/oxen-rust/target/release"
+   ```
+7. Alternatively, to create a symlink, run the following command:
+   ```bash theme={null}
+   sudo ln -s /path/to/Oxen/oxen-rust/target/release/oxen /usr/local/bin/oxen
+   ```
+   Note that if you did not use the `--release` flag when building Oxen, you will have to change the path.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

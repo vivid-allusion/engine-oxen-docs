@@ -1,0 +1,174 @@
+---
+title: "Video Generation"
+source: https://docs.oxen.ai/inference-api/reference/video_generation
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Video Generation
+
+> Generate videos from text prompts, images, or other videos
+
+## Endpoint
+
+```
+POST /api/ai/videos/generate
+```
+
+Generates videos synchronously. The request blocks until the video is ready, which can take 1-10+ minutes depending on the model and duration.
+
+For long-running or batch generation, consider using the [async queue](https://docs.oxen.ai/inference-api/reference/async_queue.md) instead.
+
+## Request Parameters
+
+| Parameter | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `model` | string | **yes** | -- | Video model name (e.g. `kling-video-v2-6-pro-text-to-video`, `kling-video-o3-pro-reference-to-video`) |
+| `prompt` | string | **one of** | -- | Text prompt. Use this or `multi_prompt`, not both. |
+| `multi_prompt` | array | **one of** | -- | Multi-shot prompts with per-shot duration. See [Kling O3 Pro reference](https://docs.oxen.ai/inference-api/reference/models/kling-video-o3-pro-reference-to-video) for details. |
+| `duration` | integer | no | 5 | Video duration in seconds (when using `prompt`). |
+| `aspect_ratio` | string | no | `"16:9"` | Aspect ratio (e.g. `"16:9"`, `"9:16"`, `"1:1"`). |
+| `input_image` | string/array | no | -- | Reference image(s) for image-to-video or reference-to-video models. |
+| `input_video` | string (URL) | no | -- | Reference video for video-to-video models. |
+| `generate_audio` | boolean | no | `false` | Generate audio track (model-dependent). |
+| `draft` | boolean | no | `false` | Render a 480p draft that can later be re-rendered at 1080p. Seedance 2.5 only. See [Seedance 2.5: Draft Mode](https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_5_draft_mode.md). |
+| `draft_task_id` | string | no | -- | Render the final of a previous draft at 1080p, or at 4k with `"resolution": "4k"`. Replaces `prompt`. Seedance 2.5 only. See [Seedance 2.5 draft mode](https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_5_draft_mode.md). |
+| `response_format` | string | no | `"url"` | `"url"` returns a hosted URL. `"b64_json"` returns base64-encoded video bytes inline. |
+| `target_namespace` | string | no | current user | Namespace to save results and bill to. Can be an organization name. |
+
+Additional parameters vary by model. Use the [model detail endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md#retrieve-model) (`GET /api/ai/models/:id`) to see the `request_schema` for model-specific parameters.
+
+Either `prompt` or `multi_prompt` is required. Sending both returns an error:
+
+```
+"Getting model response error: 422 - Value error, Cannot provide both 'prompt' and 'multi_prompt'."
+```
+
+Sending neither returns:
+
+```
+"Getting model response error: 422 - Value error, Either 'prompt' or 'multi_prompt' must be provided."
+```
+
+## Examples
+
+### Basic text-to-video
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-v2-6-pro-text-to-video",
+        "prompt": "A red balloon floating upward through blue sky",
+        "duration": 5,
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-v2-6-pro-text-to-video",
+    "prompt": "A red balloon floating upward through blue sky",
+    "duration": 5
+  }'
+```
+
+### Response (`response_format: "url"`)
+
+```json theme={null}
+{
+  "model": "kling-video-v2-6-pro-text-to-video",
+  "created": 1775090508,
+  "videos": [
+    {
+      "url": "https://hub.oxen.ai/api/repos/.../files/.../video.mp4?..."
+    }
+  ]
+}
+```
+
+The URL is a temporary link that expires after a period of time.
+
+### Response (`response_format: "b64_json"`)
+
+```json theme={null}
+{
+  "model": "kling-video-v2-6-pro-text-to-video",
+  "created": 1775090508,
+  "videos": [
+    {
+      "b64_json": "<base64-encoded mp4 bytes>"
+    }
+  ]
+}
+```
+
+### Multi-shot video
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-reference-to-video",
+        "multi_prompt": [
+            {"prompt": "Wide shot: a bird takes off from a branch", "duration": 5},
+            {"prompt": "Tracking shot: the bird soars through clouds", "duration": 5},
+        ],
+        "aspect_ratio": "16:9",
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-reference-to-video",
+    "multi_prompt": [
+      {"prompt": "Wide shot: a bird takes off from a branch", "duration": 5},
+      {"prompt": "Tracking shot: the bird soars through clouds", "duration": 5}
+    ],
+    "aspect_ratio": "16:9"
+  }'
+```
+
+## Important Notes
+
+* Video generation can take several minutes. Very long generations may time out on your client side.
+* For long-running or batch generation, use [`/ai/queue`](https://docs.oxen.ai/inference-api/reference/async_queue) which returns immediately and processes in the background.
+* Seedance 2.5 supports [draft mode](https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_5_draft_mode.md): preview at 480p, then re-render the same shot at 1080p.
+
+## Errors
+
+| Condition | Error |
+| - | - |
+| Both `prompt` and `multi_prompt` | `"Getting model response error: 422 - Value error, Cannot provide both 'prompt' and 'multi_prompt'."` |
+| Neither `prompt` nor `multi_prompt` | `"Getting model response error: 422 - Value error, Either 'prompt' or 'multi_prompt' must be provided."` |
+| Model not found | `"Model not found: <name>"` |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

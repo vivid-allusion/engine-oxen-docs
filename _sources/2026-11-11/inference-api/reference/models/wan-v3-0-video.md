@@ -1,0 +1,730 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/wan-v3-0-video
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# WAN 3.0
+
+> Reference or first/last frame video with audio
+
+> [card] [Try WAN 3.0 in the Workbench](https://www.oxen.ai/ai/workbench?model=wan-v3-0-video)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `wan-v3-0-video`
+
+WAN 3.0 Omni is the all-in-one reference mode of Alibaba's WAN 3.0 unified video model. It generates 2 to 30 second clips at up to 1080P, with generated audio on by default, and supports a smart duration mode that lets the model pick the length from the prompt. With no references supplied it generates from the prompt alone, replacing the separate text-to-video and reference-to-video models of the 2.x line.
+
+It accepts up to 10 images, 5 video clips, and 5 audio clips as combined references for appearance, motion, and voice.
+
+It also supports first/last frame generation as an alternative mode; frame inputs and reference inputs cannot be combined in a single request.
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=wan-v3-0-video) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Sync
+>
+> This blocks until the video is ready (typically 5-15 minutes). Prefer **Async** or **Async with SSE** for anything beyond quick experimentation.
+>
+> See the [video generation reference](https://docs.oxen.ai/inference-api/reference/video_generation.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5,
+> >   "enable_thinking": false,
+> >   "watermark": false
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5,
+> >         "enable_thinking": false,
+> >         "watermark": false
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+
+> [tab] Async
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5,
+> >   "enable_thinking": false,
+> >   "watermark": false
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5,
+> >         "enable_thinking": false,
+> >         "watermark": false
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+
+> [tab] Async with SSE
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "wan-v3-0-video",
+> >   "prompt": "<prompt>",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_videos": [
+> >     "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >   ],
+> >   "input_audios": [
+> >     "https://example.com/audio.mp3"
+> >   ],
+> >   "generate_audio": true,
+> >   "aspect_ratio": "adaptive",
+> >   "resolution": "1080P",
+> >   "duration": 5,
+> >   "enable_thinking": false,
+> >   "watermark": false
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "wan-v3-0-video",
+> >         "prompt": "<prompt>",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "tail_image_url": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_videos": [
+> >             "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4"
+> >         ],
+> >         "input_audios": [
+> >             "https://example.com/audio.mp3"
+> >         ],
+> >         "generate_audio": true,
+> >         "aspect_ratio": "adaptive",
+> >         "resolution": "1080P",
+> >         "duration": 5,
+> >         "enable_thinking": false,
+> >         "watermark": false
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/wan-v3-0-video
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | Text prompt describing the desired video. Refer to reference assets with the @ syntax: @Image 1, @Image 2, ..., @Video 1, ..., @Audio 1, ...; each type is numbered separately. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `input_images` | `array<string>` | — | Reference images for character, object, or scene appearance. Order maps to @Image 1, @Image 2, etc. in the prompt. Up to 10 images, max 20 MB each. JPEG/PNG/BMP/WEBP. |
+| `input_image` | `string` | — | Optional first frame image the video is generated from. JPEG/PNG/BMP/WEBP, max 20 MB. The output aspect ratio is taken from this image. Cannot be combined with reference images, videos, or audio. Format: uri. |
+| `tail_image_url` | `string` | — | Optional last frame image. The video interpolates from the first frame to this one. Requires a first frame image; same format constraints. Cannot be combined with reference images, videos, or audio. Format: uri. |
+| `input_videos` | `array<string>` | — | Reference videos for character or object appearance, motion, voice, or a camera movement to follow. Order maps to @Video 1, @Video 2, etc. in the prompt. Up to 5 clips totalling 15 seconds, max 100 MB each. MP4/MOV. |
+| `input_audios` | `array<string>` | — | Reference audio used as a voice or sound reference. Order maps to @Audio 1, @Audio 2, etc. in the prompt, e.g. "using the voice from @Audio 1". Up to 5 clips totalling 15 seconds, max 15 MB each. WAV/MP3. |
+| `generate_audio` | `boolean` | `true` | Whether the model generates sound for the video. Pricing is the same either way. |
+| `aspect_ratio` | `string` | `"adaptive"` | Aspect Ratio One of: adaptive, 16:9, 9:16, 1:1, 4:3, 3:4. |
+| `resolution` | `string` | `"1080P"` | Resolution One of: 480P, 720P, 1080P. |
+| `duration` | `integer` | `5` | Duration Range: 2 – 30. |
+| `enable_thinking` | `boolean` | `false` | Enables thinking mode, which lets the model reason about the prompt before generating. Adds processing time. |
+| `seed` | `integer` | — | Random seed for reproducibility (0-2147483647). |
+| `watermark` | `boolean` | `false` | Adds an 'AI generated' watermark to the bottom-right corner. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

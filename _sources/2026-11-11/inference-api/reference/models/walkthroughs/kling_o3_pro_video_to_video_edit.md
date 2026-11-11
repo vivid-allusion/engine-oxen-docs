@@ -1,0 +1,313 @@
+---
+title: "Kling O3 Edit: Video to Video"
+source: https://docs.oxen.ai/inference-api/reference/models/walkthroughs/kling_o3_pro_video_to_video_edit
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Kling O3 Edit: Video to Video
+
+> Edit existing videos using text prompts with optional reference images and character elements
+
+Edit existing videos using text instructions. Describe what to change — add objects, swap characters, alter scenery — and the model re-renders the video accordingly. Supports reference images (`@Image1`, `@Image2`, …) and structured element references (`@Element1`, `@Element2`, …) for character/object consistency across the edit.
+
+**Model name:** `kling-video-o3-pro-video-to-video-edit`
+
+## Endpoint
+
+```
+POST /api/ai/videos/generate
+```
+
+Video editing is synchronous — the request blocks until the edited video is ready (typically 1–5 minutes).
+
+It is recommended to use [`/ai/queue`](https://docs.oxen.ai/inference-api/reference/async_queue) instead for long-running jobs, so that you don't have long running http requests.
+
+## Request Parameters
+
+| Parameter | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `model` | string | **yes** | -- | `"kling-video-o3-pro-video-to-video-edit"` |
+| `prompt` | string | **yes** | -- | Text description of what to generate or how to edit the video. |
+| `input_video` | string (URI) | **yes** | -- | URL of the source video to edit. |
+| `input_image` | array of URIs | no | -- | Reference images for style/appearance. Use `@Image1`, `@Image2`, etc. in the prompt to refer to them. |
+| `elements` | array of objects | no | -- | Structured element references for characters/objects. See [elements](#elements) below. |
+| `keep_audio` | boolean | no | `false` | Whether to keep the original audio from the source video. |
+| `response_format` | string | no | `"url"` | `"url"` returns a hosted URL. `"b64_json"` returns base64-encoded video bytes inline. |
+| `target_namespace` | string | no | current user | Namespace to save results and bill to. Can be an organization name. |
+
+### elements
+
+Array of element objects for character/object reference. Use `@Element1`, `@Element2`, etc. in prompts.
+
+| Field | Type | Required | Description |
+| - | - | - | - |
+| `frontal_image_url` | string (URI) | **yes** | Front view of the reference object or character. |
+| `reference_image_urls` | array of URIs | no | Additional angles. Max 3 images per element. |
+
+## Examples
+
+### Basic video edit
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-video-to-video-edit",
+        "prompt": "A red bird flies in and lands in-between the two birds on the wire",
+        "input_video": "https://example.com/birds-on-wire.mp4",
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-video-to-video-edit",
+    "prompt": "A red bird flies in and lands in-between the two birds on the wire",
+    "input_video": "https://example.com/birds-on-wire.mp4"
+  }'
+```
+
+### Edit with reference images
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-video-to-video-edit",
+        "prompt": "Replace the person with @Image1 walking in the same direction",
+        "input_video": "https://example.com/street-scene.mp4",
+        "input_image": ["https://example.com/character-reference.jpg"],
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-video-to-video-edit",
+    "prompt": "Replace the person with @Image1 walking in the same direction",
+    "input_video": "https://example.com/street-scene.mp4",
+    "input_image": ["https://example.com/character-reference.jpg"]
+  }'
+```
+
+### Edit with elements and keep audio
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-video-to-video-edit",
+        "prompt": "@Element1 replaces the main character in the scene",
+        "input_video": "https://example.com/original-scene.mp4",
+        "elements": [
+            {
+                "frontal_image_url": "https://example.com/character-front.jpg",
+                "reference_image_urls": [
+                    "https://example.com/character-side.jpg",
+                    "https://example.com/character-back.jpg",
+                ],
+            }
+        ],
+        "keep_audio": True,
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-video-to-video-edit",
+    "prompt": "@Element1 replaces the main character in the scene",
+    "input_video": "https://example.com/original-scene.mp4",
+    "elements": [
+      {
+        "frontal_image_url": "https://example.com/character-front.jpg",
+        "reference_image_urls": [
+          "https://example.com/character-side.jpg",
+          "https://example.com/character-back.jpg"
+        ]
+      }
+    ],
+    "keep_audio": true
+  }'
+```
+
+### Response (`response_format: "url"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "kling-video-o3-pro-video-to-video-edit",
+  "videos": [
+    {
+      "url": "https://hub.oxen.ai/api/repos/.../files/.../video.mp4?..."
+    }
+  ]
+}
+```
+
+The URL is a temporary link that expires after a period of time.
+
+### Response (`response_format: "b64_json"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "kling-video-o3-pro-video-to-video-edit",
+  "videos": [
+    {
+      "b64_json": "<base64-encoded mp4 bytes>"
+    }
+  ]
+}
+```
+
+## Using with /ai/queue
+
+Recommended for video editing. Returns immediately, processes in the background.
+
+### Enqueue
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "kling-video-o3-pro-video-to-video-edit",
+        "prompt": "Change the background to a sunset beach",
+        "input_video": "https://example.com/my-video.mp4",
+        "num_generations": 2,
+    },
+)
+
+generations = response.json()["generations"]
+for g in generations:
+    print(f"ID: {g['generation_id']}, Status: {g['status']}")
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-video-o3-pro-video-to-video-edit",
+    "prompt": "Change the background to a sunset beach",
+    "input_video": "https://example.com/my-video.mp4",
+    "num_generations": 2
+  }'
+```
+
+### Poll
+
+```python Python theme={null}
+import requests
+import time
+
+generation_id = "4ef840a4-..."
+while True:
+    data = requests.get(
+        f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"},
+    ).json()
+    if data["status"] in {"succeeded", "failed", "cancelled"}:
+        break
+    time.sleep(10)
+
+if data["status"] == "succeeded":
+    print(f"Result: {data['result_url']}")
+else:
+    print(f"Generation {data['status']}: {data.get('error_message')}")
+```
+
+```bash cURL theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+A generation is done when its `status` is `succeeded`, `failed`, or `cancelled`. On success, `result_url` points to the output file.
+
+### Cancel
+
+```python Python theme={null}
+import requests
+
+generation_id = "4ef840a4-..."
+response = requests.delete(
+    f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+)
+
+print(response.json())
+```
+
+```bash cURL theme={null}
+curl -X DELETE -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+## Errors
+
+| Error | Cause | Fix |
+| - | - | - |
+| `Field required` | Missing `prompt` or `input_video` | Both are required |
+| `Invalid URL` | Malformed `input_video` URL | Provide a valid video URL |
+| `num_generations must be an integer between 1 and 4` | Invalid count (via `/ai/queue`) | Use 1–4 |
+
+## Other Kling Models
+
+| Model | Input | Use Case | Cost/sec |
+| - | - | - | - |
+| `kling-video-v2-6-pro-text-to-video` | Text only | Simple text-to-video | \$0.070 |
+| `kling-video-v2-6-pro-image-to-video` | Image | Animate a single image | \$0.070 |
+| `kling-video-o3-pro-image-to-video` | Image + text | Higher quality image animation | \$0.224 |
+| `kling-video-o3-pro-reference-to-video` | Images + text | Reference-conditioned, multi-shot | \$0.224 |
+| `kling-video-o3-pro-video-to-video-edit` | Video + text | Edit existing video | \$0.336 |
+| `kling-video-v3-pro-motion-control` | Text + image + video | Camera/motion control | \$0.168 |
+
+The O3 Pro models produce higher quality output than v2.x but cost roughly 3x more per second.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

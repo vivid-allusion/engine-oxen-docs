@@ -1,0 +1,2567 @@
+{
+ "source": "https://docs.oxen.ai/llms.txt",
+ "pages": [
+  {
+   "title": "\ud83d\udc02 Oxen.ai",
+   "url": "https://docs.oxen.ai/getting-started/intro",
+   "path": "getting-started/intro.md",
+   "bytes": 6291
+  },
+  {
+   "title": "Using Models on Oxen.ai",
+   "url": "https://docs.oxen.ai/getting-started/inference",
+   "path": "getting-started/inference.md",
+   "bytes": 1825
+  },
+  {
+   "title": "\ud83d\udcac Language Models",
+   "url": "https://docs.oxen.ai/examples/inference/chat_completions",
+   "path": "examples/inference/chat_completions.md",
+   "bytes": 19088
+  },
+  {
+   "title": "\ud83d\udc41\ufe0f Vision Language Models",
+   "url": "https://docs.oxen.ai/examples/inference/vision_language_models",
+   "path": "examples/inference/vision_language_models.md",
+   "bytes": 7333
+  },
+  {
+   "title": "\ud83d\uddbc\ufe0f Image Generation",
+   "url": "https://docs.oxen.ai/examples/inference/image_generation",
+   "path": "examples/inference/image_generation.md",
+   "bytes": 2610
+  },
+  {
+   "title": "\ud83c\udfa8 Image Editing",
+   "url": "https://docs.oxen.ai/examples/inference/image_editing",
+   "path": "examples/inference/image_editing.md",
+   "bytes": 4240
+  },
+  {
+   "title": "\ud83c\udfa5 Video Generation",
+   "url": "https://docs.oxen.ai/examples/inference/video_generation",
+   "path": "examples/inference/video_generation.md",
+   "bytes": 2828
+  },
+  {
+   "title": "Repositories on Oxen.ai",
+   "url": "https://docs.oxen.ai/getting-started/data",
+   "path": "getting-started/data.md",
+   "bytes": 1541
+  },
+  {
+   "title": "\ud83d\udcbe Version Control",
+   "url": "https://docs.oxen.ai/examples/data/versioning",
+   "path": "examples/data/versioning.md",
+   "bytes": 25701
+  },
+  {
+   "title": "\ud83d\udcca Datasets",
+   "url": "https://docs.oxen.ai/examples/data/datasets",
+   "path": "examples/data/datasets.md",
+   "bytes": 13103
+  },
+  {
+   "title": "\ud83d\udce6 Workspaces",
+   "url": "https://docs.oxen.ai/examples/data/workspaces",
+   "path": "examples/data/workspaces.md",
+   "bytes": 25035
+  },
+  {
+   "title": "\ud83d\udd25 Performance",
+   "url": "https://docs.oxen.ai/examples/data/performance",
+   "path": "examples/data/performance.md",
+   "bytes": 10735
+  },
+  {
+   "title": "\u2696\ufe0f Dataset Diffs",
+   "url": "https://docs.oxen.ai/concepts/diffs",
+   "path": "concepts/diffs.md",
+   "bytes": 38122
+  },
+  {
+   "title": "\ud83c\udff7\ufe0f File Metadata",
+   "url": "https://docs.oxen.ai/concepts/file_metadata",
+   "path": "concepts/file_metadata.md",
+   "bytes": 13134
+  },
+  {
+   "title": "Fine-Tuning Models on Oxen.ai",
+   "url": "https://docs.oxen.ai/getting-started/fine-tuning",
+   "path": "getting-started/fine-tuning.md",
+   "bytes": 9904
+  },
+  {
+   "title": "\ud83d\udcac Text Generation",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/text_generation",
+   "path": "examples/fine-tuning/text_generation.md",
+   "bytes": 4998
+  },
+  {
+   "title": "\ud83e\udd16 Chat Completions",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/chat_completions",
+   "path": "examples/fine-tuning/chat_completions.md",
+   "bytes": 7264
+  },
+  {
+   "title": "\ud83d\udc41\ufe0f Vision Language Models",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/image_understanding",
+   "path": "examples/fine-tuning/image_understanding.md",
+   "bytes": 5727
+  },
+  {
+   "title": "\ud83d\uddbc\ufe0f Image Generation",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/image_generation",
+   "path": "examples/fine-tuning/image_generation.md",
+   "bytes": 11288
+  },
+  {
+   "title": "\ud83d\udc68\u200d\ud83c\udfa8 Image Editing",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/image_editing",
+   "path": "examples/fine-tuning/image_editing.md",
+   "bytes": 9062
+  },
+  {
+   "title": "\ud83c\udfa5 Video Generation",
+   "url": "https://docs.oxen.ai/examples/fine-tuning/video_generation",
+   "path": "examples/fine-tuning/video_generation.md",
+   "bytes": 13653
+  },
+  {
+   "title": "\u2692\ufe0f Installation",
+   "url": "https://docs.oxen.ai/getting-started/install",
+   "path": "getting-started/install.md",
+   "bytes": 7233
+  },
+  {
+   "title": "\u2699\ufe0f Setup & Authentication",
+   "url": "https://docs.oxen.ai/getting-started/command-line/setup",
+   "path": "getting-started/command-line/setup.md",
+   "bytes": 1483
+  },
+  {
+   "title": "\ud83d\ude80 Start a Repository",
+   "url": "https://docs.oxen.ai/getting-started/command-line/start_repository",
+   "path": "getting-started/command-line/start_repository.md",
+   "bytes": 4508
+  },
+  {
+   "title": "\ud83d\udcdd Track Changes",
+   "url": "https://docs.oxen.ai/getting-started/command-line/track_changes",
+   "path": "getting-started/command-line/track_changes.md",
+   "bytes": 6841
+  },
+  {
+   "title": "\ud83c\udf3f Branches & Merging",
+   "url": "https://docs.oxen.ai/getting-started/command-line/branches",
+   "path": "getting-started/command-line/branches.md",
+   "bytes": 1994
+  },
+  {
+   "title": "\ud83d\udd04 Sync with a Remote",
+   "url": "https://docs.oxen.ai/getting-started/command-line/sync_remote",
+   "path": "getting-started/command-line/sync_remote.md",
+   "bytes": 2806
+  },
+  {
+   "title": "\ud83d\uddc2\ufe0f Workspaces",
+   "url": "https://docs.oxen.ai/getting-started/command-line/workspaces",
+   "path": "getting-started/command-line/workspaces.md",
+   "bytes": 1576
+  },
+  {
+   "title": "\ud83e\uddf9 Maintenance",
+   "url": "https://docs.oxen.ai/getting-started/command-line/maintenance",
+   "path": "getting-started/command-line/maintenance.md",
+   "bytes": 3156
+  },
+  {
+   "title": "\ud83d\udd27 Debugging & Performance",
+   "url": "https://docs.oxen.ai/getting-started/command-line/debugging",
+   "path": "getting-started/command-line/debugging.md",
+   "bytes": 5270
+  },
+  {
+   "title": "Introduction",
+   "url": "https://docs.oxen.ai/python-api/index",
+   "path": "python-api/index.md",
+   "bytes": 9122
+  },
+  {
+   "title": "Clone",
+   "url": "https://docs.oxen.ai/python-api/clone",
+   "path": "python-api/clone.md",
+   "bytes": 1454
+  },
+  {
+   "title": "Data frame",
+   "url": "https://docs.oxen.ai/python-api/data_frame",
+   "path": "python-api/data_frame.md",
+   "bytes": 6962
+  },
+  {
+   "title": "Datasets",
+   "url": "https://docs.oxen.ai/python-api/datasets",
+   "path": "python-api/datasets.md",
+   "bytes": 2516
+  },
+  {
+   "title": "Df utils",
+   "url": "https://docs.oxen.ai/python-api/df_utils",
+   "path": "python-api/df_utils.md",
+   "bytes": 1261
+  },
+  {
+   "title": "Diff",
+   "url": "https://docs.oxen.ai/python-api/diff/diff",
+   "path": "python-api/diff/diff.md",
+   "bytes": 4145
+  },
+  {
+   "title": "Line diff",
+   "url": "https://docs.oxen.ai/python-api/diff/line_diff",
+   "path": "python-api/diff/line_diff.md",
+   "bytes": 673
+  },
+  {
+   "title": "Tabular diff",
+   "url": "https://docs.oxen.ai/python-api/diff/tabular_diff",
+   "path": "python-api/diff/tabular_diff.md",
+   "bytes": 599
+  },
+  {
+   "title": "Text diff",
+   "url": "https://docs.oxen.ai/python-api/diff/text_diff",
+   "path": "python-api/diff/text_diff.md",
+   "bytes": 815
+  },
+  {
+   "title": "Init",
+   "url": "https://docs.oxen.ai/python-api/init",
+   "path": "python-api/init.md",
+   "bytes": 646
+  },
+  {
+   "title": "Oxen fs",
+   "url": "https://docs.oxen.ai/python-api/oxen_fs",
+   "path": "python-api/oxen_fs.md",
+   "bytes": 4899
+  },
+  {
+   "title": "Remote repo",
+   "url": "https://docs.oxen.ai/python-api/remote_repo",
+   "path": "python-api/remote_repo.md",
+   "bytes": 14288
+  },
+  {
+   "title": "Repo",
+   "url": "https://docs.oxen.ai/python-api/repo",
+   "path": "python-api/repo.md",
+   "bytes": 7192
+  },
+  {
+   "title": "Repositories",
+   "url": "https://docs.oxen.ai/python-api/repositories",
+   "path": "python-api/repositories.md",
+   "bytes": 5820
+  },
+  {
+   "title": "Workspace",
+   "url": "https://docs.oxen.ai/python-api/workspace",
+   "path": "python-api/workspace.md",
+   "bytes": 7287
+  },
+  {
+   "title": "\ud83d\udce1 Oxen Server",
+   "url": "https://docs.oxen.ai/getting-started/oxen-server",
+   "path": "getting-started/oxen-server.md",
+   "bytes": 7874
+  },
+  {
+   "title": "Inference API Overview",
+   "url": "https://docs.oxen.ai/inference-api/overview",
+   "path": "inference-api/overview.md",
+   "bytes": 7451
+  },
+  {
+   "title": "Chat Completions",
+   "url": "https://docs.oxen.ai/inference-api/quickstart/chat",
+   "path": "inference-api/quickstart/chat.md",
+   "bytes": 5424
+  },
+  {
+   "title": "Image Generation",
+   "url": "https://docs.oxen.ai/inference-api/quickstart/image-generation",
+   "path": "inference-api/quickstart/image-generation.md",
+   "bytes": 4317
+  },
+  {
+   "title": "Video Generation",
+   "url": "https://docs.oxen.ai/inference-api/quickstart/video-generation",
+   "path": "inference-api/quickstart/video-generation.md",
+   "bytes": 3951
+  },
+  {
+   "title": "Async Queue",
+   "url": "https://docs.oxen.ai/inference-api/quickstart/async-queue",
+   "path": "inference-api/quickstart/async-queue.md",
+   "bytes": 3534
+  },
+  {
+   "title": "Chat Completions",
+   "url": "https://docs.oxen.ai/inference-api/reference/chat_completions",
+   "path": "inference-api/reference/chat_completions.md",
+   "bytes": 17805
+  },
+  {
+   "title": "Image Generation",
+   "url": "https://docs.oxen.ai/inference-api/reference/image_generation",
+   "path": "inference-api/reference/image_generation.md",
+   "bytes": 3077
+  },
+  {
+   "title": "Image Editing",
+   "url": "https://docs.oxen.ai/inference-api/reference/image_editing",
+   "path": "inference-api/reference/image_editing.md",
+   "bytes": 3935
+  },
+  {
+   "title": "Video Generation",
+   "url": "https://docs.oxen.ai/inference-api/reference/video_generation",
+   "path": "inference-api/reference/video_generation.md",
+   "bytes": 6428
+  },
+  {
+   "title": "Async Queue",
+   "url": "https://docs.oxen.ai/inference-api/reference/async_queue",
+   "path": "inference-api/reference/async_queue.md",
+   "bytes": 28876
+  },
+  {
+   "title": "Models",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/overview",
+   "path": "inference-api/reference/models/overview.md",
+   "bytes": 8369
+  },
+  {
+   "title": "Model API References",
+   "url": "https://docs.oxen.ai/inference-api/reference/model-references",
+   "path": "inference-api/reference/model-references.md",
+   "bytes": 22755
+  },
+  {
+   "title": "Model Walkthroughs",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/overview",
+   "path": "inference-api/reference/models/walkthroughs/overview.md",
+   "bytes": 2178
+  },
+  {
+   "title": "Kling O3 Pro: Reference to Video",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/kling_o3_pro_reference_to_video",
+   "path": "inference-api/reference/models/walkthroughs/kling_o3_pro_reference_to_video.md",
+   "bytes": 14382
+  },
+  {
+   "title": "Kling O3 Edit: Video to Video",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/kling_o3_pro_video_to_video_edit",
+   "path": "inference-api/reference/models/walkthroughs/kling_o3_pro_video_to_video_edit.md",
+   "bytes": 10013
+  },
+  {
+   "title": "Seedance 2.0: Reference to Video",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_reference_to_video",
+   "path": "inference-api/reference/models/walkthroughs/seedance_2_reference_to_video.md",
+   "bytes": 11448
+  },
+  {
+   "title": "Seedance 2.5: Draft Mode",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_5_draft_mode",
+   "path": "inference-api/reference/models/walkthroughs/seedance_2_5_draft_mode.md",
+   "bytes": 21376
+  },
+  {
+   "title": "Topaz Starlight Precise 2.5",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/walkthroughs/topaz_starlight_precise_2_5",
+   "path": "inference-api/reference/models/walkthroughs/topaz_starlight_precise_2_5.md",
+   "bytes": 6809
+  },
+  {
+   "title": "Repository API",
+   "url": "https://docs.oxen.ai/http-api/index",
+   "path": "http-api/index.md",
+   "bytes": 798
+  },
+  {
+   "title": "File Upload Example",
+   "url": "https://docs.oxen.ai/http-api/example",
+   "path": "http-api/example.md",
+   "bytes": 15110
+  },
+  {
+   "title": "Large File Upload",
+   "url": "https://docs.oxen.ai/http-api/large-file-upload",
+   "path": "http-api/large-file-upload.md",
+   "bytes": 10769
+  },
+  {
+   "title": "Merge a commit into a branch",
+   "url": "https://docs.oxen.ai/http-api/branches/merge-a-commit-into-a-branch",
+   "path": "http-api/branches/merge-a-commit-into-a-branch.md",
+   "bytes": 5282
+  },
+  {
+   "title": "Get an existing branch",
+   "url": "https://docs.oxen.ai/http-api/branches/get-an-existing-branch",
+   "path": "http-api/branches/get-an-existing-branch.md",
+   "bytes": 3343
+  },
+  {
+   "title": "Update a branch to a new commit",
+   "url": "https://docs.oxen.ai/http-api/branches/update-a-branch-to-a-new-commit",
+   "path": "http-api/branches/update-a-branch-to-a-new-commit.md",
+   "bytes": 3849
+  },
+  {
+   "title": "Delete a branch",
+   "url": "https://docs.oxen.ai/http-api/branches/delete-a-branch",
+   "path": "http-api/branches/delete-a-branch.md",
+   "bytes": 3290
+  },
+  {
+   "title": "Get all versions of a file on a branch",
+   "url": "https://docs.oxen.ai/http-api/branches/get-all-versions-of-a-file-on-a-branch",
+   "path": "http-api/branches/get-all-versions-of-a-file-on-a-branch.md",
+   "bytes": 6258
+  },
+  {
+   "title": "List all branches",
+   "url": "https://docs.oxen.ai/http-api/branches/list-all-branches",
+   "path": "http-api/branches/list-all-branches.md",
+   "bytes": 4166
+  },
+  {
+   "title": "Create a new branch",
+   "url": "https://docs.oxen.ai/http-api/branches/create-a-new-branch",
+   "path": "http-api/branches/create-a-new-branch.md",
+   "bytes": 3911
+  },
+  {
+   "title": "Upload commits DB",
+   "url": "https://docs.oxen.ai/http-api/commits/upload-commits-db",
+   "path": "http-api/commits/upload-commits-db.md",
+   "bytes": 2986
+  },
+  {
+   "title": "Download commits DB",
+   "url": "https://docs.oxen.ai/http-api/commits/download-commits-db",
+   "path": "http-api/commits/download-commits-db.md",
+   "bytes": 2322
+  },
+  {
+   "title": "Upload data chunk",
+   "url": "https://docs.oxen.ai/http-api/commits/upload-data-chunk",
+   "path": "http-api/commits/upload-data-chunk.md",
+   "bytes": 3802
+  },
+  {
+   "title": "Notify upload complete",
+   "url": "https://docs.oxen.ai/http-api/commits/notify-upload-complete",
+   "path": "http-api/commits/notify-upload-complete.md",
+   "bytes": 4340
+  },
+  {
+   "title": "Get root commit",
+   "url": "https://docs.oxen.ai/http-api/commits/get-root-commit",
+   "path": "http-api/commits/get-root-commit.md",
+   "bytes": 4017
+  },
+  {
+   "title": "Get commit",
+   "url": "https://docs.oxen.ai/http-api/commits/get-commit",
+   "path": "http-api/commits/get-commit.md",
+   "bytes": 4215
+  },
+  {
+   "title": "Download commit entries DB",
+   "url": "https://docs.oxen.ai/http-api/commits/download-commit-entries-db",
+   "path": "http-api/commits/download-commit-entries-db.md",
+   "bytes": 2632
+  },
+  {
+   "title": "Upload commit",
+   "url": "https://docs.oxen.ai/http-api/commits/upload-commit",
+   "path": "http-api/commits/upload-commit.md",
+   "bytes": 4716
+  },
+  {
+   "title": "List commit history",
+   "url": "https://docs.oxen.ai/http-api/commits/list-commit-history",
+   "path": "http-api/commits/list-commit-history.md",
+   "bytes": 7202
+  },
+  {
+   "title": "List missing commits",
+   "url": "https://docs.oxen.ai/http-api/commits/list-missing-commits",
+   "path": "http-api/commits/list-missing-commits.md",
+   "bytes": 3804
+  },
+  {
+   "title": "List missing files from commits",
+   "url": "https://docs.oxen.ai/http-api/commits/list-missing-files-from-commits",
+   "path": "http-api/commits/list-missing-files-from-commits.md",
+   "bytes": 4478
+  },
+  {
+   "title": "List all commits",
+   "url": "https://docs.oxen.ai/http-api/commits/list-all-commits",
+   "path": "http-api/commits/list-all-commits.md",
+   "bytes": 4992
+  },
+  {
+   "title": "Download dir hashes DB",
+   "url": "https://docs.oxen.ai/http-api/commits/download-dir-hashes-db",
+   "path": "http-api/commits/download-dir-hashes-db.md",
+   "bytes": 2676
+  },
+  {
+   "title": "Get a commit's parents",
+   "url": "https://docs.oxen.ai/http-api/commits/get-a-commits-parents",
+   "path": "http-api/commits/get-a-commits-parents.md",
+   "bytes": 4683
+  },
+  {
+   "title": "Get Derived Data Frame",
+   "url": "https://docs.oxen.ai/http-api/compare/get-derived-data-frame",
+   "path": "http-api/compare/get-derived-data-frame.md",
+   "bytes": 8443
+  },
+  {
+   "title": "List changed files",
+   "url": "https://docs.oxen.ai/http-api/compare/list-changed-files",
+   "path": "http-api/compare/list-changed-files.md",
+   "bytes": 20653
+  },
+  {
+   "title": "Get file diff",
+   "url": "https://docs.oxen.ai/http-api/compare/get-file-diff",
+   "path": "http-api/compare/get-file-diff.md",
+   "bytes": 19837
+  },
+  {
+   "title": "Get diff tree",
+   "url": "https://docs.oxen.ai/http-api/compare/get-diff-tree",
+   "path": "http-api/compare/get-diff-tree.md",
+   "bytes": 4255
+  },
+  {
+   "title": "List file and directory entries changed between base and head",
+   "url": "https://docs.oxen.ai/http-api/compare/list-file-and-directory-entries-changed-between-base-and-head",
+   "path": "http-api/compare/list-file-and-directory-entries-changed-between-base-and-head.md",
+   "bytes": 20513
+  },
+  {
+   "title": "List commits between two revisions",
+   "url": "https://docs.oxen.ai/http-api/compare/list-commits-between-two-revisions",
+   "path": "http-api/compare/list-commits-between-two-revisions.md",
+   "bytes": 6344
+  },
+  {
+   "title": "Export resource as a zip",
+   "url": "https://docs.oxen.ai/http-api/export/export-resource-as-a-zip",
+   "path": "http-api/export/export-resource-as-a-zip.md",
+   "bytes": 2699
+  },
+  {
+   "title": "Get repository stats",
+   "url": "https://docs.oxen.ai/http-api/repositories/get-repository-stats",
+   "path": "http-api/repositories/get-repository-stats.md",
+   "bytes": 4614
+  },
+  {
+   "title": "List repositories",
+   "url": "https://docs.oxen.ai/http-api/repositories/list-repositories",
+   "path": "http-api/repositories/list-repositories.md",
+   "bytes": 3570
+  },
+  {
+   "title": "Transfer repository namespace",
+   "url": "https://docs.oxen.ai/http-api/repositories/transfer-repository-namespace",
+   "path": "http-api/repositories/transfer-repository-namespace.md",
+   "bytes": 5252
+  },
+  {
+   "title": "Rename a repository",
+   "url": "https://docs.oxen.ai/http-api/repositories/rename-a-repository",
+   "path": "http-api/repositories/rename-a-repository.md",
+   "bytes": 5006
+  },
+  {
+   "title": "Get repository size",
+   "url": "https://docs.oxen.ai/http-api/repositories/get-repository-size",
+   "path": "http-api/repositories/get-repository-size.md",
+   "bytes": 2955
+  },
+  {
+   "title": "Update repository size",
+   "url": "https://docs.oxen.ai/http-api/repositories/update-repository-size",
+   "path": "http-api/repositories/update-repository-size.md",
+   "bytes": 2863
+  },
+  {
+   "title": "Get repository details",
+   "url": "https://docs.oxen.ai/http-api/repositories/get-repository-details",
+   "path": "http-api/repositories/get-repository-details.md",
+   "bytes": 7613
+  },
+  {
+   "title": "Delete repository",
+   "url": "https://docs.oxen.ai/http-api/repositories/delete-repository",
+   "path": "http-api/repositories/delete-repository.md",
+   "bytes": 2798
+  },
+  {
+   "title": "Create repository",
+   "url": "https://docs.oxen.ai/http-api/repositories/create-repository",
+   "path": "http-api/repositories/create-repository.md",
+   "bytes": 8915
+  },
+  {
+   "title": "Clear workspaces for repo",
+   "url": "https://docs.oxen.ai/http-api/workspaces/clear-workspaces-for-repo",
+   "path": "http-api/workspaces/clear-workspaces-for-repo.md",
+   "bytes": 2698
+  },
+  {
+   "title": "Check workspace mergeability",
+   "url": "https://docs.oxen.ai/http-api/workspaces/check-workspace-mergeability",
+   "path": "http-api/workspaces/check-workspace-mergeability.md",
+   "bytes": 4643
+  },
+  {
+   "title": "Merge workspace into branch",
+   "url": "https://docs.oxen.ai/http-api/workspaces/merge-workspace-into-branch",
+   "path": "http-api/workspaces/merge-workspace-into-branch.md",
+   "bytes": 5812
+  },
+  {
+   "title": "Get workspace",
+   "url": "https://docs.oxen.ai/http-api/workspaces/get-workspace",
+   "path": "http-api/workspaces/get-workspace.md",
+   "bytes": 4405
+  },
+  {
+   "title": "Delete workspace",
+   "url": "https://docs.oxen.ai/http-api/workspaces/delete-workspace",
+   "path": "http-api/workspaces/delete-workspace.md",
+   "bytes": 4422
+  },
+  {
+   "title": "Get or create workspace",
+   "url": "https://docs.oxen.ai/http-api/workspaces/get-or-create-workspace",
+   "path": "http-api/workspaces/get-or-create-workspace.md",
+   "bytes": 5295
+  },
+  {
+   "title": "List workspaces",
+   "url": "https://docs.oxen.ai/http-api/workspaces/list-workspaces",
+   "path": "http-api/workspaces/list-workspaces.md",
+   "bytes": 4379
+  },
+  {
+   "title": "Batch download files (Tarball)",
+   "url": "https://docs.oxen.ai/http-api/version-files/batch-download-files-tarball",
+   "path": "http-api/version-files/batch-download-files-tarball.md",
+   "bytes": 2781
+  },
+  {
+   "title": "Download version file",
+   "url": "https://docs.oxen.ai/http-api/version-files/download-version-file",
+   "path": "http-api/version-files/download-version-file.md",
+   "bytes": 3595
+  },
+  {
+   "title": "Upload one part of a version file",
+   "url": "https://docs.oxen.ai/http-api/version-files/upload-one-part-of-a-version-file",
+   "path": "http-api/version-files/upload-one-part-of-a-version-file.md",
+   "bytes": 5802
+  },
+  {
+   "title": "Get version file metadata",
+   "url": "https://docs.oxen.ai/http-api/version-files/get-version-file-metadata",
+   "path": "http-api/version-files/get-version-file-metadata.md",
+   "bytes": 3461
+  },
+  {
+   "title": "Batch upload files (Multipart)",
+   "url": "https://docs.oxen.ai/http-api/version-files/batch-upload-files-multipart",
+   "path": "http-api/version-files/batch-upload-files-multipart.md",
+   "bytes": 4047
+  },
+  {
+   "title": "Begin a version file upload",
+   "url": "https://docs.oxen.ai/http-api/version-files/begin-a-version-file-upload",
+   "path": "http-api/version-files/begin-a-version-file-upload.md",
+   "bytes": 6968
+  },
+  {
+   "title": "Get data frame slice",
+   "url": "https://docs.oxen.ai/http-api/data-frames/get-data-frame-slice",
+   "path": "http-api/data-frames/get-data-frame-slice.md",
+   "bytes": 10534
+  },
+  {
+   "title": "Create a tabular data frame diff",
+   "url": "https://docs.oxen.ai/http-api/data-frames/create-a-tabular-data-frame-diff",
+   "path": "http-api/data-frames/create-a-tabular-data-frame-diff.md",
+   "bytes": 9298
+  },
+  {
+   "title": "Get a cached tabular data frame diff",
+   "url": "https://docs.oxen.ai/http-api/data-frames/get-a-cached-tabular-data-frame-diff",
+   "path": "http-api/data-frames/get-a-cached-tabular-data-frame-diff.md",
+   "bytes": 9638
+  },
+  {
+   "title": "Update tabular data frame diff",
+   "url": "https://docs.oxen.ai/http-api/data-frames/update-tabular-data-frame-diff",
+   "path": "http-api/data-frames/update-tabular-data-frame-diff.md",
+   "bytes": 9430
+  },
+  {
+   "title": "Delete DF Diff",
+   "url": "https://docs.oxen.ai/http-api/data-frames/delete-df-diff",
+   "path": "http-api/data-frames/delete-df-diff.md",
+   "bytes": 3003
+  },
+  {
+   "title": "Create data frame from directory",
+   "url": "https://docs.oxen.ai/http-api/data-frames/create-data-frame-from-directory",
+   "path": "http-api/data-frames/create-data-frame-from-directory.md",
+   "bytes": 5945
+  },
+  {
+   "title": "Start data frame indexing",
+   "url": "https://docs.oxen.ai/http-api/data-frames/start-data-frame-indexing",
+   "path": "http-api/data-frames/start-data-frame-indexing.md",
+   "bytes": 3200
+  },
+  {
+   "title": "Import file from URL",
+   "url": "https://docs.oxen.ai/http-api/import/import-file-from-url",
+   "path": "http-api/import/import-file-from-url.md",
+   "bytes": 5685
+  },
+  {
+   "title": "Upload zip archive",
+   "url": "https://docs.oxen.ai/http-api/import/upload-zip-archive",
+   "path": "http-api/import/upload-zip-archive.md",
+   "bytes": 5255
+  },
+  {
+   "title": "Copy a committed file to a new path within the workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/copy-a-committed-file-to-a-new-path-within-the-workspace",
+   "path": "http-api/workspace-files/copy-a-committed-file-to-a-new-path-within-the-workspace.md",
+   "bytes": 4451
+  },
+  {
+   "title": "Get file from workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/get-file-from-workspace",
+   "path": "http-api/workspace-files/get-file-from-workspace.md",
+   "bytes": 4373
+  },
+  {
+   "title": "Add files to workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/add-files-to-workspace",
+   "path": "http-api/workspace-files/add-files-to-workspace.md",
+   "bytes": 4272
+  },
+  {
+   "title": "List staged changes under a directory in a workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/list-staged-changes-under-a-directory-in-a-workspace",
+   "path": "http-api/workspace-files/list-staged-changes-under-a-directory-in-a-workspace.md",
+   "bytes": 17702
+  },
+  {
+   "title": "Unstage a file from the workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/unstage-a-file-from-the-workspace",
+   "path": "http-api/workspace-files/unstage-a-file-from-the-workspace.md",
+   "bytes": 3228
+  },
+  {
+   "title": "List staged changes in a workspace",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/list-staged-changes-in-a-workspace",
+   "path": "http-api/workspace-files/list-staged-changes-in-a-workspace.md",
+   "bytes": 17404
+  },
+  {
+   "title": "Unstage files",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/unstage-files",
+   "path": "http-api/workspace-files/unstage-files.md",
+   "bytes": 3887
+  },
+  {
+   "title": "Stage files for removal",
+   "url": "https://docs.oxen.ai/http-api/workspace-files/stage-files-for-removal",
+   "path": "http-api/workspace-files/stage-files-for-removal.md",
+   "bytes": 3962
+  },
+  {
+   "title": "Get namespace",
+   "url": "https://docs.oxen.ai/http-api/namespaces/get-namespace",
+   "path": "http-api/namespaces/get-namespace.md",
+   "bytes": 3344
+  },
+  {
+   "title": "List namespaces",
+   "url": "https://docs.oxen.ai/http-api/namespaces/list-namespaces",
+   "path": "http-api/namespaces/list-namespaces.md",
+   "bytes": 2753
+  },
+  {
+   "title": "Post apirepos workspaces data framescolumnsschemametadata",
+   "url": "https://docs.oxen.ai/http-api/workspace-data-frames/post-apirepos-workspaces-data_framescolumnsschemametadata",
+   "path": "http-api/workspace-data-frames/post-apirepos-workspaces-data_framescolumnsschemametadata.md",
+   "bytes": 4446
+  },
+  {
+   "title": "Get file metadata",
+   "url": "https://docs.oxen.ai/http-api/metadata/get-file-metadata",
+   "path": "http-api/metadata/get-file-metadata.md",
+   "bytes": 13598
+  },
+  {
+   "title": "Update file metadata",
+   "url": "https://docs.oxen.ai/http-api/metadata/update-file-metadata",
+   "path": "http-api/metadata/update-file-metadata.md",
+   "bytes": 3102
+  },
+  {
+   "title": "Check if branches are mergeable",
+   "url": "https://docs.oxen.ai/http-api/merge/check-if-branches-are-mergeable",
+   "path": "http-api/merge/check-if-branches-are-mergeable.md",
+   "bytes": 4425
+  },
+  {
+   "title": "Merge branches",
+   "url": "https://docs.oxen.ai/http-api/merge/merge-branches",
+   "path": "http-api/merge/merge-branches.md",
+   "bytes": 5146
+  },
+  {
+   "title": "Download File",
+   "url": "https://docs.oxen.ai/http-api/files/download-file",
+   "path": "http-api/files/download-file.md",
+   "bytes": 3874
+  },
+  {
+   "title": "Upload files",
+   "url": "https://docs.oxen.ai/http-api/files/upload-files",
+   "path": "http-api/files/upload-files.md",
+   "bytes": 6002
+  },
+  {
+   "title": "Delete file",
+   "url": "https://docs.oxen.ai/http-api/files/delete-file",
+   "path": "http-api/files/delete-file.md",
+   "bytes": 5716
+  },
+  {
+   "title": "Move/Rename file",
+   "url": "https://docs.oxen.ai/http-api/files/moverename-file",
+   "path": "http-api/files/moverename-file.md",
+   "bytes": 5354
+  },
+  {
+   "title": "Check Oxen server status",
+   "url": "https://docs.oxen.ai/http-api/health/check-oxen-server-status",
+   "path": "http-api/health/check-oxen-server-status.md",
+   "bytes": 2185
+  },
+  {
+   "title": "List directory contents",
+   "url": "https://docs.oxen.ai/http-api/directories/list-directory-contents",
+   "path": "http-api/directories/list-directory-contents.md",
+   "bytes": 15909
+  },
+  {
+   "title": "Fine-Tuning Overview",
+   "url": "https://docs.oxen.ai/fine-tuning-api/overview",
+   "path": "fine-tuning-api/overview.md",
+   "bytes": 6158
+  },
+  {
+   "title": "Text Generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/quickstart/text",
+   "path": "fine-tuning-api/quickstart/text.md",
+   "bytes": 4447
+  },
+  {
+   "title": "Image Generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/quickstart/image-generation",
+   "path": "fine-tuning-api/quickstart/image-generation.md",
+   "bytes": 5140
+  },
+  {
+   "title": "Image Editing",
+   "url": "https://docs.oxen.ai/fine-tuning-api/quickstart/image-editing",
+   "path": "fine-tuning-api/quickstart/image-editing.md",
+   "bytes": 5825
+  },
+  {
+   "title": "Video Generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/quickstart/video",
+   "path": "fine-tuning-api/quickstart/video.md",
+   "bytes": 6406
+  },
+  {
+   "title": "Fine-Tuning text generation model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/tutorials/01_fine_tuning",
+   "path": "fine-tuning-api/tutorials/01_fine_tuning.md",
+   "bytes": 6993
+  },
+  {
+   "title": "Fine-Tuning an Image Generation Model with API",
+   "url": "https://docs.oxen.ai/fine-tuning-api/tutorials/03_fine_tuning_image_generation",
+   "path": "fine-tuning-api/tutorials/03_fine_tuning_image_generation.md",
+   "bytes": 17496
+  },
+  {
+   "title": "Fine-Tuning an Image Editing Model with API",
+   "url": "https://docs.oxen.ai/fine-tuning-api/tutorials/02_fine_tuning_image",
+   "path": "fine-tuning-api/tutorials/02_fine_tuning_image.md",
+   "bytes": 9322
+  },
+  {
+   "title": "Fine-Tune: Text Generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/text_generation",
+   "path": "fine-tuning-api/reference/text_generation.md",
+   "bytes": 5632
+  },
+  {
+   "title": "Fine-Tune: Text Chat Messages",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/text_chat_messages",
+   "path": "fine-tuning-api/reference/text_chat_messages.md",
+   "bytes": 5352
+  },
+  {
+   "title": "Fine-Tune: Image Generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/image_generation",
+   "path": "fine-tuning-api/reference/image_generation.md",
+   "bytes": 5248
+  },
+  {
+   "title": "Fine-Tune: Image Editing",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/image_editing",
+   "path": "fine-tuning-api/reference/image_editing.md",
+   "bytes": 7823
+  },
+  {
+   "title": "Fine-Tune: Multi Image Editing",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/multi_image_editing",
+   "path": "fine-tuning-api/reference/multi_image_editing.md",
+   "bytes": 8800
+  },
+  {
+   "title": "Fine-Tune: Image To Text",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/image_to_text",
+   "path": "fine-tuning-api/reference/image_to_text.md",
+   "bytes": 5787
+  },
+  {
+   "title": "Fine-Tune: Image To Video",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/image_to_video",
+   "path": "fine-tuning-api/reference/image_to_video.md",
+   "bytes": 5551
+  },
+  {
+   "title": "Fine-Tune: Text To Video",
+   "url": "https://docs.oxen.ai/fine-tuning-api/reference/text_to_video",
+   "path": "fine-tuning-api/reference/text_to_video.md",
+   "bytes": 5357
+  },
+  {
+   "title": "Parameter Guide",
+   "url": "https://docs.oxen.ai/fine-tuning-api/parameters",
+   "path": "fine-tuning-api/parameters.md",
+   "bytes": 9269
+  },
+  {
+   "title": "Create chat completion",
+   "url": "https://docs.oxen.ai/fine-tuning-api/create-chat-completion",
+   "path": "fine-tuning-api/create-chat-completion.md",
+   "bytes": 6259
+  },
+  {
+   "title": "List the values each filter column takes",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-the-values-each-filter-column-takes",
+   "path": "fine-tuning-api/list-the-values-each-filter-column-takes.md",
+   "bytes": 3381
+  },
+  {
+   "title": "List past generations",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-past-generations",
+   "path": "fine-tuning-api/list-past-generations.md",
+   "bytes": 10902
+  },
+  {
+   "title": "Estimate a generation's cost",
+   "url": "https://docs.oxen.ai/fine-tuning-api/estimate-a-generations-cost",
+   "path": "fine-tuning-api/estimate-a-generations-cost.md",
+   "bytes": 4697
+  },
+  {
+   "title": "Edit image",
+   "url": "https://docs.oxen.ai/fine-tuning-api/edit-image",
+   "path": "fine-tuning-api/edit-image.md",
+   "bytes": 2449
+  },
+  {
+   "title": "Retrieve model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/retrieve-model",
+   "path": "fine-tuning-api/retrieve-model.md",
+   "bytes": 10355
+  },
+  {
+   "title": "Update model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/update-model",
+   "path": "fine-tuning-api/update-model.md",
+   "bytes": 9943
+  },
+  {
+   "title": "Delete custom model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/delete-custom-model",
+   "path": "fine-tuning-api/delete-custom-model.md",
+   "bytes": 9954
+  },
+  {
+   "title": "Search models",
+   "url": "https://docs.oxen.ai/fine-tuning-api/search-models",
+   "path": "fine-tuning-api/search-models.md",
+   "bytes": 10173
+  },
+  {
+   "title": "Get generation details",
+   "url": "https://docs.oxen.ai/fine-tuning-api/get-generation-details",
+   "path": "fine-tuning-api/get-generation-details.md",
+   "bytes": 8649
+  },
+  {
+   "title": "List featured models",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-featured-models",
+   "path": "fine-tuning-api/list-featured-models.md",
+   "bytes": 10065
+  },
+  {
+   "title": "Get generation status",
+   "url": "https://docs.oxen.ai/fine-tuning-api/get-generation-status",
+   "path": "fine-tuning-api/get-generation-status.md",
+   "bytes": 7983
+  },
+  {
+   "title": "Cancel generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/cancel-generation",
+   "path": "fine-tuning-api/cancel-generation.md",
+   "bytes": 1755
+  },
+  {
+   "title": "Generate image",
+   "url": "https://docs.oxen.ai/fine-tuning-api/generate-image",
+   "path": "fine-tuning-api/generate-image.md",
+   "bytes": 2480
+  },
+  {
+   "title": "Deactivate model deployment",
+   "url": "https://docs.oxen.ai/fine-tuning-api/deactivate-model-deployment",
+   "path": "fine-tuning-api/deactivate-model-deployment.md",
+   "bytes": 9829
+  },
+  {
+   "title": "Activate model deployment",
+   "url": "https://docs.oxen.ai/fine-tuning-api/activate-model-deployment",
+   "path": "fine-tuning-api/activate-model-deployment.md",
+   "bytes": 9915
+  },
+  {
+   "title": "Kill & retry generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/kill-&-retry-generation",
+   "path": "fine-tuning-api/kill-&-retry-generation.md",
+   "bytes": 2632
+  },
+  {
+   "title": "Generate audio",
+   "url": "https://docs.oxen.ai/fine-tuning-api/generate-audio",
+   "path": "fine-tuning-api/generate-audio.md",
+   "bytes": 3188
+  },
+  {
+   "title": "List favorite models",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-favorite-models",
+   "path": "fine-tuning-api/list-favorite-models.md",
+   "bytes": 10068
+  },
+  {
+   "title": "Resolve workbench input URLs",
+   "url": "https://docs.oxen.ai/fine-tuning-api/resolve-workbench-input-urls",
+   "path": "fine-tuning-api/resolve-workbench-input-urls.md",
+   "bytes": 5465
+  },
+  {
+   "title": "List models",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-models",
+   "path": "fine-tuning-api/list-models.md",
+   "bytes": 10558
+  },
+  {
+   "title": "List in-flight queue items",
+   "url": "https://docs.oxen.ai/fine-tuning-api/list-in-flight-queue-items",
+   "path": "fine-tuning-api/list-in-flight-queue-items.md",
+   "bytes": 10624
+  },
+  {
+   "title": "Enqueue generation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/enqueue-generation",
+   "path": "fine-tuning-api/enqueue-generation.md",
+   "bytes": 3816
+  },
+  {
+   "title": "Generate video",
+   "url": "https://docs.oxen.ai/fine-tuning-api/generate-video",
+   "path": "fine-tuning-api/generate-video.md",
+   "bytes": 3743
+  },
+  {
+   "title": "Favorite a model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/favorite-a-model",
+   "path": "fine-tuning-api/favorite-a-model.md",
+   "bytes": 9806
+  },
+  {
+   "title": "Unfavorite a model",
+   "url": "https://docs.oxen.ai/fine-tuning-api/unfavorite-a-model",
+   "path": "fine-tuning-api/unfavorite-a-model.md",
+   "bytes": 9816
+  },
+  {
+   "title": "List fine-tunes for an organization",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/list-fine-tunes-for-an-organization",
+   "path": "fine-tuning-api/fine_tunes/list-fine-tunes-for-an-organization.md",
+   "bytes": 4682
+  },
+  {
+   "title": "Run a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/run-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/run-a-fine-tune-job.md",
+   "bytes": 10345
+  },
+  {
+   "title": "Get a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/get-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/get-a-fine-tune-job.md",
+   "bytes": 2942
+  },
+  {
+   "title": "Delete a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/delete-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/delete-a-fine-tune-job.md",
+   "bytes": 2968
+  },
+  {
+   "title": "Rename or describe a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/rename-or-describe-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/rename-or-describe-a-fine-tune-job.md",
+   "bytes": 3535
+  },
+  {
+   "title": "List checkpoints for a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/list-checkpoints-for-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/list-checkpoints-for-a-fine-tune-job.md",
+   "bytes": 5441
+  },
+  {
+   "title": "Get logs for a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/get-logs-for-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/get-logs-for-a-fine-tune-job.md",
+   "bytes": 1655
+  },
+  {
+   "title": "Stop a running fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/stop-a-running-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/stop-a-running-fine-tune-job.md",
+   "bytes": 10257
+  },
+  {
+   "title": "Deploy a checkpoint from a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/deploy-a-checkpoint-from-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/deploy-a-checkpoint-from-a-fine-tune-job.md",
+   "bytes": 12048
+  },
+  {
+   "title": "Tokenize data for a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/tokenize-data-for-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/tokenize-data-for-a-fine-tune-job.md",
+   "bytes": 1708
+  },
+  {
+   "title": "Update training status for a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/update-training-status-for-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/update-training-status-for-a-fine-tune-job.md",
+   "bytes": 2100
+  },
+  {
+   "title": "Get training status for a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/get-training-status-for-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/get-training-status-for-a-fine-tune-job.md",
+   "bytes": 1722
+  },
+  {
+   "title": "List fine-tunes in a repository",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/list-fine-tunes-in-a-repository",
+   "path": "fine-tuning-api/fine_tunes/list-fine-tunes-in-a-repository.md",
+   "bytes": 4182
+  },
+  {
+   "title": "Create a fine-tune job",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/create-a-fine-tune-job",
+   "path": "fine-tuning-api/fine_tunes/create-a-fine-tune-job.md",
+   "bytes": 6020
+  },
+  {
+   "title": "List all fine-tunes accessible to the current user",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/list-all-fine-tunes-accessible-to-the-current-user",
+   "path": "fine-tuning-api/fine_tunes/list-all-fine-tunes-accessible-to-the-current-user.md",
+   "bytes": 4374
+  },
+  {
+   "title": "List fine-tunes for a user",
+   "url": "https://docs.oxen.ai/fine-tuning-api/fine_tunes/list-fine-tunes-for-a-user",
+   "path": "fine-tuning-api/fine_tunes/list-fine-tunes-for-a-user.md",
+   "bytes": 4605
+  },
+  {
+   "title": "Get evaluation status",
+   "url": "https://docs.oxen.ai/fine-tuning-api/evaluations/get-evaluation-status",
+   "path": "fine-tuning-api/evaluations/get-evaluation-status.md",
+   "bytes": 5916
+  },
+  {
+   "title": "Create an evaluation",
+   "url": "https://docs.oxen.ai/fine-tuning-api/evaluations/create-an-evaluation",
+   "path": "fine-tuning-api/evaluations/create-an-evaluation.md",
+   "bytes": 8395
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/black-forest-labs-flux-2-klein-4b",
+   "path": "inference-api/reference/models/black-forest-labs-flux-2-klein-4b.md",
+   "bytes": 20067
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/black-forest-labs-flux-2-klein-9b",
+   "path": "inference-api/reference/models/black-forest-labs-flux-2-klein-9b.md",
+   "bytes": 20067
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-depth-anything-video",
+   "path": "inference-api/reference/models/bytedance-depth-anything-video.md",
+   "bytes": 14396
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-omnihuman-2-0",
+   "path": "inference-api/reference/models/bytedance-omnihuman-2-0.md",
+   "bytes": 14711
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seed-audio-1-0",
+   "path": "inference-api/reference/models/bytedance-seed-audio-1-0.md",
+   "bytes": 6082
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-image-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-fast-image-to-video.md",
+   "bytes": 22969
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-reference-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-fast-reference-to-video.md",
+   "bytes": 26946
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-text-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-fast-text-to-video.md",
+   "bytes": 13222
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-image-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-image-to-video.md",
+   "bytes": 23016
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-image-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-mini-image-to-video.md",
+   "bytes": 23112
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-reference-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-mini-reference-to-video.md",
+   "bytes": 27018
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-text-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-mini-text-to-video.md",
+   "bytes": 13342
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-reference-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-reference-to-video.md",
+   "bytes": 26848
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-text-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-0-text-to-video.md",
+   "bytes": 13207
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-image-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-5-image-to-video.md",
+   "bytes": 24020
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-reference-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-5-reference-to-video.md",
+   "bytes": 28941
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-text-to-video",
+   "path": "inference-api/reference/models/bytedance-seedance-2-5-text-to-video.md",
+   "bytes": 14443
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-4",
+   "path": "inference-api/reference/models/bytedance-seedream-4.md",
+   "bytes": 18528
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-4-5",
+   "path": "inference-api/reference/models/bytedance-seedream-4-5.md",
+   "bytes": 18458
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-5",
+   "path": "inference-api/reference/models/bytedance-seedream-5-5.md",
+   "bytes": 20155
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-5-layers",
+   "path": "inference-api/reference/models/bytedance-seedream-5-5-layers.md",
+   "bytes": 20373
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-lite",
+   "path": "inference-api/reference/models/bytedance-seedream-5-lite.md",
+   "bytes": 18853
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-pro",
+   "path": "inference-api/reference/models/bytedance-seedream-5-pro.md",
+   "bytes": 19717
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-fable-5",
+   "path": "inference-api/reference/models/claude-fable-5.md",
+   "bytes": 4149
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-fable-5-1",
+   "path": "inference-api/reference/models/claude-fable-5-1.md",
+   "bytes": 4617
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-5-20251101",
+   "path": "inference-api/reference/models/claude-opus-4-5-20251101.md",
+   "bytes": 4250
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-6",
+   "path": "inference-api/reference/models/claude-opus-4-6.md",
+   "bytes": 3877
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-7",
+   "path": "inference-api/reference/models/claude-opus-4-7.md",
+   "bytes": 3990
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-8",
+   "path": "inference-api/reference/models/claude-opus-4-8.md",
+   "bytes": 4205
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-opus-5-5",
+   "path": "inference-api/reference/models/claude-opus-5-5.md",
+   "bytes": 3995
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-4-5",
+   "path": "inference-api/reference/models/claude-sonnet-4-5.md",
+   "bytes": 3563
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-4-6",
+   "path": "inference-api/reference/models/claude-sonnet-4-6.md",
+   "bytes": 3791
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-5",
+   "path": "inference-api/reference/models/claude-sonnet-5.md",
+   "bytes": 4091
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-5-5",
+   "path": "inference-api/reference/models/claude-sonnet-5-5.md",
+   "bytes": 4314
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-1-flash",
+   "path": "inference-api/reference/models/deepseek-v4-1-flash.md",
+   "bytes": 5723
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-flash",
+   "path": "inference-api/reference/models/deepseek-v4-flash.md",
+   "bytes": 5229
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-pro",
+   "path": "inference-api/reference/models/deepseek-v4-pro.md",
+   "bytes": 4975
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-dubbing",
+   "path": "inference-api/reference/models/elevenlabs-dubbing.md",
+   "bytes": 14370
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4",
+   "path": "inference-api/reference/models/elevenlabs-eleven-v4.md",
+   "bytes": 5544
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-dialogue",
+   "path": "inference-api/reference/models/elevenlabs-eleven-v4-dialogue.md",
+   "bytes": 4786
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-turbo",
+   "path": "inference-api/reference/models/elevenlabs-eleven-v4-turbo.md",
+   "bytes": 5418
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-voice-clone",
+   "path": "inference-api/reference/models/elevenlabs-eleven-v4-voice-clone.md",
+   "bytes": 5618
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-music-v2-5",
+   "path": "inference-api/reference/models/elevenlabs-music-v2-5.md",
+   "bytes": 4157
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-music-v2-5-composition",
+   "path": "inference-api/reference/models/elevenlabs-music-v2-5-composition.md",
+   "bytes": 3414
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-scribe-v2",
+   "path": "inference-api/reference/models/elevenlabs-scribe-v2.md",
+   "bytes": 5018
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-sound-effects-v3",
+   "path": "inference-api/reference/models/elevenlabs-sound-effects-v3.md",
+   "bytes": 4333
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-changer",
+   "path": "inference-api/reference/models/elevenlabs-voice-changer.md",
+   "bytes": 5226
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-design",
+   "path": "inference-api/reference/models/elevenlabs-voice-design.md",
+   "bytes": 4457
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-isolator",
+   "path": "inference-api/reference/models/elevenlabs-voice-isolator.md",
+   "bytes": 2595
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/fish-audio-drama-3",
+   "path": "inference-api/reference/models/fish-audio-drama-3.md",
+   "bytes": 5502
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-1-dev",
+   "path": "inference-api/reference/models/flux-1-dev.md",
+   "bytes": 14734
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-2-flex",
+   "path": "inference-api/reference/models/flux-2-flex.md",
+   "bytes": 20688
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-2-pro",
+   "path": "inference-api/reference/models/flux-2-pro.md",
+   "bytes": 20571
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-3-image",
+   "path": "inference-api/reference/models/flux-3-image.md",
+   "bytes": 19644
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-3-max-image-to-video",
+   "path": "inference-api/reference/models/flux-3-max-image-to-video.md",
+   "bytes": 21936
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-3-max-keyframes-to-video",
+   "path": "inference-api/reference/models/flux-3-max-keyframes-to-video.md",
+   "bytes": 15584
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-3-max-text-to-video",
+   "path": "inference-api/reference/models/flux-3-max-text-to-video.md",
+   "bytes": 13538
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-3-video",
+   "path": "inference-api/reference/models/flux-3-video.md",
+   "bytes": 21400
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-deblur",
+   "path": "inference-api/reference/models/flux-deblur.md",
+   "bytes": 12755
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-erase",
+   "path": "inference-api/reference/models/flux-erase.md",
+   "bytes": 20884
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-image-upscaler",
+   "path": "inference-api/reference/models/flux-image-upscaler.md",
+   "bytes": 13629
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-kontext-dev",
+   "path": "inference-api/reference/models/flux-kontext-dev.md",
+   "bytes": 15715
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-video-edit",
+   "path": "inference-api/reference/models/flux-video-edit.md",
+   "bytes": 14498
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-video-upscaler",
+   "path": "inference-api/reference/models/flux-video-upscaler.md",
+   "bytes": 19717
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/flux-virtual-try-on",
+   "path": "inference-api/reference/models/flux-virtual-try-on.md",
+   "bytes": 16315
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-2-5-flash",
+   "path": "inference-api/reference/models/gemini-2-5-flash.md",
+   "bytes": 5271
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-2-5-pro",
+   "path": "inference-api/reference/models/gemini-2-5-pro.md",
+   "bytes": 4955
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-3-1-pro-preview",
+   "path": "inference-api/reference/models/gemini-3-1-pro-preview.md",
+   "bytes": 2593
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-3-8-flash",
+   "path": "inference-api/reference/models/gemini-3-8-flash.md",
+   "bytes": 3154
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-3-flash-preview",
+   "path": "inference-api/reference/models/gemini-3-flash-preview.md",
+   "bytes": 5069
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemini-omni-1-1-flash",
+   "path": "inference-api/reference/models/gemini-omni-1-1-flash.md",
+   "bytes": 26434
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gemma-4-31b-it",
+   "path": "inference-api/reference/models/gemma-4-31b-it.md",
+   "bytes": 5150
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/glm-5-3-flash",
+   "path": "inference-api/reference/models/glm-5-3-flash.md",
+   "bytes": 5485
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/google-nano-banana-pro",
+   "path": "inference-api/reference/models/google-nano-banana-pro.md",
+   "bytes": 19773
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/google-veo-3",
+   "path": "inference-api/reference/models/google-veo-3.md",
+   "bytes": 18994
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-4-1-2025-04-14",
+   "path": "inference-api/reference/models/gpt-4-1-2025-04-14.md",
+   "bytes": 5197
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-4-1-mini-2025-04-14",
+   "path": "inference-api/reference/models/gpt-4-1-mini-2025-04-14.md",
+   "bytes": 5263
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-4o",
+   "path": "inference-api/reference/models/gpt-4o.md",
+   "bytes": 4963
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-4o-mini",
+   "path": "inference-api/reference/models/gpt-4o-mini.md",
+   "bytes": 5096
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-1-2025-11-13",
+   "path": "inference-api/reference/models/gpt-5-1-2025-11-13.md",
+   "bytes": 5248
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-2-2025-12-11",
+   "path": "inference-api/reference/models/gpt-5-2-2025-12-11.md",
+   "bytes": 5032
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-2025-08-07",
+   "path": "inference-api/reference/models/gpt-5-2025-08-07.md",
+   "bytes": 5251
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-4-2026-03-05",
+   "path": "inference-api/reference/models/gpt-5-4-2026-03-05.md",
+   "bytes": 5161
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-4-mini",
+   "path": "inference-api/reference/models/gpt-5-4-mini.md",
+   "bytes": 5205
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-5-2026-04-23",
+   "path": "inference-api/reference/models/gpt-5-5-2026-04-23.md",
+   "bytes": 5153
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-5-pro-2026-04-23",
+   "path": "inference-api/reference/models/gpt-5-5-pro-2026-04-23.md",
+   "bytes": 5112
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-luna",
+   "path": "inference-api/reference/models/gpt-5-6-luna.md",
+   "bytes": 5202
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-sol",
+   "path": "inference-api/reference/models/gpt-5-6-sol.md",
+   "bytes": 5267
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-terra",
+   "path": "inference-api/reference/models/gpt-5-6-terra.md",
+   "bytes": 5243
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-mini",
+   "path": "inference-api/reference/models/gpt-5-mini.md",
+   "bytes": 5029
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-5-nano",
+   "path": "inference-api/reference/models/gpt-5-nano.md",
+   "bytes": 5157
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-6-1-sol",
+   "path": "inference-api/reference/models/gpt-6-1-sol.md",
+   "bytes": 5541
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-6-1-terra",
+   "path": "inference-api/reference/models/gpt-6-1-terra.md",
+   "bytes": 5463
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-6-astra",
+   "path": "inference-api/reference/models/gpt-6-astra.md",
+   "bytes": 5828
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-6-luna",
+   "path": "inference-api/reference/models/gpt-6-luna.md",
+   "bytes": 5325
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-6-sol",
+   "path": "inference-api/reference/models/gpt-6-sol.md",
+   "bytes": 5339
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-audio",
+   "path": "inference-api/reference/models/gpt-audio.md",
+   "bytes": 2087
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-1-5",
+   "path": "inference-api/reference/models/gpt-image-1-5.md",
+   "bytes": 18700
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-2",
+   "path": "inference-api/reference/models/gpt-image-2.md",
+   "bytes": 20801
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-5-flare",
+   "path": "inference-api/reference/models/gpt-image-2-5-flare.md",
+   "bytes": 22273
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-5-sunburst",
+   "path": "inference-api/reference/models/gpt-image-2-5-sunburst.md",
+   "bytes": 22324
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-6-flare",
+   "path": "inference-api/reference/models/gpt-image-2-6-flare.md",
+   "bytes": 23701
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-6-sunburst",
+   "path": "inference-api/reference/models/gpt-image-2-6-sunburst.md",
+   "bytes": 23868
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/gpt-oss-120b",
+   "path": "inference-api/reference/models/gpt-oss-120b.md",
+   "bytes": 5482
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-i2v",
+   "path": "inference-api/reference/models/happyhorse-1_0-i2v.md",
+   "bytes": 13581
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-r2v",
+   "path": "inference-api/reference/models/happyhorse-1_0-r2v.md",
+   "bytes": 19156
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-t2v",
+   "path": "inference-api/reference/models/happyhorse-1_0-t2v.md",
+   "bytes": 12303
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-video-edit",
+   "path": "inference-api/reference/models/happyhorse-1_0-video-edit.md",
+   "bytes": 21561
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-i2v",
+   "path": "inference-api/reference/models/happyhorse-1_1-i2v.md",
+   "bytes": 13614
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-r2v",
+   "path": "inference-api/reference/models/happyhorse-1_1-r2v.md",
+   "bytes": 19072
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-t2v",
+   "path": "inference-api/reference/models/happyhorse-1_1-t2v.md",
+   "bytes": 12325
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ideogram-v4",
+   "path": "inference-api/reference/models/ideogram-v4.md",
+   "bytes": 14658
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ideogram-v4-5",
+   "path": "inference-api/reference/models/ideogram-v4-5.md",
+   "bytes": 13310
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ideogram-v4-5-edit",
+   "path": "inference-api/reference/models/ideogram-v4-5-edit.md",
+   "bytes": 24195
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kimi-k3",
+   "path": "inference-api/reference/models/kimi-k3.md",
+   "bytes": 5247
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kimi-k3-1-pro",
+   "path": "inference-api/reference/models/kimi-k3-1-pro.md",
+   "bytes": 5283
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-image-to-video",
+   "path": "inference-api/reference/models/kling-video-o1-image-to-video.md",
+   "bytes": 20911
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-reference-to-video",
+   "path": "inference-api/reference/models/kling-video-o1-reference-to-video.md",
+   "bytes": 20730
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-video-to-video-edit",
+   "path": "inference-api/reference/models/kling-video-o1-video-to-video-edit.md",
+   "bytes": 21870
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-o3-omni",
+   "path": "inference-api/reference/models/kling-video-o3-omni.md",
+   "bytes": 25160
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-5-turbo-pro-image-to-video",
+   "path": "inference-api/reference/models/kling-video-v2-5-turbo-pro-image-to-video.md",
+   "bytes": 21000
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-6-pro-image-to-video",
+   "path": "inference-api/reference/models/kling-video-v2-6-pro-image-to-video.md",
+   "bytes": 18926
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-6-pro-text-to-video",
+   "path": "inference-api/reference/models/kling-video-v2-6-pro-text-to-video.md",
+   "bytes": 13383
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v3-pro-motion-control",
+   "path": "inference-api/reference/models/kling-video-v3-pro-motion-control.md",
+   "bytes": 16553
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-image-to-video",
+   "path": "inference-api/reference/models/kling-video-v4-0-image-to-video.md",
+   "bytes": 22068
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-reference-to-video",
+   "path": "inference-api/reference/models/kling-video-v4-0-reference-to-video.md",
+   "bytes": 26725
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-text-to-video",
+   "path": "inference-api/reference/models/kling-video-v4-0-text-to-video.md",
+   "bytes": 12791
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-2-large",
+   "path": "inference-api/reference/models/krea-2-large.md",
+   "bytes": 18470
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-2-medium",
+   "path": "inference-api/reference/models/krea-2-medium.md",
+   "bytes": 18495
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-2-medium-turbo",
+   "path": "inference-api/reference/models/krea-2-medium-turbo.md",
+   "bytes": 18645
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-2-raw",
+   "path": "inference-api/reference/models/krea-2-raw.md",
+   "bytes": 18474
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-3",
+   "path": "inference-api/reference/models/krea-3.md",
+   "bytes": 19317
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/krea-v2-large-text-to-image",
+   "path": "inference-api/reference/models/krea-v2-large-text-to-image.md",
+   "bytes": 19329
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3",
+   "path": "inference-api/reference/models/ltx-2-3.md",
+   "bytes": 21020
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-extend",
+   "path": "inference-api/reference/models/ltx-2-3-extend.md",
+   "bytes": 13381
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-pro",
+   "path": "inference-api/reference/models/ltx-2-3-pro.md",
+   "bytes": 20811
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-pro-22b-IC-LoRA-Union-Control",
+   "path": "inference-api/reference/models/ltx-2-3-pro-22b-IC-LoRA-Union-Control.md",
+   "bytes": 21446
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-quality-hdr",
+   "path": "inference-api/reference/models/ltx-2-3-quality-hdr.md",
+   "bytes": 15509
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-reframe",
+   "path": "inference-api/reference/models/ltx-2-3-reframe.md",
+   "bytes": 13081
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-retake",
+   "path": "inference-api/reference/models/ltx-2-3-retake.md",
+   "bytes": 13699
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-5",
+   "path": "inference-api/reference/models/ltx-2-5.md",
+   "bytes": 21329
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-5-hdr",
+   "path": "inference-api/reference/models/ltx-2-5-hdr.md",
+   "bytes": 13324
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ltx-2-5-upscale",
+   "path": "inference-api/reference/models/ltx-2-5-upscale.md",
+   "bytes": 13050
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-image-to-video",
+   "path": "inference-api/reference/models/luma-ray-v3-2-image-to-video.md",
+   "bytes": 14498
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-reframe",
+   "path": "inference-api/reference/models/luma-ray-v3-2-reframe.md",
+   "bytes": 14231
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-text-to-video",
+   "path": "inference-api/reference/models/luma-ray-v3-2-text-to-video.md",
+   "bytes": 12946
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-video-to-video",
+   "path": "inference-api/reference/models/luma-ray-v3-2-video-to-video.md",
+   "bytes": 14955
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/minimax-h3",
+   "path": "inference-api/reference/models/minimax-h3.md",
+   "bytes": 25017
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-image-to-video",
+   "path": "inference-api/reference/models/minimax-h3-max-image-to-video.md",
+   "bytes": 22285
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-reference-to-video",
+   "path": "inference-api/reference/models/minimax-h3-max-reference-to-video.md",
+   "bytes": 24400
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-text-to-video",
+   "path": "inference-api/reference/models/minimax-h3-max-text-to-video.md",
+   "bytes": 13741
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ministral-3b-latest",
+   "path": "inference-api/reference/models/ministral-3b-latest.md",
+   "bytes": 4892
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/ministral-8b-latest",
+   "path": "inference-api/reference/models/ministral-8b-latest.md",
+   "bytes": 5243
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/muse-image-1-0",
+   "path": "inference-api/reference/models/muse-image-1-0.md",
+   "bytes": 19174
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/muse-spark-1-3",
+   "path": "inference-api/reference/models/muse-spark-1-3.md",
+   "bytes": 5206
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/nano-banana",
+   "path": "inference-api/reference/models/nano-banana.md",
+   "bytes": 18923
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/nano-banana-2",
+   "path": "inference-api/reference/models/nano-banana-2.md",
+   "bytes": 19238
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/nano-banana-2-1",
+   "path": "inference-api/reference/models/nano-banana-2-1.md",
+   "bytes": 19882
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/nano-banana-2-lite",
+   "path": "inference-api/reference/models/nano-banana-2-lite.md",
+   "bytes": 19394
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/o3-2025-04-16",
+   "path": "inference-api/reference/models/o3-2025-04-16.md",
+   "bytes": 5327
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/openai-gpt-oss-20b",
+   "path": "inference-api/reference/models/openai-gpt-oss-20b.md",
+   "bytes": 5939
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image",
+   "path": "inference-api/reference/models/qwen-image.md",
+   "bytes": 14789
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-2",
+   "path": "inference-api/reference/models/qwen-image-2.md",
+   "bytes": 20060
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-2-1",
+   "path": "inference-api/reference/models/qwen-image-2-1.md",
+   "bytes": 20419
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-2-pro",
+   "path": "inference-api/reference/models/qwen-image-2-pro.md",
+   "bytes": 20313
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-2512",
+   "path": "inference-api/reference/models/qwen-image-2512.md",
+   "bytes": 14281
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-3",
+   "path": "inference-api/reference/models/qwen-image-3.md",
+   "bytes": 20468
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-3-pro",
+   "path": "inference-api/reference/models/qwen-image-3-pro.md",
+   "bytes": 20666
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit",
+   "path": "inference-api/reference/models/qwen-image-edit.md",
+   "bytes": 13762
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-2511",
+   "path": "inference-api/reference/models/qwen-image-edit-2511.md",
+   "bytes": 14166
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-max",
+   "path": "inference-api/reference/models/qwen-image-edit-max.md",
+   "bytes": 15296
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-plus",
+   "path": "inference-api/reference/models/qwen-image-edit-plus.md",
+   "bytes": 14893
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen3-8-max",
+   "path": "inference-api/reference/models/qwen3-8-max.md",
+   "bytes": 4721
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen3-8-omni-flash",
+   "path": "inference-api/reference/models/qwen3-8-omni-flash.md",
+   "bytes": 3028
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen3-vl-2b-instruct",
+   "path": "inference-api/reference/models/qwen3-vl-2b-instruct.md",
+   "bytes": 5308
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/qwen3-vl-4b-instruct",
+   "path": "inference-api/reference/models/qwen3-vl-4b-instruct.md",
+   "bytes": 5527
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sam-3-image",
+   "path": "inference-api/reference/models/sam-3-image.md",
+   "bytes": 13812
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sam-3-video",
+   "path": "inference-api/reference/models/sam-3-video.md",
+   "bytes": 13420
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sonar",
+   "path": "inference-api/reference/models/sonar.md",
+   "bytes": 5249
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sonar-deep-research",
+   "path": "inference-api/reference/models/sonar-deep-research.md",
+   "bytes": 5065
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sonar-pro",
+   "path": "inference-api/reference/models/sonar-pro.md",
+   "bytes": 4936
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/sonar-reasoning-pro",
+   "path": "inference-api/reference/models/sonar-reasoning-pro.md",
+   "bytes": 5253
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-astra-2-video",
+   "path": "inference-api/reference/models/topazlabs-astra-2-video.md",
+   "bytes": 14528
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-bloom-2-image",
+   "path": "inference-api/reference/models/topazlabs-bloom-2-image.md",
+   "bytes": 18926
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-bloom-image",
+   "path": "inference-api/reference/models/topazlabs-bloom-image.md",
+   "bytes": 19580
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-2-5-video",
+   "path": "inference-api/reference/models/topazlabs-hyperion-2-5-video.md",
+   "bytes": 13962
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-2-video",
+   "path": "inference-api/reference/models/topazlabs-hyperion-2-video.md",
+   "bytes": 13571
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-hdr-video",
+   "path": "inference-api/reference/models/topazlabs-hyperion-hdr-video.md",
+   "bytes": 14864
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-image-upscale",
+   "path": "inference-api/reference/models/topazlabs-image-upscale.md",
+   "bytes": 13636
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-iris-mq-video",
+   "path": "inference-api/reference/models/topazlabs-iris-mq-video.md",
+   "bytes": 15081
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-proteus-video",
+   "path": "inference-api/reference/models/topazlabs-proteus-video.md",
+   "bytes": 15143
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-rhea-video",
+   "path": "inference-api/reference/models/topazlabs-rhea-video.md",
+   "bytes": 15076
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-upscale-starlight-2-5-video",
+   "path": "inference-api/reference/models/topazlabs-upscale-starlight-2-5-video.md",
+   "bytes": 13785
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-upscale-starlight-2-6-video",
+   "path": "inference-api/reference/models/topazlabs-upscale-starlight-2-6-video.md",
+   "bytes": 14376
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-video-upscale",
+   "path": "inference-api/reference/models/topazlabs-video-upscale.md",
+   "bytes": 13136
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-3-5-image",
+   "path": "inference-api/reference/models/topazlabs-wonder-3-5-image.md",
+   "bytes": 13468
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-3-image",
+   "path": "inference-api/reference/models/topazlabs-wonder-3-image.md",
+   "bytes": 13290
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-4-image",
+   "path": "inference-api/reference/models/topazlabs-wonder-4-image.md",
+   "bytes": 13205
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-1-t2v-1-3b-diffusers",
+   "path": "inference-api/reference/models/wan-ai-wan2-1-t2v-1-3b-diffusers.md",
+   "bytes": 13739
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-1-t2v-14b-diffusers",
+   "path": "inference-api/reference/models/wan-ai-wan2-1-t2v-14b-diffusers.md",
+   "bytes": 13922
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-2-t2v-a14b-diffusers",
+   "path": "inference-api/reference/models/wan-ai-wan2-2-t2v-a14b-diffusers.md",
+   "bytes": 14248
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-2-ti2v-5b-diffusers",
+   "path": "inference-api/reference/models/wan-ai-wan2-2-ti2v-5b-diffusers.md",
+   "bytes": 13906
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-6-image-to-video",
+   "path": "inference-api/reference/models/wan-v2-6-image-to-video.md",
+   "bytes": 13842
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-6-reference-to-video",
+   "path": "inference-api/reference/models/wan-v2-6-reference-to-video.md",
+   "bytes": 12997
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-edit-video",
+   "path": "inference-api/reference/models/wan-v2-7-edit-video.md",
+   "bytes": 14106
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-image-to-video",
+   "path": "inference-api/reference/models/wan-v2-7-image-to-video.md",
+   "bytes": 22372
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-reference-to-video",
+   "path": "inference-api/reference/models/wan-v2-7-reference-to-video.md",
+   "bytes": 23328
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-text-to-video",
+   "path": "inference-api/reference/models/wan-v2-7-text-to-video.md",
+   "bytes": 13501
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v3-0-video",
+   "path": "inference-api/reference/models/wan-v3-0-video.md",
+   "bytes": 27505
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/wan-v3-0-video-prime",
+   "path": "inference-api/reference/models/wan-v3-0-video-prime.md",
+   "bytes": 27776
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-image",
+   "path": "inference-api/reference/models/xai-grok-imagine-image.md",
+   "bytes": 12476
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-image-edit",
+   "path": "inference-api/reference/models/xai-grok-imagine-image-edit.md",
+   "bytes": 13355
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-1-5-image-to-video",
+   "path": "inference-api/reference/models/xai-grok-imagine-video-1-5-image-to-video.md",
+   "bytes": 13527
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-edit-video",
+   "path": "inference-api/reference/models/xai-grok-imagine-video-edit-video.md",
+   "bytes": 14003
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-image-to-video",
+   "path": "inference-api/reference/models/xai-grok-imagine-video-image-to-video.md",
+   "bytes": 13848
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/z-image-turbo",
+   "path": "inference-api/reference/models/z-image-turbo.md",
+   "bytes": 12546
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/zai-org-glm-5-2",
+   "path": "inference-api/reference/models/zai-org-glm-5-2.md",
+   "bytes": 5449
+  },
+  {
+   "title": "",
+   "url": "https://docs.oxen.ai/inference-api/reference/models/zai-org-glm-5-3",
+   "path": "inference-api/reference/models/zai-org-glm-5-3.md",
+   "bytes": 4960
+  }
+ ],
+ "failures": [
+  {
+   "url": "https://docs.oxen.ai/inference-api/reference/models/overview.md",
+   "error": "https://docs.oxen.ai/inference-api/reference/models/overview.md.md: HTTP Error 404: Not Found"
+  }
+ ]
+}

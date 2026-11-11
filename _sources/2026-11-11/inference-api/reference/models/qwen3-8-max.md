@@ -1,0 +1,182 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/qwen3-8-max
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Qwen3.8 Max
+
+> Coding and agentic work, 1M context
+
+> [card] [Try Qwen3.8 Max in the Workbench](https://www.oxen.ai/ai/workbench?model=qwen3-8-max)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `qwen3-8-max`
+
+Qwen3.8 Max is Alibaba's top-tier closed model, a mixture-of-experts architecture aimed at coding, agentic work, long-horizon reasoning, and research tasks. It takes a 1M-token context, which suits whole-repository reasoning and long document analysis.
+
+| Metric | Value |
+| - | - |
+| Context Length | 1,000,000 |
+| Multilingual | Yes |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=qwen3-8-max) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "qwen3-8-max",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ]
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "qwen3-8-max",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ]
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] Basic parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "qwen3-8-max",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "qwen3-8-max",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] All parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "qwen3-8-max",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false,
+>   "top_p": 1.0
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "qwen3-8-max",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false,
+>         "top_p": 1.0
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/qwen3-8-max
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

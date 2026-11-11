@@ -1,0 +1,315 @@
+---
+title: "Model API References"
+source: https://docs.oxen.ai/inference-api/reference/model-references
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Model API References
+
+> Browse the full list of models available in the Oxen.AI inference API.
+
+Every model exposed by the Oxen.AI inference API has a dedicated reference page with a sample request, Python snippet, and the full request schema. Models are grouped below by developer.
+
+> [card] [Models API endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md)
+>
+> List, search, and fetch model details programmatically via `GET /api/ai/models`.
+
+> [card] [Discover models on our Models page](https://www.oxen.ai/ai/models)
+>
+> Filter by modality, search by name, and preview every model side-by-side before diving into a reference page.
+
+## Alibaba Wan
+
+* [Happy Horse - Image to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-i2v)
+* [Happy Horse - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-r2v)
+* [Happy Horse - Text to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-t2v)
+* [Happy Horse - Video Edit](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_0-video-edit)
+* [Happy Horse 1.1 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-i2v)
+* [Happy Horse 1.1 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-r2v)
+* [Happy Horse 1.1 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/happyhorse-1_1-t2v)
+* [Wan2.1 1.3B - Text to Video](https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-1-t2v-1-3b-diffusers)
+* [Wan2.1 14B - Text to Video](https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-1-t2v-14b-diffusers)
+* [Wan2.2 A14B - Text to Video](https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-2-t2v-a14b-diffusers)
+* [Wan2.2 5B - Text to Video](https://docs.oxen.ai/inference-api/reference/models/wan-ai-wan2-2-ti2v-5b-diffusers)
+* [WAN 2.6 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-6-image-to-video)
+* [WAN 2.6 - Video to Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-6-reference-to-video)
+* [WAN 2.7 - Edit Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-edit-video)
+* [WAN 2.7 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-image-to-video)
+* [WAN 2.7 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-reference-to-video)
+* [WAN 2.7 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/wan-v2-7-text-to-video)
+* [WAN 3.0](https://docs.oxen.ai/inference-api/reference/models/wan-v3-0-video)
+* [WAN 3.0 Prime](https://docs.oxen.ai/inference-api/reference/models/wan-v3-0-video-prime)
+
+## Anthropic
+
+* [Claude Fable 5](https://docs.oxen.ai/inference-api/reference/models/claude-fable-5)
+* [Claude Fable 5.1](https://docs.oxen.ai/inference-api/reference/models/claude-fable-5-1)
+* [Claude Opus 4.5](https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-5-20251101)
+* [Claude Opus 4.6](https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-6)
+* [Claude Opus 4.7](https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-7)
+* [Claude Opus 4.8](https://docs.oxen.ai/inference-api/reference/models/claude-opus-4-8)
+* [Claude Opus 5.5](https://docs.oxen.ai/inference-api/reference/models/claude-opus-5-5)
+* [Claude Sonnet 4.5](https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-4-5)
+* [Claude Sonnet 4.6](https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-4-6)
+* [Claude Sonnet 5](https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-5)
+* [Claude Sonnet 5.5](https://docs.oxen.ai/inference-api/reference/models/claude-sonnet-5-5)
+
+## Black Forest Labs
+
+* [FLUX.2 Klein 4B](https://docs.oxen.ai/inference-api/reference/models/black-forest-labs-flux-2-klein-4b)
+* [FLUX.2 Klein 9B](https://docs.oxen.ai/inference-api/reference/models/black-forest-labs-flux-2-klein-9b)
+* [FLUX.1 \[dev\]](https://docs.oxen.ai/inference-api/reference/models/flux-1-dev)
+* [FLUX.2 \[flex\]](https://docs.oxen.ai/inference-api/reference/models/flux-2-flex)
+* [FLUX.2 \[pro\]](https://docs.oxen.ai/inference-api/reference/models/flux-2-pro)
+* [FLUX 3 Image](https://docs.oxen.ai/inference-api/reference/models/flux-3-image)
+* [FLUX 3 Max: Image to Video](https://docs.oxen.ai/inference-api/reference/models/flux-3-max-image-to-video)
+* [FLUX 3 Max: Keyframes to Video](https://docs.oxen.ai/inference-api/reference/models/flux-3-max-keyframes-to-video)
+* [FLUX 3 Max: Text to Video](https://docs.oxen.ai/inference-api/reference/models/flux-3-max-text-to-video)
+* [FLUX 3 Video](https://docs.oxen.ai/inference-api/reference/models/flux-3-video)
+* [FLUX Deblur](https://docs.oxen.ai/inference-api/reference/models/flux-deblur)
+* [FLUX Erase](https://docs.oxen.ai/inference-api/reference/models/flux-erase)
+* [FLUX Image Upscaler](https://docs.oxen.ai/inference-api/reference/models/flux-image-upscaler)
+* [FLUX.1-Kontext \[dev\]](https://docs.oxen.ai/inference-api/reference/models/flux-kontext-dev)
+* [FLUX Video Edit](https://docs.oxen.ai/inference-api/reference/models/flux-video-edit)
+* [FLUX Video Upscaler](https://docs.oxen.ai/inference-api/reference/models/flux-video-upscaler)
+* [FLUX Virtual Try-On](https://docs.oxen.ai/inference-api/reference/models/flux-virtual-try-on)
+
+## ByteDance
+
+* [Depth Anything Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-depth-anything-video)
+* [OmniHuman 2.0](https://docs.oxen.ai/inference-api/reference/models/bytedance-omnihuman-2-0)
+* [Seed Audio 1.0](https://docs.oxen.ai/inference-api/reference/models/bytedance-seed-audio-1-0)
+* [Seedance 2.0 Fast - Image to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-image-to-video)
+* [Seedance 2.0 Fast - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-reference-to-video)
+* [Seedance 2.0 Fast - Text to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-fast-text-to-video)
+* [Seedance 2.0 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-image-to-video)
+* [Seedance 2.0 Mini - Image to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-image-to-video)
+* [Seedance 2.0 Mini - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-reference-to-video)
+* [Seedance 2.0 Mini - Text to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-mini-text-to-video)
+* [Seedance 2.0 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-reference-to-video)
+* [Seedance 2.0 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-0-text-to-video)
+* [Seedance 2.5 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-image-to-video)
+* [Seedance 2.5 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-reference-to-video)
+* [Seedance 2.5 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedance-2-5-text-to-video)
+* [Seedream 4.0](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-4)
+* [Seedream 4.5](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-4-5)
+* [Seedream 5.5](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-5)
+* [Seedream 5.5 Layers](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-5-layers)
+* [Seedream 5.0 Lite](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-lite)
+* [Seedream 5.0 Pro](https://docs.oxen.ai/inference-api/reference/models/bytedance-seedream-5-pro)
+
+## DeepSeek
+
+* [DeepSeek V4.1 Flash](https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-1-flash)
+* [DeepSeek V4 Flash](https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-flash)
+* [DeepSeek V4 Pro](https://docs.oxen.ai/inference-api/reference/models/deepseek-v4-pro)
+
+## ElevenLabs
+
+* [Eleven Dubbing](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-dubbing)
+* [Eleven v4](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4)
+* [Eleven v4 Dialogue](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-dialogue)
+* [Eleven v4 Turbo](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-turbo)
+* [Eleven v4 Voice Clone](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-eleven-v4-voice-clone)
+* [Eleven Music v2.5](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-music-v2-5)
+* [Eleven Music v2.5: Composition Plan](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-music-v2-5-composition)
+* [Scribe v2](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-scribe-v2)
+* [Eleven Sound Effects v3](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-sound-effects-v3)
+* [Eleven Voice Changer](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-changer)
+* [Eleven Voice Design](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-design)
+* [Eleven Voice Isolator](https://docs.oxen.ai/inference-api/reference/models/elevenlabs-voice-isolator)
+
+## Fish Audio
+
+* [Fish Audio Drama 3](https://docs.oxen.ai/inference-api/reference/models/fish-audio-drama-3)
+
+## Google
+
+* [Gemini 2.5 Flash](https://docs.oxen.ai/inference-api/reference/models/gemini-2-5-flash)
+* [Gemini 2.5 Pro](https://docs.oxen.ai/inference-api/reference/models/gemini-2-5-pro)
+* [Gemini 3.1 Pro Preview](https://docs.oxen.ai/inference-api/reference/models/gemini-3-1-pro-preview)
+* [Gemini 3.8 Flash](https://docs.oxen.ai/inference-api/reference/models/gemini-3-8-flash)
+* [Gemini 3 Flash](https://docs.oxen.ai/inference-api/reference/models/gemini-3-flash-preview)
+* [Gemini Omni 1.1 Flash](https://docs.oxen.ai/inference-api/reference/models/gemini-omni-1-1-flash)
+* [Gemma 4 31B](https://docs.oxen.ai/inference-api/reference/models/gemma-4-31b-it)
+* [Nano Banana Pro](https://docs.oxen.ai/inference-api/reference/models/google-nano-banana-pro)
+* [Veo 3.0](https://docs.oxen.ai/inference-api/reference/models/google-veo-3)
+* [Nano Banana](https://docs.oxen.ai/inference-api/reference/models/nano-banana)
+* [Nano Banana 2](https://docs.oxen.ai/inference-api/reference/models/nano-banana-2)
+* [Nano Banana 2.1](https://docs.oxen.ai/inference-api/reference/models/nano-banana-2-1)
+* [Nano Banana 2 Lite](https://docs.oxen.ai/inference-api/reference/models/nano-banana-2-lite)
+
+## Ideogram
+
+* [Ideogram v4](https://docs.oxen.ai/inference-api/reference/models/ideogram-v4)
+* [Ideogram v4.5](https://docs.oxen.ai/inference-api/reference/models/ideogram-v4-5)
+* [Ideogram v4.5 Edit](https://docs.oxen.ai/inference-api/reference/models/ideogram-v4-5-edit)
+
+## Kling
+
+* [Kling O1 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-image-to-video)
+* [Kling O1 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-reference-to-video)
+* [Kling O1 Edit - Video to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-o1-video-to-video-edit)
+* [Kling O3 Omni](https://docs.oxen.ai/inference-api/reference/models/kling-video-o3-omni)
+* [Kling v2.5 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-5-turbo-pro-image-to-video)
+* [Kling 2.6 Pro - Image to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-6-pro-image-to-video)
+* [Kling 2.6 Pro - Text to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v2-6-pro-text-to-video)
+* [Kling 3.0 Pro: Motion Control](https://docs.oxen.ai/inference-api/reference/models/kling-video-v3-pro-motion-control)
+* [Kling 4.0 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-image-to-video)
+* [Kling 4.0 - Reference to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-reference-to-video)
+* [Kling 4.0 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/kling-video-v4-0-text-to-video)
+
+## Krea
+
+* [Krea 2 Large](https://docs.oxen.ai/inference-api/reference/models/krea-2-large)
+* [Krea 2 Medium](https://docs.oxen.ai/inference-api/reference/models/krea-2-medium)
+* [Krea 2 Medium Turbo](https://docs.oxen.ai/inference-api/reference/models/krea-2-medium-turbo)
+* [Krea 2 Raw](https://docs.oxen.ai/inference-api/reference/models/krea-2-raw)
+* [Krea 3](https://docs.oxen.ai/inference-api/reference/models/krea-3)
+* [Krea 2 Large](https://docs.oxen.ai/inference-api/reference/models/krea-v2-large-text-to-image)
+
+## Lightricks
+
+* [LTX 2.3](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3)
+* [LTX 2.3 Extend](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-extend)
+* [LTX-2.3 Pro](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-pro)
+* [LTX-2.3 Pro 22B IC-LoRA Union Control](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-pro-22b-IC-LoRA-Union-Control)
+* [LTX 2.3 Quality: Video to HDR](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-quality-hdr)
+* [LTX 2.3 Reframe](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-reframe)
+* [LTX 2.3 Retake](https://docs.oxen.ai/inference-api/reference/models/ltx-2-3-retake)
+* [LTX 2.5](https://docs.oxen.ai/inference-api/reference/models/ltx-2-5)
+* [LTX 2.5 HDR](https://docs.oxen.ai/inference-api/reference/models/ltx-2-5-hdr)
+* [LTX 2.5 Upscale](https://docs.oxen.ai/inference-api/reference/models/ltx-2-5-upscale)
+
+## Luma AI
+
+* [Luma Ray 3.2 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-image-to-video)
+* [Luma Ray 3.2 - Reframe](https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-reframe)
+* [Luma Ray 3.2 - Text to Video](https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-text-to-video)
+* [Luma Ray 3.2 - Video to Video](https://docs.oxen.ai/inference-api/reference/models/luma-ray-v3-2-video-to-video)
+
+## Meta
+
+* [Muse Image 1.0](https://docs.oxen.ai/inference-api/reference/models/muse-image-1-0)
+* [Muse Spark 1.3](https://docs.oxen.ai/inference-api/reference/models/muse-spark-1-3)
+* [Segment Anything 3 - Image](https://docs.oxen.ai/inference-api/reference/models/sam-3-image)
+* [Segment Anything 3 - Video](https://docs.oxen.ai/inference-api/reference/models/sam-3-video)
+
+## MiniMax
+
+* [MiniMax H3](https://docs.oxen.ai/inference-api/reference/models/minimax-h3)
+* [MiniMax H3 Max: Image to Video](https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-image-to-video)
+* [MiniMax H3 Max: Reference to Video](https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-reference-to-video)
+* [MiniMax H3 Max: Text to Video](https://docs.oxen.ai/inference-api/reference/models/minimax-h3-max-text-to-video)
+
+## Mistral AI
+
+* [Ministral 3B](https://docs.oxen.ai/inference-api/reference/models/ministral-3b-latest)
+* [Ministral 8B](https://docs.oxen.ai/inference-api/reference/models/ministral-8b-latest)
+
+## Moonshot AI
+
+* [Kimi K3](https://docs.oxen.ai/inference-api/reference/models/kimi-k3)
+* [Kimi K3.1 Pro](https://docs.oxen.ai/inference-api/reference/models/kimi-k3-1-pro)
+
+## OpenAI
+
+* [GPT 4.1](https://docs.oxen.ai/inference-api/reference/models/gpt-4-1-2025-04-14)
+* [GPT 4.1 mini](https://docs.oxen.ai/inference-api/reference/models/gpt-4-1-mini-2025-04-14)
+* [GPT 4o](https://docs.oxen.ai/inference-api/reference/models/gpt-4o)
+* [GPT 4o mini](https://docs.oxen.ai/inference-api/reference/models/gpt-4o-mini)
+* [GPT 5.1](https://docs.oxen.ai/inference-api/reference/models/gpt-5-1-2025-11-13)
+* [GPT 5.2](https://docs.oxen.ai/inference-api/reference/models/gpt-5-2-2025-12-11)
+* [GPT 5](https://docs.oxen.ai/inference-api/reference/models/gpt-5-2025-08-07)
+* [GPT 5.4](https://docs.oxen.ai/inference-api/reference/models/gpt-5-4-2026-03-05)
+* [GPT 5.4 Mini](https://docs.oxen.ai/inference-api/reference/models/gpt-5-4-mini)
+* [GPT 5.5](https://docs.oxen.ai/inference-api/reference/models/gpt-5-5-2026-04-23)
+* [GPT 5.5 Pro](https://docs.oxen.ai/inference-api/reference/models/gpt-5-5-pro-2026-04-23)
+* [GPT 5.6 Luna](https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-luna)
+* [GPT 5.6 Sol](https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-sol)
+* [GPT 5.6 Terra](https://docs.oxen.ai/inference-api/reference/models/gpt-5-6-terra)
+* [GPT 5 Mini](https://docs.oxen.ai/inference-api/reference/models/gpt-5-mini)
+* [GPT 5 Nano](https://docs.oxen.ai/inference-api/reference/models/gpt-5-nano)
+* [GPT 6.1 Sol](https://docs.oxen.ai/inference-api/reference/models/gpt-6-1-sol)
+* [GPT 6.1 Terra](https://docs.oxen.ai/inference-api/reference/models/gpt-6-1-terra)
+* [GPT 6 Astra](https://docs.oxen.ai/inference-api/reference/models/gpt-6-astra)
+* [GPT 6 Luna](https://docs.oxen.ai/inference-api/reference/models/gpt-6-luna)
+* [GPT 6 Sol](https://docs.oxen.ai/inference-api/reference/models/gpt-6-sol)
+* [GPT Audio](https://docs.oxen.ai/inference-api/reference/models/gpt-audio)
+* [GPT Image 1.5](https://docs.oxen.ai/inference-api/reference/models/gpt-image-1-5)
+* [GPT Image 2](https://docs.oxen.ai/inference-api/reference/models/gpt-image-2)
+* [GPT Image 2.5 Flare](https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-5-flare)
+* [GPT Image 2.5 Sunburst](https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-5-sunburst)
+* [GPT Image 2.6 Flare](https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-6-flare)
+* [GPT Image 2.6 Sunburst](https://docs.oxen.ai/inference-api/reference/models/gpt-image-2-6-sunburst)
+* [OpenAI/GPT-OSS-120B](https://docs.oxen.ai/inference-api/reference/models/gpt-oss-120b)
+* [o3](https://docs.oxen.ai/inference-api/reference/models/o3-2025-04-16)
+* [OpenAI/GPT-OSS-20B](https://docs.oxen.ai/inference-api/reference/models/openai-gpt-oss-20b)
+
+## Perplexity
+
+* [Perplexity Sonar](https://docs.oxen.ai/inference-api/reference/models/sonar)
+* [Perplexity Sonar Deep Research](https://docs.oxen.ai/inference-api/reference/models/sonar-deep-research)
+* [Perplexity Sonar Pro](https://docs.oxen.ai/inference-api/reference/models/sonar-pro)
+* [Perplexity Sonar Reasoning Pro](https://docs.oxen.ai/inference-api/reference/models/sonar-reasoning-pro)
+
+## Qwen
+
+* [Qwen Image](https://docs.oxen.ai/inference-api/reference/models/qwen-image)
+* [Qwen Image 2.0](https://docs.oxen.ai/inference-api/reference/models/qwen-image-2)
+* [Qwen Image 2.1](https://docs.oxen.ai/inference-api/reference/models/qwen-image-2-1)
+* [Qwen Image 2.0 Pro](https://docs.oxen.ai/inference-api/reference/models/qwen-image-2-pro)
+* [Qwen Image - 2512](https://docs.oxen.ai/inference-api/reference/models/qwen-image-2512)
+* [Qwen Image 3.0](https://docs.oxen.ai/inference-api/reference/models/qwen-image-3)
+* [Qwen Image 3.0 Pro](https://docs.oxen.ai/inference-api/reference/models/qwen-image-3-pro)
+* [Qwen Image Edit](https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit)
+* [Qwen Image Edit - 2511](https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-2511)
+* [Qwen Image Edit Max](https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-max)
+* [Qwen Image Edit - 2509](https://docs.oxen.ai/inference-api/reference/models/qwen-image-edit-plus)
+* [Qwen3.8 Max](https://docs.oxen.ai/inference-api/reference/models/qwen3-8-max)
+* [Qwen3.8 Omni Flash](https://docs.oxen.ai/inference-api/reference/models/qwen3-8-omni-flash)
+* [Qwen3 VL 2B - Instruct](https://docs.oxen.ai/inference-api/reference/models/qwen3-vl-2b-instruct)
+* [Qwen3 VL 4B - Instruct](https://docs.oxen.ai/inference-api/reference/models/qwen3-vl-4b-instruct)
+
+## Tongyi-MAI
+
+* [Z-Image-Turbo](https://docs.oxen.ai/inference-api/reference/models/z-image-turbo)
+
+## Topaz Labs
+
+* [Topaz Astra 2](https://docs.oxen.ai/inference-api/reference/models/topazlabs-astra-2-video)
+* [Topaz Bloom 2](https://docs.oxen.ai/inference-api/reference/models/topazlabs-bloom-2-image)
+* [Topaz Bloom](https://docs.oxen.ai/inference-api/reference/models/topazlabs-bloom-image)
+* [Topaz Hyperion 2.5](https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-2-5-video)
+* [Topaz Hyperion 2](https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-2-video)
+* [Topaz Hyperion HDR](https://docs.oxen.ai/inference-api/reference/models/topazlabs-hyperion-hdr-video)
+* [Topaz Image Upscaler](https://docs.oxen.ai/inference-api/reference/models/topazlabs-image-upscale)
+* [Topaz Iris - Face Detail Video Upscaler](https://docs.oxen.ai/inference-api/reference/models/topazlabs-iris-mq-video)
+* [Topaz Proteus - Versatile Video Upscaler](https://docs.oxen.ai/inference-api/reference/models/topazlabs-proteus-video)
+* [Topaz Rhea - Fine Detail Video Upscaler](https://docs.oxen.ai/inference-api/reference/models/topazlabs-rhea-video)
+* [Topaz Starlight Precise 2.5](https://docs.oxen.ai/inference-api/reference/models/topazlabs-upscale-starlight-2-5-video)
+* [Topaz Starlight Precise 2.6](https://docs.oxen.ai/inference-api/reference/models/topazlabs-upscale-starlight-2-6-video)
+* [Topaz Video Upscaler](https://docs.oxen.ai/inference-api/reference/models/topazlabs-video-upscale)
+* [Topaz Wonder 3.5](https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-3-5-image)
+* [Topaz Wonder 3](https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-3-image)
+* [Topaz Wonder 4](https://docs.oxen.ai/inference-api/reference/models/topazlabs-wonder-4-image)
+
+## xAI
+
+* [Grok Imagine - Text to Image](https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-image)
+* [Grok Imagine - Image Edit](https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-image-edit)
+* [Grok Imagine Video 1.5 - Image to Video](https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-1-5-image-to-video)
+* [Grok Imagine - Video Edit](https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-edit-video)
+* [Grok Imagine - Image to Video](https://docs.oxen.ai/inference-api/reference/models/xai-grok-imagine-video-image-to-video)
+
+## Z AI
+
+* [GLM 5.3 Flash](https://docs.oxen.ai/inference-api/reference/models/glm-5-3-flash)
+* [GLM 5.2](https://docs.oxen.ai/inference-api/reference/models/zai-org-glm-5-2)
+* [GLM 5.3](https://docs.oxen.ai/inference-api/reference/models/zai-org-glm-5-3)
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

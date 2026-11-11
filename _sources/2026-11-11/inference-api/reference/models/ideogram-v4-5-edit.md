@@ -1,0 +1,643 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/ideogram-v4-5-edit
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Ideogram v4.5 Edit
+
+> Reference-guided image editing with pixel preservation
+
+> [card] [Try Ideogram v4.5 Edit in the Workbench](https://www.oxen.ai/ai/workbench?model=ideogram-v4-5-edit)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `ideogram-v4-5-edit`
+
+Ideogram v4.5 Edit transforms a source image using text instructions, with optional reference images and masks for targeted changes.
+
+Regular editing supports broad transformations, while high precision restores unchanged pixels to preserve areas outside the edit. Up to four reference images can guide an edit, reduced to three when a mask is supplied. Masks must match the source dimensions: black regions are edited and white regions are preserved, and both regions must be present.
+
+Output preserves the source geometry by default, with downscaling when needed. Only unmasked regular edits can pick a different aspect ratio and resolution (1K or 2K), and Ideogram prices each image by quality tier only. Four quality tiers cover quick iteration through final designs.
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=ideogram-v4-5-edit) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Sync
+>
+> See the [image editing reference](https://docs.oxen.ai/inference-api/reference/image_editing.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/images/edit \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/images/edit",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/images/edit \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/images/edit",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/images/edit \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true,
+> >   "edit_precision": "regular",
+> >   "quality": "medium",
+> >   "aspect_ratio": "auto",
+> >   "resolution": "1K",
+> >   "sync_mode": false
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/images/edit",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true,
+> >         "edit_precision": "regular",
+> >         "quality": "medium",
+> >         "aspect_ratio": "auto",
+> >         "resolution": "1K",
+> >         "sync_mode": false
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+
+> [tab] Async
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true,
+> >   "edit_precision": "regular",
+> >   "quality": "medium",
+> >   "aspect_ratio": "auto",
+> >   "resolution": "1K",
+> >   "sync_mode": false
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true,
+> >         "edit_precision": "regular",
+> >         "quality": "medium",
+> >         "aspect_ratio": "auto",
+> >         "resolution": "1K",
+> >         "sync_mode": false
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+
+> [tab] Async with SSE
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] Basic parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4-5-edit",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_images": [
+> >     "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >   ],
+> >   "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "lock_unmasked": true,
+> >   "edit_precision": "regular",
+> >   "quality": "medium",
+> >   "aspect_ratio": "auto",
+> >   "resolution": "1K",
+> >   "sync_mode": false
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ideogram-v4-5-edit",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_images": [
+> >             "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"
+> >         ],
+> >         "mask": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "lock_unmasked": true,
+> >         "edit_precision": "regular",
+> >         "quality": "medium",
+> >         "aspect_ratio": "auto",
+> >         "resolution": "1K",
+> >         "sync_mode": false
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/ideogram-v4-5-edit
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | Describe how to edit the source image, using the optional reference images for guidance. |
+| `input_image` | `string` | — | Primary source image to edit. Format: uri. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `input_images` | `array<string>` | — | Up to four reference images, or three when a mask is supplied, in addition to the primary source image. |
+| `mask` | `string` | — | Paint the part of Image 1 to change. Takes up to three reference images. Format: uri. |
+| `lock_unmasked` | `boolean` | `true` | Only modify the pixels within the masked region. |
+| `edit_precision` | `string` | `"regular"` | Regular performs generative editing. High uses precise editing with restoration of unchanged pixels. One of: regular, high. |
+| `quality` | `string` | `"medium"` | Image quality tier. Very low costs $0.008, low $0.03, medium $0.06, and high $0.22 per image, independent of image size. One of: very\_low, low, medium, high. |
+| `aspect_ratio` | `string` | `"auto"` | Aspect Ratio One of: auto, 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, 5:4, 4:5, 16:10, 10:16, 2:1, 1:2. |
+| `resolution` | `string` | `"1K"` | Resolution One of: 1K, 2K. |
+| `image_size` | `object` | — | Pixel dimensions sent to fal, looked up from aspect\_ratio and resolution in the size table below. Auto passes through unchanged. |
+| `seed` | `integer` | — | Random seed. Omit to choose automatically. |
+| `sync_mode` | `boolean` | `false` | Return image data directly in the response. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

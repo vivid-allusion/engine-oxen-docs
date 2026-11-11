@@ -1,0 +1,215 @@
+---
+title: "\ud83d\udcdd Track Changes"
+source: https://docs.oxen.ai/getting-started/command-line/track_changes
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# 📝 Track Changes
+
+> Stage, commit, inspect, and undo changes in your local repository.
+
+The day-to-day Oxen workflow follows the same shape as git: stage what's changed, commit it, and inspect the history when you need to.
+
+## Stage Files
+
+Add files to a repository with `oxen add`. This copies the files' contents to the repository's version store and stages the changes for commit. You can use absolute paths or paths relative to the repo root.
+
+```bash theme={null}
+oxen add path/to/file.txt
+```
+
+```bash theme={null}
+oxen add images/
+```
+
+You can also stage matching files with glob patterns and wildcards. This stages everything that matches the pattern and isn't excluded by `.oxenignore`.
+
+```bash theme={null}
+# Adds all paths starting with an 'f' in the images dir
+oxen add images/f*
+```
+
+```bash theme={null}
+# Adds everything in the current directory
+oxen add .
+```
+
+`oxen add` handles new, modified, and removed files and directories.
+
+Oxen lets you version any data type — text, images, audio, video, parquet, etc. — in the same repository, and you interact with all of them through the same commands. Under the hood, Oxen stores type-specific [file metadata](https://docs.oxen.ai/concepts/file_metadata.md) to power richer features.
+
+## View Status
+
+To see what is tracked, staged, modified, removed, or not yet added, use `oxen status`.
+
+```bash theme={null}
+oxen status
+```
+
+Output:
+
+```
+On branch main -> e76dd52a4fc13a6f
+
+Directories to be committed
+  added: images with added 8108 files
+
+Files to be committed:
+  new file: images/000000000042.jpg
+  new file: images/000000000074.jpg
+  new file: images/000000000109.jpg
+  new file: images/000000000307.jpg
+  new file: images/000000000309.jpg
+  new file: images/000000000394.jpg
+  new file: images/000000000400.jpg
+  new file: images/000000000443.jpg
+  new file: images/000000000490.jpg
+  new file: images/000000000575.jpg
+  ... and 8098 others
+
+Untracked Directories
+  (use "oxen add <dir>..." to update what will be committed)
+  annotations/ (3 items)
+```
+
+Because Oxen is built for large datasets with many files, `status` rolls up directory-level changes and summarizes them.
+
+You can paginate through staged files with the `-s` (skip) and `-l` (limit) flags. Run `oxen status --help` for the full list.
+
+## Commit Changes
+
+Once changes are staged, commit them with a message.
+
+```bash theme={null}
+oxen commit -m "Some informative commit message"
+```
+
+This creates a new commit on the current branch. If the repository was previously empty, this also creates the `main` branch.
+
+After a commit, a copy of each file's contents lives in the repository's version store (by default `.oxen/versions/files`). File and directory metadata are stored in the [Merkle Tree](https://ghost.oxen.ai/merkle-tree-101/), which mirrors the working directory structure.
+
+## View History
+
+Show the commit history of your current branch with `oxen log`.
+
+```bash theme={null}
+oxen log
+```
+
+Output:
+
+```
+commit 6b958e268656b0c5
+
+Author: Ox
+Date:   Fri, 21 Oct 2022 16:08:39 -0700
+
+    adding 10,000 training images
+
+commit e76dd52a4fc13a6f
+
+Author: Ox
+Date:   Fri, 21 Oct 2022 16:05:22 -0700
+
+    Initialized Repo 🐂
+```
+
+## View Diffs
+
+Oxen can compute and display diffs between files using the [oxen diff](https://docs.oxen.ai/concepts/diffs.md) command.
+
+```bash theme={null}
+oxen diff dataset.csv
+```
+
+This compares `dataset.csv` in the working directory with its version in the HEAD commit. You can also diff different files against each other, files across revisions, or whole revisions against each other. See the [diff concepts page](https://docs.oxen.ai/concepts/diffs.md) for the full set of options.
+
+## View File Contents
+
+To print the raw bytes of a file as they exist at a revision, use `oxen cat`. The contents are written to stdout, so you can pipe them into another tool or redirect them to a file without restoring the file into your working directory.
+
+```bash theme={null}
+oxen cat README.md
+```
+
+Output:
+
+```
+# My Dataset
+
+A collection of training images and their annotations.
+```
+
+By default `oxen cat` reads from `HEAD`. Pass `--revision` (or `-r`) to read the file as it existed at a specific branch or commit.
+
+```bash theme={null}
+oxen cat README.md --revision my-branch
+```
+
+`oxen cat` streams the exact stored bytes, so it works on any file type, including binary data. Pipe the output into another tool rather than printing binary straight to your terminal, which can garble it.
+
+```bash theme={null}
+oxen cat data/train.csv | head
+```
+
+To get a file's *metadata* (hash, size, data type) instead of its contents — pairing with `oxen cat` — use `oxen info`. Pass `--revision` (or `-r`) to describe the file as it existed at a specific branch or commit, and `--json` for machine-readable output. Without `--revision`, `oxen info` describes the file in your working tree.
+
+```bash theme={null}
+oxen info data/train.csv --revision my-branch --json
+```
+
+Output:
+
+```json theme={null}
+{"filename": "train.csv", "last_updated": {"id": "a1b2c3d4e5f6a7b8", "parent_ids": ["9f8e7d6c5b4a3210"], "message": "Add training data", "author": "Bloxy", "email": "bloxy@oxen.ai", "timestamp": "2026-06-23T18:09:25.412889Z"}, "hash": "5d41402abc4b2a76b9719d911017c592", "size": 40960, "data_type": "tabular", "mime_type": "text/csv", "extension": "csv"}
+```
+
+## Restore Files
+
+To revert changes you've made to a file in the working directory, use `oxen restore`. This restores the file to its version in the HEAD commit, and works on both modified and deleted files.
+
+```bash theme={null}
+oxen restore path/to/file.txt
+```
+
+You can also restore directories — `oxen restore` will recursively restore the files inside.
+
+To restore from a specific commit or branch, pass `--source`.
+
+```bash theme={null}
+oxen restore path/to/file.txt --source COMMIT_ID
+```
+
+Like git, you can also unstage files (without changing the working directory) using `--staged`.
+
+```bash theme={null}
+oxen restore --staged path/to/dir
+```
+
+## Remove Files
+
+To stage a file to be removed from the next commit, use `oxen rm`.
+
+```bash theme={null}
+oxen rm path/to/file.txt
+```
+
+The file must already be committed for this to work. If you want to remove a file that has not been committed yet, just use your shell's `rm` command.
+
+To recursively remove a directory, use the `-r` flag.
+
+```bash theme={null}
+oxen rm -r path/to/dir
+```
+
+You can also remove entries from the staging area only — without deleting the file from the working directory — using `--staged`.
+
+```bash theme={null}
+oxen rm --staged -r path/to/dir
+```
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

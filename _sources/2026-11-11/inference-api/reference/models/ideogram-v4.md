@@ -1,0 +1,421 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/ideogram-v4
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Ideogram v4
+
+> Typography-focused image and design generation
+
+> [card] [Try Ideogram v4 in the Workbench](https://www.oxen.ai/ai/workbench?model=ideogram-v4)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `ideogram-v4`
+
+Ideogram v4 (v4.0q) is a text-to-image model from Ideogram. It generates high-quality images, posters, and logos with crisp visuals, fine detail, and full creative control for polished, ready-to-use designs.
+
+Typography and graphic design are Ideogram v4's strongest capabilities. It renders dense, accurate text that reads cleanly on posters, packaging, and brand work, including logos, multi-font layouts, long-form text, and creative typography integrated naturally into the design rather than pasted on top. The model was trained with bounding boxes tied to region descriptions, so it understands where every object, text region, and layout element belongs, enabling fine-grained control over composition.
+
+Beyond design, Ideogram v4 delivers strong realism and broad artistic range. It renders in native 2K resolution with the fine texture and natural imperfections that separate a real photograph from an AI-generated image, supports native background transparency, and offers multiple quality tiers (Turbo, Balanced, Quality) so you can choose the right balance of speed and fidelity for drafts, iteration, or final output.
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=ideogram-v4) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Sync
+>
+> See the [image generation reference](https://docs.oxen.ai/inference-api/reference/image_generation.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/images/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/images/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/images/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>",
+> >   "image_size": "square_hd",
+> >   "rendering_speed": "BALANCED",
+> >   "expansion_model": "Medium",
+> >   "acceleration": "none",
+> >   "num_images": 1,
+> >   "enable_safety_checker": true,
+> >   "output_format": "jpeg"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/images/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>",
+> >         "image_size": "square_hd",
+> >         "rendering_speed": "BALANCED",
+> >         "expansion_model": "Medium",
+> >         "acceleration": "none",
+> >         "num_images": 1,
+> >         "enable_safety_checker": true,
+> >         "output_format": "jpeg"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+
+> [tab] Async
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>",
+> >   "image_size": "square_hd",
+> >   "rendering_speed": "BALANCED",
+> >   "expansion_model": "Medium",
+> >   "acceleration": "none",
+> >   "num_images": 1,
+> >   "enable_safety_checker": true,
+> >   "output_format": "jpeg"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>",
+> >         "image_size": "square_hd",
+> >         "rendering_speed": "BALANCED",
+> >         "expansion_model": "Medium",
+> >         "acceleration": "none",
+> >         "num_images": 1,
+> >         "enable_safety_checker": true,
+> >         "output_format": "jpeg"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+
+> [tab] Async with SSE
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "ideogram-v4",
+> >   "prompt": "<prompt>",
+> >   "image_size": "square_hd",
+> >   "rendering_speed": "BALANCED",
+> >   "expansion_model": "Medium",
+> >   "acceleration": "none",
+> >   "num_images": 1,
+> >   "enable_safety_checker": true,
+> >   "output_format": "jpeg"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "ideogram-v4",
+> >         "prompt": "<prompt>",
+> >         "image_size": "square_hd",
+> >         "rendering_speed": "BALANCED",
+> >         "expansion_model": "Medium",
+> >         "acceleration": "none",
+> >         "num_images": 1,
+> >         "enable_safety_checker": true,
+> >         "output_format": "jpeg"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/ideogram-v4
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | The prompt to generate an image from. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `image_size` | `string` | `"square_hd"` | The resolution of the generated image. One of: square\_hd, square, portrait\_4\_3, portrait\_16\_9, landscape\_4\_3, landscape\_16\_9. |
+| `rendering_speed` | `string` | `"BALANCED"` | The rendering speed to use. Faster speeds use fewer denoising steps. One of: TURBO, BALANCED, QUALITY. |
+| `expansion_model` | `string` | `"Medium"` | Which model expands the prompt. 'Medium' is fast; 'Large' uses Ideogram's Magic Prompt for the highest quality. One of: Medium, Large. |
+| `acceleration` | `string` | `"none"` | The acceleration level to use for the image generation. One of: none, low, regular, high. |
+| `num_images` | `integer` | `1` | Number of images to generate. |
+| `seed` | `integer` | — | The seed to use for generation. If not provided, a random seed will be used. |
+| `enable_safety_checker` | `boolean` | `true` | If set to true, the safety checker will be enabled. |
+| `output_format` | `string` | `"jpeg"` | The format of the generated image. One of: jpeg, png. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

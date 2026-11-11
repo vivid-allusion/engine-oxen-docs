@@ -1,0 +1,233 @@
+---
+title: "\ud83d\udce1 Oxen Server"
+source: https://docs.oxen.ai/getting-started/oxen-server
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# 📡 Oxen Server
+
+> `oxen-server` is the storage backend for Oxen. It is where the merkle tree, commit history, and other metadata is stored.
+
+You can deploy your own `oxen-server` instance on your own infrastructure, or use the hosted version on [OxenHub](https://oxen.ai). If you want to kick the tires of Oxen in the privacy of your own infrastructure, we recommend you setup a local server.
+
+```bash theme={null}
+oxen-server start -p 3000 -i 0.0.0.0
+```
+
+The hosted solution comes with a [UI](https://oxen.ai) and the benefits of not having to setup infrastructure yourself. [Sign up here](https://oxen.ai/register) to get started.
+
+![OxenHub](https://mintcdn.com/oxenai/s_o9ZlhOEkYJf27_/images/ImageNet-Oxen-Files.png?fit=max\&auto=format\&n=s_o9ZlhOEkYJf27_\&q=85\&s=d0cb9322421a0f58f46d9c7007777f4a)
+
+## ⚙️ Install
+
+To setup a local Oxen Server instance, first install the `oxen-server` binary.
+
+> [!NOTE]
+>
+> `oxen-server` is supported on **Linux, macOS, and Docker**. It is **not supported on Windows**. The `oxen` CLI and Python client *are* supported on Windows and can connect to a server hosted on a supported platform.
+
+### Mac OS
+
+On Mac-OS you can use [Homebrew](https://brew.sh/) to install the binary.
+
+```bash theme={null}
+brew tap Oxen-AI/oxen-server
+brew install oxen-server
+```
+
+### Ubuntu
+
+On Ubuntu you can download the latest .deb file from our [GitHub Releases](https://github.com/Oxen-AI/Oxen/releases) and install it.
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-ubuntu-latest.deb
+sudo dpkg -i oxen-server-ubuntu-latest.deb
+```
+
+### Docker
+
+To run the server in a docker container, download the latest .tar file from our [GitHub Releases](https://github.com/Oxen-AI/Oxen/releases) and run the following commands.
+
+```bash theme={null}
+wget https://github.com/Oxen-AI/Oxen/releases/latest/download/oxen-server-docker.tar
+docker load < oxen-server-docker.tar
+docker run -d -v /path/to/my/data:/var/oxen/data -p 80:3001 oxen/oxen-server:latest
+```
+
+To install on other platforms, follow the [installation instructions](https://docs.oxen.ai/getting-started/install.md).
+
+## 🏎️ Start Server
+
+```bash theme={null}
+oxen-server start
+```
+
+`oxen-server` does not authenticate requests itself. To require authentication, run it behind a reverse proxy or gateway that checks each request before forwarding it. If the gateway checks a bearer token, give each client its token with the `config` command. It keeps one token per host in `~/.config/oxen/auth_config.toml` and sends it as `Authorization: Bearer <TOKEN>` on every request to that host.
+
+```bash theme={null}
+oxen config --auth <HOST> <TOKEN>
+```
+
+> [!NOTE]
+>
+> `oxen-server` 0.59.0 removed the `-a` flag and the `add-user` command, and a server started with `-a` refuses to start. See [the upgrade steps](https://github.com/Oxen-AI/Oxen/blob/main/docs/migrations.md#stop-starting-the-server-with--a) before upgrading a server that uses them.
+
+## 🗂️ Sync Directory
+
+The default directory that Oxen stores data is `data`, relative to the working directory the server was started from, which is convenient for trying things out but not what you want in production. To change it set the `SYNC_DIR` environment variable to an absolute path.
+
+```bash theme={null}
+export SYNC_DIR=/var/oxen/data
+oxen-server start
+```
+
+Output:
+
+```
+Running 🐂 server on 0.0.0.0:3000
+Syncing to directory: /var/oxen/data
+[2022-06-08T10:00:48Z INFO  actix_server::builder] Starting 8 workers
+[2022-06-08T10:00:48Z INFO  actix_server::server] Actix runtime found; starting in Actix runtime
+```
+
+If you want to change the default `IP ADDRESS` and `PORT` you can do so by passing them in with the `-i` and `-p` parameters.
+
+```bash theme={null}
+oxen-server start -i 0.0.0.0 -p 4321
+```
+
+## 🐞 Debug Logs
+
+The oxen server provides debug logs, which are off by default. You can turn these on with the RUST\_LOG variable.
+
+```bash theme={null}
+export RUST_LOG="debug"
+```
+
+You can also set RUST\_LOG to `info` or `warn` for more restrictive debug logs. Be aware, turning on debug logs can significantly slow down some metadata-heavy operations like `oxen commit`
+
+## 📁 Create a Repository
+
+Assuming you have already installed the `oxen` CLI, you can create a remote repository on the server.
+
+```bash theme={null}
+oxen create-remote --name my_namespace/repo_name --host localhost:3000 --scheme http
+```
+
+Note: The host and scheme are optional and default to `hub.oxen.ai` and `https` respectively. If you are running a local server, you can set the host to `localhost:3000` and the scheme to `http`.
+
+You can either clone data from this remote repository, or push data to it.
+
+## 🗄️ File Storage
+
+When you create a remote repository, Oxen will create a directory for it on the server. The directory structure is `$SYNC_DIR/<namespace>/<repo_name>/.oxen`.
+
+```bash theme={null}
+ls /var/oxen/data/my_namespace/repo_name/.oxen
+```
+
+Output:
+
+```
+config.toml
+history/
+refs/
+tree/
+versions/
+```
+
+All of the metadata and versioned files for a repository are stored in the `.oxen` directory. This directory mirrors the `.oxen` directory in your local repository, so that logic can be reused between the client and server.
+
+## 💾 Configureable Storage Backend
+
+Oxen allows you to configure the storage backend of self-hosted oxen servers. By default, a repository's version files are stored in the `.oxen/versions/files` folder, but this can be changed by using the `--storage-backend` and `--storage-backend-path` parameters
+
+```bash theme={null}
+oxen create-remote --name ox/test_repo --host localhost:3000 --scheme http --storage-backend local --storage-backend-path ~/mountpoint/ox/test_repo/version/files
+```
+
+This is useful if you have a large amount of data and you want to store it on a virtual file system. If you set `--storage-backend-path` to a location on your VFS, files that you push to the remote will be stored there. Depending on your VFS, this can slow down some upload and download operations.
+
+## ⬆️ Upload Data
+
+To upload data to the server, you can use the `oxen` CLI to initialize a local repository, add data to it, and push it to the server.
+
+```bash theme={null}
+# Create a directory for the new dataset
+mkdir my-dataset
+cd my-dataset
+
+# Initialize a local repository
+oxen init
+
+# Add data to the repository
+echo "prompt,response" > data.csv
+oxen add data.csv
+
+# Commit the changes
+oxen commit -m "Initial commit"
+```
+
+If you look in your local repository, you will see the `.oxen` directory.
+
+```bash theme={null}
+ls .oxen
+```
+
+Output:
+
+```
+config.toml
+history/
+refs/
+tree/
+versions/
+```
+
+You can set the remote to the server by running the following command. This will update the `config.toml` file in your local repository.
+
+```bash theme={null}
+oxen config --set-remote origin http://localhost:3000/my_namespace/repo_name
+```
+
+If you look at the `config.toml` file, you will see the remote set.
+
+```bash theme={null}
+cat .oxen/config.toml
+```
+
+Output:
+
+```toml theme={null}
+remote_name = "origin"
+
+[[remotes]]
+name = "origin"
+url = "http://localhost:3000/my_namespace/repo_name"
+```
+
+Once a remote is set you can push your changes to the server.
+
+```bash theme={null}
+oxen push origin main
+```
+
+You can change the remote (origin) and the branch (main) to whichever remote and branch you want to push.
+
+## ⬇️ Clone Data
+
+Clone the empty repository:
+
+```bash theme={null}
+oxen clone http://<HOST>/my_namespace/repo_name
+```
+
+## API Spec
+
+The server has a REST API that can be used to interact with the server. The API is documented [here](https://docs.oxen.ai/http-api.md).
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

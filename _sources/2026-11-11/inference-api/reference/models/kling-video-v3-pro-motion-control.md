@@ -1,0 +1,416 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/kling-video-v3-pro-motion-control
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Kling 3.0 Pro: Motion Control
+
+> Transfer motion from video to image
+
+> [card] [Try Kling 3.0 Pro: Motion Control in the Workbench](https://www.oxen.ai/ai/workbench?model=kling-video-v3-pro-motion-control)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `kling-video-v3-pro-motion-control`
+
+Transfer movements from a reference video to any character image. Cost-effective mode for motion transfer, perfect for portraits and simple animations.
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=kling-video-v3-pro-motion-control) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Sync
+>
+> This blocks until the video is ready (typically 5-15 minutes). Prefer **Async** or **Async with SSE** for anything beyond quick experimentation.
+>
+> See the [video generation reference](https://docs.oxen.ai/inference-api/reference/video_generation.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video"
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video"
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video",
+> >   "keep_original_sound": true
+> > }'
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import requests
+> >
+> > response = requests.post(
+> >     "https://hub.oxen.ai/api/ai/videos/generate",
+> >     headers={
+> >         "Content-Type": "application/json",
+> >         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> >     },
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video",
+> >         "keep_original_sound": true
+> >     },
+> > )
+> > response.raise_for_status()
+> > print(response.json())
+> > ```
+
+> [tab] Async
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video",
+> >   "keep_original_sound": true
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Poll until the generation reaches a terminal status.
+> > while true; do
+> >   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+> >   echo "Status: $STATUS"
+> >   case $STATUS in succeeded|failed|cancelled) break;; esac
+> >   sleep 5
+> > done
+> >
+> > # Print the result.
+> > curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import os
+> > import time
+> > import requests
+> >
+> > HEADERS = {
+> >     "Content-Type": "application/json",
+> >     "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+> > }
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers=HEADERS,
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video",
+> >         "keep_original_sound": true
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > while True:
+> >     data = requests.get(
+> >         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+> >         headers=HEADERS,
+> >     ).json()
+> >     if data["status"] in {"succeeded", "failed", "cancelled"}:
+> >         break
+> >     time.sleep(5)
+> >
+> > if data["status"] == "succeeded":
+> >     print(f"Result: {data['result_url']}")
+> > else:
+> >     print(f"Generation {data['status']}: {data.get('error_message')}")
+> > ```
+
+> [tab] Async with SSE
+>
+> See the [async queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) for more details.
+>
+> > [tab] Minimal
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video"
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video"
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+>
+> > [tab] All parameters
+> >
+> > ```bash cURL theme={null}
+> > # Enqueue, capture the generation id.
+> > GEN_ID=$(curl -s -X POST https://hub.oxen.ai/api/ai/queue \
+> >   -H "Content-Type: application/json" \
+> >   -H "Authorization: Bearer $OXEN_API_KEY" \
+> >   -d '{
+> >   "model": "kling-video-v3-pro-motion-control",
+> >   "prompt": "<prompt>",
+> >   "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >   "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >   "character_orientation": "video",
+> >   "keep_original_sound": true
+> > }' | jq -r '.generations[0].generation_id')
+> >
+> > # Stream the SSE channel, grab the data line that follows a
+> > # media_generation_completed event for our id, and pretty-print it.
+> > curl -sN -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/events \
+> >   | awk -v id="$GEN_ID" '
+> >     /^event: media_generation_completed$/ { expect=1; next }
+> >     /^data: / && expect {
+> >       payload = substr($0, 7)
+> >       if (index(payload, "\"generation_id\":\"" id "\"")) { print payload; exit }
+> >       expect = 0
+> >     }
+> >   ' | jq .
+> > ```
+> >
+> > ```python Python theme={null}
+> > import json
+> > import os
+> > import requests
+> >
+> > API_KEY = os.environ["OXEN_API_KEY"]
+> > AUTH = {"Authorization": f"Bearer {API_KEY}"}
+> >
+> > enqueue = requests.post(
+> >     "https://hub.oxen.ai/api/ai/queue",
+> >     headers={**AUTH, "Content-Type": "application/json"},
+> >     json={
+> >         "model": "kling-video-v3-pro-motion-control",
+> >         "prompt": "<prompt>",
+> >         "input_image": "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+> >         "input_video": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/images/winter_summer_ox.mp4",
+> >         "character_orientation": "video",
+> >         "keep_original_sound": true
+> >     },
+> > )
+> > enqueue.raise_for_status()
+> > generation_id = enqueue.json()["generations"][0]["generation_id"]
+> >
+> > with requests.get(
+> >     "https://hub.oxen.ai/api/events",
+> >     headers=AUTH,
+> >     stream=True,
+> > ) as stream:
+> >     event_name = None
+> >     for line in stream.iter_lines(decode_unicode=True):
+> >         if line.startswith("event: "):
+> >             event_name = line.removeprefix("event: ")
+> >         elif line.startswith("data: ") and event_name == "media_generation_completed":
+> >             payload = json.loads(line.removeprefix("data: "))
+> >             if payload.get("generation_id") == generation_id:
+> >                 print(payload)
+> >                 break
+> > ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/kling-video-v3-pro-motion-control
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | Text prompt for the scene or character. |
+| `input_image` | `string` | — | Reference image URL. The characters, backgrounds, and other elements in the generated video are based on this reference image. Characters should have clear body proportions, avoid occlusion, and occupy more than 5% of the image area. Format: uri. |
+| `input_video` | `string` | — | Reference video URL (mp4, mov). The character actions in the generated video will be consistent with this reference video. Should contain a realistic style character with entire body or upper body visible, including head, without obstruction. Minimum 3s. Max depends on character\_orientation: 10s for 'image', 30s for 'video'. Format: uri. |
+| `character_orientation` | `string` | `"video"` | Controls whether the output character's orientation matches the reference image or video. 'video': orientation matches reference video - better for complex motions (max 30s). 'image': orientation matches reference image - better for following camera movements (max 10s). One of: image, video. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `elements` | `array<object>` | — | Optional element for facial consistency binding. Upload a facial element to enhance identity preservation in the generated video. Only 1 element is supported. Reference in prompt as @Element1. Element binding is only supported when character\_orientation is 'video'. |
+| `keep_original_sound` | `boolean` | `true` | Whether to keep the original sound from the reference video. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

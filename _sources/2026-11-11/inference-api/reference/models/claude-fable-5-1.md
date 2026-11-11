@@ -1,0 +1,136 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/claude-fable-5-1
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Claude Fable 5.1
+
+> Long-horizon agents and research, 1M context
+
+> [card] [Try Claude Fable 5.1 in the Workbench](https://www.oxen.ai/ai/workbench?model=claude-fable-5-1)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `claude-fable-5-1`
+
+**Claude Fable 5.1 is the successor to Claude Fable 5 in Anthropic's Mythos-class tier, built for demanding reasoning and long-horizon agentic work.** It keeps Claude Fable 5's input and output prices and brings stronger long-running agentic coding, multistep research, and document, spreadsheet, and slide work. Anthropic positions Claude Opus 5 as the starting point for most workloads and Claude Fable 5.1 for tasks where Opus 5 at higher effort still falls short.
+
+Adaptive thinking is always on and steered by the effort parameter (low through max); the raw chain of thought is never returned. Safety classifiers may decline requests in sensitive domains such as cybersecurity and biology, returning a refusal stop reason that can be routed to another Claude model via server-side fallback. Compared with Claude Fable 5, forced tool use is no longer supported, thinking blocks are readable only by the model that produced them, and editing earlier turns invalidates thinking blocks, so conversation histories should be append-only. Prompt cache reads cost a quarter of Claude Fable 5's rate. It accepts text and images and has a reliable knowledge cutoff of June 2026.
+
+| Metric | Value |
+| - | - |
+| Context Length | 1,000,000 tokens |
+| Max Output | 128,000 tokens |
+| Multilingual | Yes |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=claude-fable-5-1) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "claude-fable-5-1",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ]
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "claude-fable-5-1",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ]
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] Basic parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "claude-fable-5-1",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "claude-fable-5-1",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/claude-fable-5-1
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

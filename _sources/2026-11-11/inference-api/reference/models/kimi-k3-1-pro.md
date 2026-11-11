@@ -1,0 +1,189 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/kimi-k3-1-pro
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Kimi K3.1 Pro
+
+> Agentic coding and tool use, 1M context
+
+> [card] [Try Kimi K3.1 Pro in the Workbench](https://www.oxen.ai/ai/workbench?model=kimi-k3-1-pro)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `kimi-k3-1-pro`
+
+Kimi K3.1 Pro is Moonshot AI's post-trained upgrade of Kimi K3, a Mixture-of-Experts model with a 1M-token context window aimed at agentic coding, terminal work, and long-horizon tool use.
+
+The model always thinks before answering and returns its reasoning alongside the response, with a reasoning effort of low, high, or max. It calls tools with strict JSON schema output and understands images and video, which suits coding agents that read screenshots, multi-step research, and whole-repository work. Moonshot is publishing open weights for the model.
+
+| Metric | Value |
+| - | - |
+| Parameter Count | Unknown |
+| Mixture of Experts | Yes |
+| Context Length | 1,048,576 tokens |
+| Multilingual | Yes |
+| Quantized\* | Unknown |
+
+\**Quantization is specific to the inference provider and the model may be offered with different quantization levels by other providers.*
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=kimi-k3-1-pro) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "kimi-k3-1-pro",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ]
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "kimi-k3-1-pro",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ]
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] Basic parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "kimi-k3-1-pro",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "kimi-k3-1-pro",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] All parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "kimi-k3-1-pro",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false,
+>   "top_p": 1.0
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "kimi-k3-1-pro",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false,
+>         "top_p": 1.0
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/kimi-k3-1-pro
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

@@ -1,0 +1,803 @@
+---
+title: "\u2696\ufe0f Dataset Diffs"
+source: https://docs.oxen.ai/concepts/diffs
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# ⚖️ Dataset Diffs
+
+> Quickly find changes in your datasets with Oxen.ai
+
+Oxen.ai has built in tools to help you find differences in your datasets. It is as simple as running the `oxen diff` command with the path to your datasets.
+
+```bash CLI theme={null}
+oxen diff dataset.csv -o diff.csv
+```
+
+```bash Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get()) # .get() will resolve the diff data type
+```
+
+```
+Column changes:
+   + label (str)
+
+Row changes:
+   Δ 1 (modified)
+   + 3 (added)
+   - 2 (removed)
+
+shape: (6, 7)
++-------------+-----+-----+-------+--------+-------------+-------------------+
+| file        | x   | y   | width | height | label.right | .oxen.diff.status |
+| ---         | --- | --- | ---   | ---    | ---         | ---               |
+| str         | i64 | i64 | i64   | i64    | str         | str               |
++-------------+-----+-----+-------+--------+-------------+-------------------+
+| image_0.jpg | 0   | 0   | 10    | 10     | cat         | modified          |
+| image_1.jpg | 1   | 2   | 10    | 20     | null        | removed           |
+| image_1.jpg | 200 | 100 | 10    | 20     | dog         | added             |
+| image_2.jpg | 4   | 10  | 20    | 20     | null        | removed           |
+| image_3.jpg | 4   | 10  | 20    | 20     | dog         | added             |
+| image_4.jpg | 10  | 10  | 10    | 10     | dog         | added             |
++-------------+-----+-----+-------+--------+-------------+-------------------+
+```
+
+Under the hood Oxen.ai is using a combination of hashing and diffing algorithms to find the differences in your datasets. This allows you to quickly find changes in your datasets, whether they are rows, columns, or individual cells. Oxen's diff tool tries to strike a balance between being easy to use and being flexible enough to handle complex datasets.
+
+# Diff Types
+
+Oxen.ai currently supports a [TextDiff](https://docs.oxen.ai/python-api/diff/text_diff.md) and a [TabularDiff](https://docs.oxen.ai/python-api/diff/tabular_diff.md) data type.
+
+The `TabularDiff` data type is used to represent the differences in tabular data, such as CSV, TSV, or Parquet files. The `TextDiff` data type is used to represent the differences in text files, such as markdown, code, or configuration files. In the future, we plan to add support for other data types such as images, audio, and video.
+
+# Diff Command Syntax
+
+The `oxen diff` command supports multiple syntax patterns similar to Git:
+
+* `oxen diff` - Compare working tree with HEAD
+* `oxen diff <path>` - Compare specific file in working tree with HEAD
+* `oxen diff <commit>` - Compare commit with HEAD
+* `oxen diff <commit>..<commit>` - Compare two commits using range syntax
+* `oxen diff <commit> <commit>` - Compare two commits
+* `oxen diff <commit> [--] [<path>...]` - Compare commit with HEAD for specific paths
+* `oxen diff <commit>..<commit> [--] [<path>...]` - Compare two commits for specific paths
+* `oxen diff file1 file2` - Compare two local files (not in repository)
+
+The `..` separator can be used to specify commit ranges, making it easy to compare different versions of your data.
+
+# Pick Your Tooling
+
+All the functionality below is available through the [🖥️ Command Line](https://docs.oxen.ai/getting-started/command-line/start_repository.md), [🦀 Rust Library](https://crates.io/crates/liboxen), [🐍 Python Library](https://docs.oxen.ai/python-api.md), as well as the [🌎 Web Interface](https://oxen.ai). This guide will focus on the command line tooling, but the same principles apply to the other interfaces.
+
+Using the [Oxen.ai Hub](https://oxen.ai) you can quickly visualize and navigate the changes in your datasets with an easy to use interface. Sign up for free 👉 [here](https://oxen.ai/register).
+
+![Data Diff](https://mintcdn.com/oxenai/s_o9ZlhOEkYJf27_/images/data-frames/data-diff.png?fit=max\&auto=format\&n=s_o9ZlhOEkYJf27_\&q=85\&s=d70896b1b01ede28248e5a4e93762956)
+
+We will build up from simple examples to more complex ones. Starting from adding and removing rows, to modifying rows, to detecting schema changes, and finally providing specific target fields you are interested in.
+
+All the data below can be found in the [datasets/diff-examples repository](https://www.oxen.ai/datasets/diff-examples).
+
+# Let's Build a Dataset
+
+In order to demonstrate how to use the `oxen diff` command, we will need a dataset to work with. Imagine we are collecting a dataset for fine-tuning a Large Language Model (LLM). This dataset will have a set of `prompts` and a `category` that they belong to.
+
+Create a new file called `dataset.csv` and add the following data to it.
+
+```
+prompt,category
+What is the capital of France?,geography
+What is 2+10?,math
+What is the capital of Germany?,geography
+What is the best python library for http requests?,programming
+Tell me a story about an ox.,story
+```
+
+If you are not familiar with the `oxen df` command it is a handy tool to manipulate and inspect tabular data. You can use it with any CSV, TSV, Parquet, or line delimited JSON file.
+
+```bash CLI theme={null}
+oxen df dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+# the oxen.df module can save and load files into a polars data frame
+# for more info on polars see: https://pola.rs/
+
+# it will infer the type of data from the fileextension
+df = oxen.df("dataset.csv")
+print(df)
+```
+
+```
+shape: (5, 2)
++-----------------------------------+-------------+
+| prompt                            | category    |
+| ---                               | ---         |
+| str                               | str         |
++-----------------------------------+-------------+
+| What is the capital of France?    | geography   |
+| What is 2+10?                     | math        |
+| What is the capital of Germany?   | geography   |
+| What is the best python library … | programming |
+| Tell me a story about an ox.      | story       |
++-----------------------------------+-------------+
+```
+
+In order to return to this initial version of the data at any point, let's add and commit it to a local Oxen repository.
+
+```bash CLI theme={null}
+oxen init
+oxen add dataset.csv
+oxen commit -m "Initial dataset"
+```
+
+```python Python theme={null}
+import os
+from oxen import Repo
+
+repo = Repo("/path/to/data")
+repo.init()
+repo.add("dataset.csv")
+repo.commit("Adding my data")
+```
+
+## Adding Rows
+
+Let's start with a completely additive workflow as if we are collecting a large datasets of prompts. Add a row to the dataset by simply appending to the file.
+
+```bash theme={null}
+echo "20*20,math" >> dataset.csv
+```
+
+If you want to see the changes between the current version of your file and the previous version, you can use the `oxen diff` command. By default, Oxen compares the working tree with the HEAD commit (the last committed version).
+
+```bash CLI theme={null}
+oxen diff dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get())
+```
+
+```
+Row changes:
+   + 1 (added)
+
+shape: (1, 3)
++--------+----------+-------------------+
+| prompt | category | .oxen.diff.status |
+| ---    | ---      | ---               |
+| str    | str      | str               |
++--------+----------+-------------------+
+| 20*20  | math     | added             |
++--------+----------+-------------------+
+```
+
+As you can see Oxen found the one added row and augmented the data frame with an `.oxen.diff.status` column to show the status of the row.
+
+There are three possible values for the `.oxen.diff.status` column:
+
+* `added`
+* `removed`
+* `modified`
+
+## Removing Rows
+
+Next remove the first entry of the file to see how Oxen handles deletions. We will use the `sed` command with the in place flag `-i` to remove the first row from the file.
+
+```bash theme={null}
+sed -i '' '2d' dataset.csv
+```
+
+(Note: the `-i ''` flag is for MacOS, if you are using Linux you can simply use `-i`.) Since the file is a CSV with a header row, you will need to remove the second row hence `2d`.
+
+Verify that the first row was removed by using the `oxen diff` command.
+
+```bash CLI theme={null}
+oxen diff dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get())
+```
+
+```
+Row changes:
+   + 1 (added)
+   - 1 (removed)
+
+shape: (2, 3)
++--------------------------------+-----------+-------------------+
+| prompt                         | category  | .oxen.diff.status |
+| ---                            | ---       | ---               |
+| str                            | str       | str               |
++--------------------------------+-----------+-------------------+
+| What is the capital of France? | geography | removed           |
+| 20*20                          | math      | added             |
++--------------------------------+-----------+-------------------+
+```
+
+## Modifing Rows
+
+This is great for adding and removing rows, but what about modifying rows? Say we change the `category` of "geography" to be a more generic "trivia" category and add a new prompt to it "What is the fastest land animal?".
+
+Edit the `datasets.csv` file to look like this:
+
+```bash theme={null}
+prompt,category
+What is 2+10?,math
+What is the capital of Germany?,trivia
+What is the best python library for http requests?,programming
+Tell me a story about an ox.,story
+20*20,math
+What is the fastest land animal?,trivia
+```
+
+If we run the `oxen diff` command again, we will see the changes.
+
+```
+Row changes:
+   + 3 (added)
+   - 2 (removed)
+
+shape: (5, 3)
++----------------------------------+-----------+-------------------+
+| prompt                           | category  | .oxen.diff.status |
+| ---                              | ---       | ---               |
+| str                              | str       | str               |
++----------------------------------+-----------+-------------------+
+| What is the capital of France?   | geography | removed           |
+| What is the capital of Germany?  | geography | removed           |
+| 20*20                            | math      | added             |
+| What is the capital of Germany?  | trivia    | added             |
+| What is the fastest land animal? | trivia    | added             |
++----------------------------------+-----------+-------------------+
+```
+
+You'll notice that for every row we modified we end up having +1 addition and +1 removal. This is because Oxen is treating the modified row as one added row and one removed row.
+
+## Specifying Keys
+
+The reason that the above example treats the modified row as a new row and a removed row is because both the `prompt` and `category` columns being considered keys under the hood. `oxen diff` hashes the combination of keys in order to find differences in the data. The default keys are all the common columns between the two versions of the datasets.
+
+If you have a unique identifier for each row, you can use the `--keys` (or `-k`) flag to specify the column or columns that should be used as the primary keys.
+
+```bash CLI theme={null}
+oxen diff dataset.csv -k prompt
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv", keys=["prompt"])
+print(result.get())
+```
+
+```
+Row changes:
+   Δ 1 (modified)
+   + 2 (added)
+   - 1 (removed)
+
+shape: (4, 4)
++----------------------------------+---------------+----------------+-------------------+
+| prompt                           | category.left | category.right | .oxen.diff.status |
+| ---                              | ---           | ---            | ---               |
+| str                              | str           | str            | str               |
++----------------------------------+---------------+----------------+-------------------+
+| 20*20                            | null          | math           | added             |
+| What is the capital of France?   | geography     | null           | removed           |
+| What is the capital of Germany?  | geography     | trivia         | modified          |
+| What is the fastest land animal? | null          | trivia         | added             |
++----------------------------------+---------------+----------------+-------------------+
+```
+
+Great! This collapsed our added and removed row into a single modified row. The category column has now been split into two columns, `category.left` and `category.right`, to show the old and new values.
+
+Assumming these changes look good, you can add and commit the changes to your local repository.
+
+```bash CLI theme={null}
+oxen add dataset.csv
+oxen commit -m "Added and removed rows"
+```
+
+```python Python theme={null}
+# ... instantiate repo
+
+repo.add("dataset.csv")
+repo.commit("Added and removed rows")
+```
+
+## Adding Columns
+
+Adding and removing rows is great, but what about changes to the schema itself? Instead of using the prompt as a key, let's add an `id` column to the dataset and use that as the key. Let's also add an `answer` column to the dataset, so that we can evaluate the responses.
+
+Update your raw csv with the new columns like so:
+
+```
+id,prompt,answer,category
+0,What is 2+10?,12,math
+1,What is the capital of Germany?,Berlin,trivia
+2,What is the best python library for http requests?,requests,programming
+3,Tell me a story about an ox.,I am sorry I cannot do that.,story
+4,20*20,400,math
+5,What is the fastest land animal?,cheetah,trivia
+```
+
+Now if you run the `oxen diff` command, you will see that it automatically detects the added columns and displays the new values in `id.right` and `answer.right`.
+
+```bash CLI theme={null}
+oxen diff dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get())
+```
+
+```
+Column changes:
+   + id (i64)
+   + answer (str)
+
+Row changes:
+   Δ 6 (modified)
+
+shape: (6, 5)
++-----------------------------------+-------------+----------+------------------------------+-------------------+
+| prompt                            | category    | id.right | answer.right                 | .oxen.diff.status |
+| ---                               | ---         | ---      | ---                          | ---               |
+| str                               | str         | i64      | str                          | str               |
++-----------------------------------+-------------+----------+------------------------------+-------------------+
+| 20*20                             | math        | 4        | 400                          | modified          |
+| What is 2+10?                     | math        | 0        | 12                           | modified          |
+| What is the best python library … | programming | 2        | requests                     | modified          |
+| Tell me a story about an ox.      | story       | 3        | I am sorry I cannot do that. | modified          |
+| What is the capital of Germany?   | trivia      | 1        | Berlin                       | modified          |
+| What is the fastest land animal?  | trivia      | 5        | cheetah                      | modified          |
++-----------------------------------+-------------+----------+------------------------------+-------------------+
+```
+
+Removing a column would show the values in columns called `.left` to show the values in columns that are now missing. If you are happy with the changes, you can add and commit the changes to your local repository.
+
+```bash CLI theme={null}
+oxen add dataset.csv
+oxen commit -m "Added id and answer column"
+```
+
+```python Python theme={null}
+# ... instantiate repo
+
+repo.add("dataset.csv")
+repo.commit("Added id and answer column")
+```
+
+## Specifying Compares
+
+Not only can you specify keys to narrow down the scope of what fields oxen hashes, but you can also specify columns to compare with the `--compares` (`-c`) flag. This specifies the fields oxen compares.
+
+You can think of the keys as the fields that are hashed to create a unique id to tell if a row was added or removed. The compares are the fields that are compared to check if a row was modified. By default if you specify a single key, the rest of the columns become the compares. If you specify multiple keys, the compares are all the columns that are not keys.
+
+To see this in action, let's add one row, remove one row, and modify 3 existing ones to demonstrate how this works. In this case we will only modify values of the `answer` column.
+
+Overwrite the `dataset.csv` file with the following data.
+
+```
+id,prompt,answer,category
+0,What is 2+10?,12,math
+1,What is the capital of Germany?,The capital of Germany is Berlin,trivia
+3,Tell me a story about an ox.,I am sorry Hal.,story
+4,20*20,20*20=400,math
+5,What is the fastest land animal?,cheetah,trivia
+6,What is Oxen.ai?,Imagine git - but can handle large datasets,trivia
+```
+
+Since we only modified the answers in this dataset and not the category or the prompt, we can use the `-c` flag to specify that we are only interested in changes in the `answer` column.
+
+```bash CLI theme={null}
+oxen diff dataset.csv -k id,prompt -c answer
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv", keys=["id", "prompt"], compares=["answer"])
+print(result.get())
+```
+
+```
+Row changes:
+   Δ 3 (modified)
+   + 1 (added)
+   - 1 (removed)
+
+shape: (5, 5)
++-----+-----------------------------+----------------------------+------------------------+-------------------+
+| id  | prompt                      | answer.left                | answer.right           | .oxen.diff.status |
+| --- | ---                         | ---                        | ---                    | ---               |
+| i64 | str                         | str                        | str                    | str               |
++-----+-----------------------------+----------------------------+------------------------+-------------------+
+| 1   | What is the capital of      | The capital of Germany is  | Berlin                 | modified          |
+|     | Germany?                    | Berlin                     |                        |                   |
+| 2   | What is the best python     | null                       | requests               | added             |
+|     | library …                   |                            |                        |                   |
+| 3   | Tell me a story about an    | I am sorry Hal.            | I am sorry I cannot do | modified          |
+|     | ox.                         |                            | that.                  |                   |
+| 4   | 20*20                       | 20*20=400                  | 400                    | modified          |
+| 6   | What is Oxen.ai?            | Imagine git - but can      | null                   | removed           |
+|     |                             | handle lar…                |                        |                   |
++-----+-----------------------------+----------------------------+------------------------+-------------------+
+```
+
+Contrast this with a default diff which will show 8 changes, 4 added and 4 removed, and you can see the id field is duplicated because we are flagging one addition and one removal for each changed row.
+
+```bash CLI theme={null}
+oxen diff dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get())
+```
+
+```
+Row changes:
+   + 4 (added)
+   - 4 (removed)
+
+shape: (8, 5)
++-----+----------------------------------+----------------------------------+-------------+-------------------+
+| id  | prompt                           | answer                           | category    | .oxen.diff.status |
+| --- | ---                              | ---                              | ---         | ---               |
+| i64 | str                              | str                              | str         | str               |
++-----+----------------------------------+----------------------------------+-------------+-------------------+
+| 1   | What is the capital of Germany?  | Berlin                           | trivia      | added             |
+| 1   | What is the capital of Germany?  | The capital of Germany is Berlin | trivia      | removed           |
+| 2   | What is the best python library  | requests                         | programming | added             |
+|     | …                                |                                  |             |                   |
+| 3   | Tell me a story about an ox.     | I am sorry Hal.                  | story       | removed           |
+| 3   | Tell me a story about an ox.     | I am sorry I cannot do that.     | story       | added             |
+| 4   | 20*20                            | 20*20=400                        | math        | removed           |
+| 4   | 20*20                            | 400                              | math        | added             |
+| 6   | What is Oxen.ai?                 | Imagine git - but can handle     | trivia      | removed           |
+|     |                                  | lar…                             |             |                   |
++-----+----------------------------------+----------------------------------+-------------+-------------------+
+```
+
+A diff that only specifies a key will show the correct number of changes, but it may have many columns that are not relevant to the changes you are interested in. This is because under the hood Oxen infers the compares to be the remaining columns. Having more control over the compares is where the `-c` flag comes in handy.
+
+To see how this works, try using the `-k` flag on the same dataset without any compares.
+
+```bash CLI theme={null}
+oxen diff dataset.csv -k id
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv", keys=["id"])
+print(result.get())
+```
+
+```
+Row changes:
+   Δ 3 (modified)
+   + 1 (added)
+   - 1 (removed)
+
+shape: (5, 7)
++-----+-----------------+-----------------+-----------------+---------------+----------------+----------------+
+| id  | prompt          | answer.left     | answer.right    | category.left | category.right | .oxen.diff.sta |
+| --- | ---             | ---             | ---             | ---           | ---            | tus            |
+| i64 | str             | str             | str             | str           | str            | ---            |
+|     |                 |                 |                 |               |                | str            |
++-----+-----------------+-----------------+-----------------+---------------+----------------+----------------+
+| 1   | What is the     | The capital of  | Berlin          | trivia        | trivia         | modified       |
+|     | capital of      | Germany is      |                 |               |                |                |
+|     | Germany?        | Berlin          |                 |               |                |                |
+| 2   | What is the     | null            | requests        | null          | programming    | added          |
+|     | best python     |                 |                 |               |                |                |
+|     | library …       |                 |                 |               |                |                |
+| 3   | Tell me a story | I am sorry Hal. | I am sorry I    | story         | story          | modified       |
+|     | about an ox.    |                 | cannot do that. |               |                |                |
+| 4   | 20*20           | 20*20=400       | 400             | math          | math           | modified       |
+| 6   | What is         | Imagine git -   | null            | trivia        | null           | removed        |
+|     | Oxen.ai?        | but can handle  |                 |               |                |                |
+|     |                 | lar…            |                 |               |                |                |
++-----+-----------------+-----------------+-----------------+---------------+----------------+----------------+
+```
+
+The above output is `(5 rows x 7 columns)` which isn't too bad, but if you have a dataset with many columns, it can quickly become overwhelming with irrelevant information. If you know where to look, you can use the `-c` flag to narrow down the scope of the diff.
+
+## Saving Results
+
+The `--output` (`-o`) flag can be used to save the results of the diff to a new file. This is useful if you want to save the results of the diff to a new file for further inspection or to share with others.
+
+```bash CLI theme={null}
+oxen diff dataset.csv -o diff.csv
+```
+
+```python Python theme={null}
+import oxen
+
+oxen.diff("dataset.csv", output="diff.csv")
+```
+
+The above command will save the results of the diff to a new file called `diff.csv`. You can then load it into a jupyter notebook, pandas, or even back into Oxen to do more analysis on the results.
+
+## Real World Example
+
+To drive all these features home, imagine you have taken the dataset above and run it through an LLM with a prompt to get the responses. You have saved the results in a new file called `model_results.csv`.
+
+Below is an example script that runs the prompts through `gpt-3.5-turbo` and saves the results to a new file. This script uses the `openai` python package to interact with the OpenAI API.
+
+[process\_csv\_with\_openai.py](https://www.oxen.ai/datasets/diff-examples/file/main/process_with_openai.py)
+
+```python theme={null}
+import csv
+import time
+from openai import OpenAI
+import argparse
+import os
+
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
+
+def process_csv_with_gpt4(input_csv, output_csv):
+    print(f'Processing {input_csv} with GPT-4 and writing to {output_csv}')
+    with open(input_csv, mode='r', encoding='utf-8') as infile, open(output_csv, mode='w', newline='', encoding='utf-8') as outfile:
+        reader = csv.DictReader(infile)
+        fieldnames = ['id', 'prompt', 'answer', 'category', 'response', 'is_correct', 'model', 'inference_time']
+        writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for row in reader:
+            start_time = time.time()
+            print(f'Processing row: {row}')
+
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": row['prompt'],
+                    }
+                ],
+                model="gpt-3.5-turbo",
+            )
+
+            end_time = time.time()
+            inference_time = end_time - start_time
+
+            # Simplified correctness check; customize based on your needs
+            print(f'Chat completion: {chat_completion}')
+            response = chat_completion.choices[0].message.content.strip()
+            is_correct = 'yes' if row['answer'].lower() in response.lower() else 'no'
+
+            writer.writerow({
+                'id': row['id'],
+                'prompt': row['prompt'],
+                'answer': row['answer'],
+                'category': row['category'],
+                'response': response,
+                'is_correct': is_correct,
+                'model': 'gpt-3.5-turbo',  # Adjust based on the model used
+                'inference_time': inference_time
+            })
+
+# main
+if __name__ == '__main__':
+    # argparse can be used to accept input/output file names from command line
+    parser = argparse.ArgumentParser(description='Process CSV with GPT-4')
+    parser.add_argument('input_csv', help='Input CSV file')
+    parser.add_argument('output_csv', help='Output CSV file')
+
+    args = parser.parse_args()
+    process_csv_with_gpt4(args.input_csv, args.output_csv)
+```
+
+Run this script on the `dataset.csv` file to get the `model_results.csv` file.
+
+```bash theme={null}
+python process_csv_with_openai.py dataset.csv model_results.csv
+```
+
+Quickly inspect the `model_results.csv` file with the `oxen df` command to make sure the csv was created correctly.
+
+```bash theme={null}
+oxen df model_results.csv
+```
+
+Output:
+
+```
+shape: (6, 8)
++-----+--------------------------+------------------------+-------------+--------------------------------+------------+-------+----------------+
+| id  | prompt                   | answer                 | category    | response                       | is_correct | model | inference_time |
+| --- | ---                      | ---                    | ---         | ---                            | ---        | ---   | ---            |
+| i64 | str                      | str                    | str         | str                            | str        | str   | f64            |
++-----+--------------------------+------------------------+-------------+--------------------------------+------------+-------+----------------+
+| 0   | What is 2+10?            | 12                     | math        | 2+10=12                        | yes        | gpt-4 | 0.750142       |
+| 1   | What is the capital of   | Berlin                 | trivia      | Berlin                         | yes        | gpt-4 | 0.428595       |
+|     | Germany?                 |                        |             |                                |            |       |                |
+| 2   | What is the best python  | requests               | programming | There is no one best library   | yes        | gpt-4 | 3.663857       |
+|     | library …                |                        |             | for…                           |            |       |                |
+| 3   | Tell me a story about an | I am sorry I cannot do | story       | Once upon a time in a small    | no         | gpt-4 | 7.15331        |
+|     | ox.                      | that.                  |             | vill…                          |            |       |                |
+| 4   | 20*20                    | 400                    | math        | 400                            | yes        | gpt-4 | 0.422363       |
+| 5   | What is the fastest land | cheetah                | trivia      | The fastest land animal is the | yes        | gpt-4 | 0.91197        |
+|     | animal?                  |                        |             | c…                             |            |       |                |
++-----+--------------------------+------------------------+-------------+--------------------------------+------------+-------+----------------+
+```
+
+This dataset has the same `id`, `prompt`, `answer`, and `category` columns as the original dataset, but it also has some additional columns such as `response`, `is_correct`, `model`, and `inference_time`.
+
+Add and commit the model results to your local repository.
+
+```bash theme={null}
+oxen add model_results.csv
+oxen commit -m "Added model results"
+```
+
+Let's say you tweaked the prompt and wanted to run the dataset through the LLM again. Since you have the results versioned in your local repository, you can fearlessly overwrite the file and run the `oxen diff` command to see the differences.
+
+Overwrite the `model_results.csv` file with the new results.
+
+```
+id,prompt,answer,category,response,is_correct,model,inference_time
+0,What is 2+10?,12,math,12,true,model-2,0.21
+1,What is the capital of Germany?,Berlin,trivia,Berlin,true,model-2,0.12
+2,What is the best python library for http requests?,requests,programming,requests,true,model-2,0.31
+3,Tell me a story about an ox.,I am sorry I cannot do that.,story,I am sorry I cannot do that.,true,model-2,0.23
+4,20*20,400,math,400,true,model-2,0.09
+5,What is the fastest land animal?,cheetah,trivia,cheetah,true,model-2,0.41
+```
+
+If we do a base diff without any flags, we will see that every row is has been marked as added and removed, since the `model` and `inference_time` columns could be different for each row.
+
+```bash CLI theme={null}
+oxen diff dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("dataset.csv")
+print(result.get())
+```
+
+```
+Row changes:
+   + 6 (added)
+   - 6 (removed)
+
+shape: (12, 9)
++-----+----------------------------------+---------+----------+---+------------+---------+----------------+-------------------+
+| id  | prompt                           | answer  | category | … | is_correct | model   | inference_time | .oxen.diff.status |
+| --- | ---                              | ---     | ---      |   | ---        | ---     | ---            | ---               |
+| i64 | str                              | str     | str      |   | bool       | str     | f64            | str               |
++-----+----------------------------------+---------+----------+---+------------+---------+----------------+-------------------+
+| 4   | 20*20                            | 400     | math     | … | true       | model-2 | 0.09           | added             |
+| 4   | 20*20                            | 400     | math     | … | true       | model-1 | 0.1            | removed           |
+| 0   | What is 2+10?                    | 12      | math     | … | true       | model-2 | 0.21           | added             |
+| 0   | What is 2+10?                    | 12      | math     | … | true       | model-1 | 0.23           | removed           |
+| …   | …                                | …       | …        | … | …          | …       | …              | …                 |
+| 1   | What is the capital of Germany?  | Berlin  | trivia   | … | true       | model-2 | 0.12           | added             |
+| 1   | What is the capital of Germany?  | Berlin  | trivia   | … | false      | model-1 | 0.11           | removed           |
+| 5   | What is the fastest land animal? | cheetah | trivia   | … | true       | model-1 | 0.4            | removed           |
+| 5   | What is the fastest land animal? | cheetah | trivia   | … | true       | model-2 | 0.41           | added             |
++-----+----------------------------------+---------+----------+---+------------+---------+----------------+------------
+```
+
+This is clearly not what we want. We want to see the differences in the `response` and `is_correct` columns, and ignore the `model` and `inference_time` columns.
+
+In combination with the `--keys` flag, you can use the `--compares` (or `-c`) flag to specify the columns you are interested in.
+
+```bash CLI theme={null}
+oxen diff model_results.csv -k id,prompt,answer -c response,is_correct
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff(
+   "dataset.csv",
+   keys=["id", "prompt", "answer"],
+   compares=["response", "is_correct"]
+)
+print(result.get())
+```
+
+```
+Row changes:
+   Δ 2 (modified)
+
+shape: (2, 8)
++-----+----------------+----------------+----------------+----------------+----------------+----------------+---------------+
+| id  | prompt         | answer         | response.left  | response.right | is_correct.lef | is_correct.rig | .oxen.diff.st |
+| --- | ---            | ---            | ---            | ---            | t              | ht             | atus          |
+| i64 | str            | str            | str            | str            | ---            | ---            | ---           |
+|     |                |                |                |                | bool           | bool           | str           |
++-----+----------------+----------------+----------------+----------------+----------------+----------------+---------------+
+| 1   | What is the    | Berlin         | Munich         | Berlin         | false          | true           | modified      |
+|     | capital of     |                |                |                |                |                |               |
+|     | Germany?       |                |                |                |                |                |               |
+| 3   | Tell me a      | I am sorry I   | Once upon a    | I am sorry I   | false          | true           | modified      |
+|     | story about an | cannot do      | time           | cannot do      |                |                |               |
+|     | ox.            | that.          |                | that.          |                |                |               |
++-----+----------------+----------------+----------------+----------------+----------------+----------------+---------------+
+```
+
+This now narrows down the scope of the diff to only the `response` and `is_correct` columns. We can see that the new model has a different response for the prompts `1` and `3`. Diff allows us to quickly narrow down the responses that model 1 and model 2 disagree on, and which ones are correct.
+
+## Next Up: Comparing Different Files
+
+Now that you understand the basics of the diff command, you may be wondering if you can compare different files or different commits. The answer is yes!
+
+## Comparing Different Files
+
+You can compare two local files (that may not be in the repository) by passing both file paths:
+
+```bash CLI theme={null}
+oxen diff model_results_1.csv model_results_2.csv
+```
+
+```python Python theme={null}
+import oxen
+
+result = oxen.diff("model_results_1.csv", to="model_results_2.csv")
+print(result.get())
+```
+
+## Comparing Different Commits
+
+You can also compare the same file across different commits or branches using commit identifiers:
+
+```bash CLI theme={null}
+# Compare a specific commit with HEAD
+oxen diff abc123 dataset.csv
+
+# Compare two commits using range syntax
+oxen diff abc123..def456 dataset.csv
+
+# Compare two commits
+oxen diff abc123 def456 dataset.csv
+
+# Compare branches
+oxen diff main..feature-branch dataset.csv
+```
+
+```python Python theme={null}
+import oxen
+
+# Compare specific commit with HEAD
+result = oxen.diff("dataset.csv", revision="abc123")
+print(result.get())
+```
+
+This is useful for tracking how your dataset has evolved over time, comparing different versions of model results, or understanding what changed between branches.
+
+You can find all the example data used in this guide in the [datasets/diff-examples repository](https://www.oxen.ai/datasets/diff-examples).
+
+[Next: Comparing Different Files](https://docs.oxen.ai/concepts/compare)
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

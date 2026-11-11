@@ -1,0 +1,186 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/gemini-2-5-flash
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Gemini 2.5 Flash
+
+> Fast multimodal reasoning, 1M context
+
+> [card] [Try Gemini 2.5 Flash in the Workbench](https://www.oxen.ai/ai/workbench?model=gemini-2-5-flash)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `gemini-2-5-flash`
+
+Gemini 2.5 Flash is a multimodal LLM designed for fast, cost-effective reasoning across text, images, audio, and video.
+
+It excels in **low-latency, high-volume tasks** that require rapid processing with strong reasoning abilities, making it suitable for general-purpose applications where speed and versatility are essential. Its main strengths include an exceptionally long context window (up to 1 million tokens), native support for multiple modalities, and robust multilingual capabilities.
+
+Some other noteworthy features of Gemini 2.5 Flash include **deep domain knowledge in science, mathematics, and code**, as well as support for agentic use cases and the ability to handle large-scale processing with efficient performance.
+
+| Metric | Value |
+| - | - |
+| Context Length | 1,048,576 tokens |
+| Multilingual | Yes |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=gemini-2-5-flash) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "gemini-2-5-flash",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ]
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "gemini-2-5-flash",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ]
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] Basic parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "gemini-2-5-flash",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "gemini-2-5-flash",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] All parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "gemini-2-5-flash",
+>   "messages": [
+>     {
+>       "role": "user",
+>       "content": "Hello, what can you do?"
+>     }
+>   ],
+>   "temperature": 0.7,
+>   "max_tokens": 1024,
+>   "stream": false,
+>   "top_p": 1.0
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/chat/completions",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "gemini-2-5-flash",
+>         "messages": [
+>             {
+>                 "role": "user",
+>                 "content": "Hello, what can you do?"
+>             }
+>         ],
+>         "temperature": 0.7,
+>         "max_tokens": 1024,
+>         "stream": false,
+>         "top_p": 1.0
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/gemini-2-5-flash
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

@@ -1,0 +1,130 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/elevenlabs-sound-effects-v3
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Eleven Sound Effects v3
+
+> Layered multi-sound effects up to 30s, loopable
+
+> [card] [Try Eleven Sound Effects v3 in the Workbench](https://www.oxen.ai/ai/workbench?model=elevenlabs-sound-effects-v3)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `elevenlabs-sound-effects-v3`
+
+Eleven Sound Effects v3 generates sound effects, ambiences, music cues, and vocal sounds from a text description, following several sound instructions in a single prompt.
+
+Describe a layered scene, such as "rain on a tin roof, a dog barking in the distance, and a kettle starting to whistle", and the model renders each element in one clip of up to 30 seconds, or picks a length from the prompt. It produces clean, natural audio, with convincing music and vocals and tonal sounds like gongs, chimes, and whistles. Loop mode produces clips that repeat seamlessly for ambiences and game audio, and a prompt-influence control trades variety for closer adherence to the description. It suits foley for video, game assets, UI sounds, and adding audio to silent video generations.
+
+| Metric | Value |
+| - | - |
+| Max Output | 30 seconds |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=elevenlabs-sound-effects-v3) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+> [tab] Minimal
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/audio/speech \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "elevenlabs-sound-effects-v3",
+>   "prompt": "<prompt>",
+>   "input": "Welcome to Oxen"
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/audio/speech",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "elevenlabs-sound-effects-v3",
+>         "prompt": "<prompt>",
+>         "input": "Welcome to Oxen"
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+> [tab] All parameters
+>
+> ```bash cURL theme={null}
+> curl -X POST https://hub.oxen.ai/api/ai/audio/speech \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>   "model": "elevenlabs-sound-effects-v3",
+>   "prompt": "<prompt>",
+>   "duration": 5,
+>   "loop": false,
+>   "prompt_influence": 0.3,
+>   "input": "Welcome to Oxen"
+> }'
+> ```
+>
+> ```python Python theme={null}
+> import os
+> import requests
+>
+> response = requests.post(
+>     "https://hub.oxen.ai/api/ai/audio/speech",
+>     headers={
+>         "Content-Type": "application/json",
+>         "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+>     },
+>     json={
+>         "model": "elevenlabs-sound-effects-v3",
+>         "prompt": "<prompt>",
+>         "duration": 5,
+>         "loop": false,
+>         "prompt_influence": 0.3,
+>         "input": "Welcome to Oxen"
+>     },
+> )
+> response.raise_for_status()
+> print(response.json())
+> ```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/elevenlabs-sound-effects-v3
+```
+
+## Request parameters
+
+### Required parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `prompt` | `string` | — | Describe the sound, its source, and the space it is in. |
+
+### Optional parameters
+
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `duration` | `number` | `5` | Duration Range: 0.5 – 30. |
+| `loop` | `boolean` | `false` | Make a clip that repeats seamlessly. |
+| `prompt_influence` | `number` | `0.3` | Higher values follow the prompt more closely with less variation between generations. Range: 0.0 – 1.0. |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

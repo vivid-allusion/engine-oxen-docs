@@ -1,0 +1,247 @@
+---
+title: "Topaz Starlight Precise 2.5"
+source: https://docs.oxen.ai/inference-api/reference/models/walkthroughs/topaz_starlight_precise_2_5
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Topaz Starlight Precise 2.5
+
+> Upscale and restore video to 1080p or 4K with detail-preserving temporal consistency
+
+Video restoration and upscaling model focused on preserving fine detail and temporal consistency while improving clarity. Upscales input video to 1080p, 2K, or 4K and lets you control the output frame rate (up to 60 fps).
+
+**Model name:** `topazlabs-upscale-starlight-2-5-video`
+
+## Endpoint
+
+```
+POST /api/ai/videos/generate
+```
+
+Video upscaling is synchronous — the request blocks until the video is ready. Processing time depends on the input video length and target resolution.
+
+It is recommended to use [`/ai/queue`](https://docs.oxen.ai/inference-api/reference/async_queue) instead for long-running jobs, so that you don't have long running http requests.
+
+## Request Parameters
+
+| Parameter | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `model` | string | **yes** | -- | `"topazlabs-upscale-starlight-2-5-video"` |
+| `input_video` | string (URI) | **yes** | -- | URL of the video to upscale. |
+| `resolution` | string | no | `"4k"` | Target output resolution: `"1080p"`, `"2k"`, or `"4k"`. |
+| `target_fps` | integer | no | `24` | Target frame rate (1–60 fps). |
+| `response_format` | string | no | `"url"` | `"url"` returns a hosted URL. `"b64_json"` returns base64-encoded video bytes inline. |
+| `target_namespace` | string | no | current user | Namespace to save results and bill to. Can be an organization name. |
+
+### Resolution and Pricing
+
+| Resolution | Cost per Second |
+| - | - |
+| 1080p | \$0.0374 |
+| 2K | \$0.1494 |
+| 4K | \$0.1494 |
+
+Higher resolutions (2K and 4K) are billed at the high-res rate.
+
+## Examples
+
+### Upscale to 4K (default)
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "topazlabs-upscale-starlight-2-5-video",
+        "input_video": "https://example.com/my-video.mp4",
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "topazlabs-upscale-starlight-2-5-video",
+    "input_video": "https://example.com/my-video.mp4"
+  }'
+```
+
+### Upscale to 1080p at 60 fps
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "topazlabs-upscale-starlight-2-5-video",
+        "input_video": "https://example.com/my-video.mp4",
+        "resolution": "1080p",
+        "target_fps": 60,
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "topazlabs-upscale-starlight-2-5-video",
+    "input_video": "https://example.com/my-video.mp4",
+    "resolution": "1080p",
+    "target_fps": 60
+  }'
+```
+
+### Response (`response_format: "url"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "topazlabs-upscale-starlight-2-5-video",
+  "videos": [
+    {
+      "url": "https://hub.oxen.ai/api/repos/.../files/.../video.mp4?..."
+    }
+  ]
+}
+```
+
+The URL is a temporary link that expires after a period of time.
+
+### Response (`response_format: "b64_json"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "topazlabs-upscale-starlight-2-5-video",
+  "videos": [
+    {
+      "b64_json": "<base64-encoded mp4 bytes>"
+    }
+  ]
+}
+```
+
+## Using with /ai/queue
+
+Recommended for longer videos. Returns immediately, processes in the background.
+
+### Enqueue
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "topazlabs-upscale-starlight-2-5-video",
+        "input_video": "https://example.com/my-video.mp4",
+        "resolution": "4k",
+        "target_fps": 30,
+        "num_generations": 1,
+    },
+)
+
+generations = response.json()["generations"]
+for g in generations:
+    print(f"ID: {g['generation_id']}, Status: {g['status']}")
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "topazlabs-upscale-starlight-2-5-video",
+    "input_video": "https://example.com/my-video.mp4",
+    "resolution": "4k",
+    "target_fps": 30,
+    "num_generations": 1
+  }'
+```
+
+### Poll
+
+```python Python theme={null}
+import requests
+import time
+
+generation_id = "4ef840a4-..."
+while True:
+    data = requests.get(
+        f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"},
+    ).json()
+    if data["status"] in {"succeeded", "failed", "cancelled"}:
+        break
+    time.sleep(10)
+
+if data["status"] == "succeeded":
+    print(f"Result: {data['result_url']}")
+else:
+    print(f"Generation {data['status']}: {data.get('error_message')}")
+```
+
+```bash cURL theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+A generation is done when its `status` is `succeeded`, `failed`, or `cancelled`. On success, `result_url` points to the output file.
+
+### Cancel
+
+```python Python theme={null}
+import requests
+
+generation_id = "4ef840a4-..."
+response = requests.delete(
+    f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+)
+
+print(response.json())
+```
+
+```bash cURL theme={null}
+curl -X DELETE -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+## Errors
+
+| Error | Cause | Fix |
+| - | - | - |
+| `Field required` | Missing `input_video` | Provide a video URL |
+| `Invalid resolution` | Unsupported resolution value | Use `"1080p"`, `"2k"`, or `"4k"` |
+| `target_fps must be between 1 and 60` | FPS out of range | Use a value between 1 and 60 |
+| `num_generations must be an integer between 1 and 4` | Invalid count (via `/ai/queue`) | Use 1–4 |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

@@ -1,0 +1,306 @@
+---
+title: "Large File Upload"
+source: https://docs.oxen.ai/http-api/large-file-upload
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Large File Upload
+
+> Upload a file of up to 1 TiB in parts, and optionally stage it into a workspace without committing
+
+The [File Upload Example](https://docs.oxen.ai/http-api/example.md) posts a whole file in one request. That works until the
+file is bigger than what a single request can carry: a proxy, gateway, or serverless function in
+front of your client will usually cap a request body long before Oxen does.
+
+An upload session removes that ceiling. It's the same protocol `oxen push` and `oxen workspace add`
+use for large files: you begin an upload with the file's hash and size, and the server tells you how
+to split it into parts. Each part is its own request, and the server stores each one as it arrives,
+then checks the whole file against its hash once the last part is in.
+
+It also does something the single-request upload can't: **stage the file directly into a
+[workspace](https://docs.oxen.ai/getting-started/command-line/workspaces.md)**, so it's ready to commit, or to read back,
+without ever committing it.
+
+> [!NOTE]
+>
+> A file may be at most **1 TiB** (1,099,511,627,776 bytes). This limit is provisional, and will be
+> raised when users need larger files.
+
+## The two steps
+
+| Step | Endpoint |
+| - | - |
+| 1. Begin the upload | `POST /api/repos/{namespace}/{repo_name}/versions/uploads` |
+| 2. Send each part | `PUT /api/repos/{namespace}/{repo_name}/versions/uploads/{upload_id}/parts/{part_number}` |
+
+Both take your API key as a bearer token:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+There is no separate step to finish the upload: the part that completes the file says so in its
+response.
+
+## The hash identifies the file
+
+You begin an upload with the **XXH3-128 hash of the file's complete contents**, written as
+hexadecimal. The server checks the bytes it receives against that hash before the file becomes
+visible, so a wrong hash gets the upload rejected, and a right one guarantees the server stored
+exactly what you sent.
+
+```python Python theme={null}
+import xxhash  # pip install xxhash
+
+with open(LOCAL_FILE_PATH, "rb") as f:
+    file_hash = xxhash.xxh128(f.read()).hexdigest()
+```
+
+```javascript JavaScript theme={null}
+import { createXXHash128 } from "hash-wasm"; // npm install hash-wasm
+
+const hasher = await createXXHash128();
+hasher.init();
+hasher.update(new Uint8Array(await file.arrayBuffer()));
+const fileHash = hasher.digest("hex");
+```
+
+> [!NOTE]
+>
+> For files large enough that you don't want them in memory, hash incrementally: every XXH3
+> implementation supports feeding it the file in pieces.
+
+## Step 1: Begin the upload
+
+Send the file's hash and size, and, to stage the file into a workspace, a `destination`.
+
+### Request
+
+```
+POST /api/repos/{namespace}/{repo_name}/versions/uploads
+Content-Type: application/json
+```
+
+```json theme={null}
+{
+  "hash": "9f3a1c77b2e4d8a6013f5c2e7a94bd10",
+  "size": 20971520,
+  "destination": {
+    "workspace_id": "my-workspace",
+    "path": "documents/example.pdf"
+  }
+}
+```
+
+| Field | Description |
+| - | - |
+| `hash` | The file's XXH3-128 hash, in hexadecimal. |
+| `size` | The file's size in bytes, at least 1 and at most 1 TiB. |
+| `destination` | Optional. The workspace to stage the file into, and its path in the repository. Leave it out and the file is only stored, addressed by its hash. |
+
+### Response
+
+The response's `file` field says whether to send parts.
+
+```json theme={null}
+{
+  "status": "success",
+  "status_message": "resource_created",
+  "oxen_version": "0.63.0",
+  "file": "awaiting_parts",
+  "upload_id": "0b6f3c9e-2d1a-4f7e-9a51-6c2e8d4b7f10",
+  "part_size": 10485760,
+  "num_parts": 2,
+  "part_window": 102
+}
+```
+
+| Field | Description |
+| - | - |
+| `file` | `awaiting_parts` when the server needs the file's bytes, or `already_stored` when it already has a file with this hash. |
+| `upload_id` | The upload to send parts to. |
+| `part_size` | The size of every part but the last, which holds the rest of the file. |
+| `num_parts` | How many parts to send, numbered from 1. |
+| `part_window` | How many consecutive parts the upload accepts at once, starting at the first part it has not yet checked. |
+
+When `file` is `already_stored`, there is nothing to send: the server has the file, and has already
+staged it at the destination if you gave one. The other fields are absent.
+
+```json theme={null}
+{
+  "status": "success",
+  "status_message": "resource_found",
+  "oxen_version": "0.63.0",
+  "file": "already_stored"
+}
+```
+
+## Step 2: Send the parts
+
+Send part `n` as the **raw bytes** of the file from byte `(n - 1) * part_size`, `part_size` bytes long
+except for the last part. The body is not multipart, and not JSON.
+
+### Request
+
+```
+PUT /api/repos/{namespace}/{repo_name}/versions/uploads/{upload_id}/parts/{part_number}
+Content-Type: application/octet-stream
+```
+
+```bash theme={null}
+curl -X PUT \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @part-1.bin \
+  "$SERVER_URL/api/repos/$NAMESPACE/$REPO/versions/uploads/$UPLOAD_ID/parts/1"
+```
+
+Output:
+
+```json theme={null}
+{"status":"success","status_message":"resource_created","oxen_version":"0.63.0","completed":false}
+```
+
+The server stores each part as it arrives and checks the parts against the hash in order. The part
+that completes the file answers with `"completed": true`, once the whole file matches its hash and is
+staged at the destination, if the upload has one.
+
+### Sending parts in parallel
+
+Parts may arrive out of order, but only so far ahead: a part is accepted while its number is less
+than the first part not yet checked plus `part_window`. Send parts in order and keep no more than
+`part_window` of them in flight, and every part fits.
+
+A part the server cannot take yet gets **429 Too Many Requests** with a `Retry-After` header, the
+seconds to wait before sending it again. That happens when a part arrives too far ahead, or while an
+earlier copy of the same part is still being stored.
+
+### When a response is lost
+
+Send the part again. A part the server already stored is accepted and ignored, so a repeat is
+always safe.
+
+A part sent after the upload has completed gets **404 Not Found**, as does any part of an upload the
+server aborted, which happens after a minute with no part arriving. On a 404, begin the upload again:
+if the file completed, begin answers `already_stored`, and if it was aborted, begin starts a new
+upload.
+
+## Errors
+
+| Response | Cause |
+| - | - |
+| `400` from begin | The hash isn't hexadecimal, the size is 0 or larger than 1 TiB, or the destination path is invalid. |
+| `404` from begin | The repository, or the destination's workspace, doesn't exist. |
+| `429` from begin | The repository is busy with maintenance. Begin again after `Retry-After`. |
+| `400` from a part | The part number is out of range, the part is the wrong length, or the file's bytes don't match its hash, which discards the upload. |
+| `404` from a part | The upload completed or was aborted. Begin again. |
+| `429` from a part | Send the part again after `Retry-After`. |
+
+On Oxen.ai, beginning an upload that would take you past your storage quota gets **402 Payment
+Required**.
+
+## Complete example
+
+Uploads a file in parts and stages it into a workspace, sending one part at a time.
+
+```python Python theme={null}
+import os
+import time
+
+import requests
+import xxhash
+
+SERVER_URL = "https://hub.oxen.ai"
+API_KEY = "your-api-key-here"
+NAMESPACE = "your-username"
+REPO_NAME = "my-dataset"
+WORKSPACE_ID = "my-workspace"
+
+LOCAL_FILE_PATH = "./example.pdf"
+DST_PATH = "documents/example.pdf"
+
+headers = {"Authorization": f"Bearer {API_KEY}"}
+uploads = f"{SERVER_URL}/api/repos/{NAMESPACE}/{REPO_NAME}/versions/uploads"
+size = os.path.getsize(LOCAL_FILE_PATH)
+
+# The file's XXH3-128, hashed incrementally.
+hasher = xxhash.xxh128()
+with open(LOCAL_FILE_PATH, "rb") as f:
+    while block := f.read(8 * 1024 * 1024):
+        hasher.update(block)
+
+# 1. begin the upload
+begun = requests.post(
+    uploads,
+    headers=headers,
+    json={
+        "hash": hasher.hexdigest(),
+        "size": size,
+        "destination": {"workspace_id": WORKSPACE_ID, "path": DST_PATH},
+    },
+)
+begun.raise_for_status()
+begun = begun.json()
+
+# 2. send every part, waiting out any 429
+if begun["file"] == "awaiting_parts":
+    with open(LOCAL_FILE_PATH, "rb") as f:
+        for part_number in range(1, begun["num_parts"] + 1):
+            f.seek((part_number - 1) * begun["part_size"])
+            part = f.read(begun["part_size"])
+            while True:
+                sent = requests.put(
+                    f"{uploads}/{begun['upload_id']}/parts/{part_number}",
+                    headers={**headers, "Content-Type": "application/octet-stream"},
+                    data=part,
+                )
+                if sent.status_code != 429:
+                    break
+                time.sleep(int(sent.headers.get("Retry-After", "1")))
+            sent.raise_for_status()
+    print(f"Staged {DST_PATH} ({size} bytes) in {begun['num_parts']} parts")
+else:
+    print(f"Staged {DST_PATH}, which the server already had")
+```
+
+Output:
+
+```
+Staged documents/example.pdf (20971520 bytes) in 2 parts
+```
+
+From here, commit the workspace to turn the staged file into history:
+
+```bash theme={null}
+curl -X POST \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Add example.pdf","author":"Your Name","email":"you@example.com"}' \
+  "$SERVER_URL/api/repos/$NAMESPACE/$REPO_NAME/workspaces/$WORKSPACE_ID/merge/main"
+```
+
+## When to use this
+
+Reach for an upload session when any of these is true:
+
+* **The file is larger than one request can carry.** The most common reason. Serverless platforms in
+  particular cap request bodies at a few megabytes.
+* **You want a failure to cost one part, not the whole file.** A part is sent again on its own.
+* **You want parallelism.** Up to `part_window` parts can be in flight at once.
+* **You want the file staged but not committed.** A `destination` puts it in a workspace, where you
+  can read it back or throw it away without touching history.
+
+For small files where none of this applies, the single-request [file upload](https://docs.oxen.ai/http-api/example.md) is
+simpler.
+
+> [!NOTE]
+>
+> Older clients upload large files through `POST /versions/{hash}/create`,
+> `PUT /versions/{hash}/chunks`, and `POST /versions/{hash}/complete`. Those endpoints are deprecated
+> and will be removed in a future release, so use upload sessions for new code.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

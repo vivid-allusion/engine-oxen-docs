@@ -1,0 +1,611 @@
+---
+title: "Chat Completions"
+source: https://docs.oxen.ai/inference-api/reference/chat_completions
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Chat Completions
+
+> Generate text responses from language models with support for streaming, vision, audio, documents, tool calling, and prompt caching
+
+## Endpoint
+
+```
+POST /api/ai/chat/completions
+```
+
+Compatible with the OpenAI chat completions format. Supports streaming, multimodal input (images, video, audio, and documents), tool calling, structured output, and [prompt caching](#prompt-caching).
+
+## Request Parameters
+
+| Parameter | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `model` | string | **yes** | -- | Model name (e.g. `claude-sonnet-4-6`, `gpt-5-4-2026-03-05`, `gemini-3-1-flash-lite-preview`) |
+| `messages` | array | **yes** | -- | Array of message objects. Must not be empty. |
+| `stream` | boolean | no | `false` | Stream the response as server-sent events. |
+| `max_tokens` | integer | no | varies | Maximum tokens in the response. |
+| `temperature` | number | no | varies | Sampling temperature (0-2). |
+| `top_p` | number | no | -- | Nucleus sampling parameter. |
+| `frequency_penalty` | number | no | -- | Penalize repeated tokens. |
+| `presence_penalty` | number | no | -- | Penalize tokens already present. |
+| `tools` | array | no | -- | Tool/function definitions for tool calling. |
+| `tool_choice` | string/object | no | -- | Control tool selection behavior. |
+| `parallel_tool_calls` | boolean | no | -- | Allow parallel tool calls. |
+| `response_format` | object | no | -- | Constrain response format (e.g. `{"type": "json_object"}`). Support varies by provider. |
+
+## Message Format
+
+Each message has a `role` and `content`:
+
+```json theme={null}
+[
+  {"role": "system", "content": "You are a helpful assistant."},
+  {"role": "user", "content": "Hello!"},
+  {"role": "assistant", "content": "Hi there!"}
+]
+```
+
+### Vision (multimodal)
+
+Use a content array to include images or video:
+
+```json theme={null}
+{
+  "role": "user",
+  "content": [
+    {"type": "text", "text": "What's in this image?"},
+    {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}}
+  ]
+}
+```
+
+Video input:
+
+```json theme={null}
+{
+  "role": "user",
+  "content": [
+    {"type": "text", "text": "Describe this video"},
+    {"type": "video_url", "video_url": {"url": "https://example.com/clip.mp4"}}
+  ]
+}
+```
+
+Image and video URLs must be publicly accessible.
+
+### Audio understanding
+
+Send audio to a model that supports audio input with an `audio_url` content
+part:
+
+```json theme={null}
+{
+  "role": "user",
+  "content": [
+    {"type": "audio_url", "audio_url": {"url": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/audio/DoOrDoNot.m4a"}},
+    {"type": "text", "text": "What is said in this clip?"}
+  ]
+}
+```
+
+You may also inline the audio as a base64
+[data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs):
+
+```json theme={null}
+{"type": "audio_url", "audio_url": {"url": "data:audio/mp3;base64,SUQzBAAAAAA..."}}
+```
+
+The URL must be publicly accessible (and unexpired, if presigned). Audio must be
+20 MB or smaller; larger files return a `400`. Place the audio part before the
+text part for the best results.
+
+> [!NOTE]
+>
+> **Supported formats vary by provider.** OpenAI audio models (e.g. `gpt-audio`)
+> accept only `wav` and `mp3`; an unsupported format returns a `400`. Gemini models
+> (e.g. `gemini-3-1-pro-preview`) additionally accept `m4a`, `aac`, `ogg`, and
+> `flac`.
+
+### Files and documents (PDFs)
+
+Attach a document to a message with a `file` content part. Pass the file inline
+as a base64 [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)
+in `file.file_data`:
+
+```json theme={null}
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "file",
+      "file": {
+        "filename": "report.pdf",
+        "file_data": "data:application/pdf;base64,JVBERi0xLjQK..."
+      }
+    },
+    {"type": "text", "text": "Summarize the key findings in this document."}
+  ]
+}
+```
+
+You may also reference a document by URL, useful for files generated in a
+[workspace](https://docs.oxen.ai/concepts/workspaces):
+
+```json theme={null}
+{
+  "type": "file",
+  "file": {"file_url": "https://arxiv.org/pdf/1706.03762"}
+}
+```
+
+Pass exactly one of `file_data` (a base64 data URL) or `file_url`. The
+URL must be publicly accessible (and unexpired, if presigned). A document must be
+24 MB or smaller; larger files return a `400`. Place the document before the text
+part for the best results.
+
+> [!NOTE]
+>
+> **Supported file types:** `application/pdf`. Requesting an unsupported file type
+> returns a `400` error. Referencing files by OpenAI `file_id` is not supported.
+> Inline the file with `file_data` or pass `file_url`.
+
+A 400 response for an unsupported type looks like:
+
+```json theme={null}
+{
+  "error": {
+    "type": "invalid_file_input",
+    "title": "The provided file could not be used.",
+    "detail": "Unsupported file type 'image/tiff'. Supported file types: application/pdf."
+  },
+  "status": "error",
+  "status_message": "invalid_file_input",
+  "status_description": "The provided file could not be used."
+}
+```
+
+## Prompt caching
+
+When several requests start with the same prompt prefix, Oxen can serve
+that prefix from its prompt cache instead of processing it again. Cache hits
+make long prompts faster. You don't need extra parameters: send the same
+OpenAI-format request and caching happens upstream.
+
+| Provider | How caching works |
+| - | - |
+| OpenAI (`gpt-*`) and other OpenAI-compatible providers | Automatic for prompts of 1,024 tokens or more. |
+| Anthropic (`claude-*`) | Oxen marks a cache breakpoint at the end of the stable prefix: after the system message, or after the last tool definition if there is no system message. A prefix shorter than the model's minimum cacheable length isn't cached. |
+| Google (`gemini-*`) | Gemini's implicit caching, applied on a best-effort basis. A repeated prefix isn't guaranteed to hit, and some Gemini models rarely report cache hits. |
+| DeepSeek, Mistral, Moonshot (`kimi-*`), Qwen (`qwen3-*-max`) | Automatic on the provider's side. |
+| Other models | Depends on the provider. Some don't cache prompts at all. Check `cached_tokens` in the response to see whether a model is serving your prefix from cache. |
+
+To get cache hits:
+
+* **Put stable content first.** The system prompt, tool definitions, and any
+  large documents or few-shot examples belong at the start of the request.
+  Content that changes per request, such as the user's question, goes last.
+* **Keep the prefix byte-identical.** Any change to the prefix, even a
+  timestamp in the system prompt or reordered tools, invalidates the cache from
+  that point on.
+* **Use a plain string system message for Claude.** The cache breakpoint is
+  added to the first system message when its `content` is a string.
+* **Send requests close together.** Cache entries expire after a few minutes
+  of inactivity, depending on the provider.
+
+### Reading cache usage
+
+When the provider reports cache activity, `usage` includes
+`prompt_tokens_details.cached_tokens`: the number of prompt tokens served from
+the cache. Cached tokens are already counted in `prompt_tokens`, so don't add
+them on top. Streaming responses report the same field in the final usage
+chunk.
+
+```json theme={null}
+"usage": {
+  "prompt_tokens": 9526,
+  "completion_tokens": 20,
+  "total_tokens": 9546,
+  "prompt_tokens_details": {"cached_tokens": 9514},
+  "cost": "0.031765800",
+  "currency": "USD"
+}
+```
+
+`cost` is the amount charged for the request, in `currency`.
+
+If a response has no `prompt_tokens_details`, the provider didn't report any
+cache activity for that request.
+
+### Example
+
+Send two requests that share a long system prompt and compare cache usage:
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+# A long, unchanging prefix: instructions, reference docs, examples, etc.
+system_prompt = open("support_policy.md").read()
+
+for question in ["How do I reset my password?", "Can I change my billing date?"]:
+    response = client.chat.completions.create(
+        model="claude-sonnet-4-6",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": question},
+        ],
+    )
+    details = response.usage.prompt_tokens_details
+    cached = details.cached_tokens if details else 0
+    print(f"prompt_tokens={response.usage.prompt_tokens} cached_tokens={cached}")
+```
+
+Output:
+
+```
+prompt_tokens=9521 cached_tokens=0
+prompt_tokens=9526 cached_tokens=9514
+```
+
+The first request writes the prefix to the cache. The second reads it back.
+
+## Examples
+
+### Basic text generation
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[{"role": "user", "content": "Say hello in exactly 3 words."}],
+    max_tokens=50,
+    temperature=0.1,
+)
+
+print(response.choices[0].message.content)
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "Say hello in exactly 3 words."}],
+    "max_tokens": 50,
+    "temperature": 0.1
+  }'
+```
+
+### Response
+
+```json theme={null}
+{
+  "id": "chatcmpl-97eab7db-fe67-4b29-900c-ed5260c654d4",
+  "object": "chat.completion",
+  "created": 1775090332,
+  "model": "claude-sonnet-4-6",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Hello, how are you?"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 15,
+    "completion_tokens": 5,
+    "total_tokens": 20,
+    "cost": "0.000120000",
+    "currency": "USD"
+  }
+}
+```
+
+`usage` may also include `prompt_tokens_details.cached_tokens`. See
+[Prompt caching](#prompt-caching).
+
+### Analyze a PDF
+
+```python Python theme={null}
+import base64
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+with open("report.pdf", "rb") as f:
+    file_data = "data:application/pdf;base64," + base64.standard_b64encode(f.read()).decode()
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "file", "file": {"filename": "report.pdf", "file_data": file_data}},
+                {"type": "text", "text": "Summarize the key findings in this document."},
+            ],
+        }
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+```bash cURL theme={null}
+FILE_DATA="data:application/pdf;base64,$(base64 < report.pdf | tr -d '\n')"
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [{
+      "role": "user",
+      "content": [
+        {"type": "file", "file": {"filename": "report.pdf", "file_data": "'"$FILE_DATA"'"}},
+        {"type": "text", "text": "Summarize the key findings in this document."}
+      ]
+    }]
+  }'
+```
+
+### Understand audio
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+response = client.chat.completions.create(
+    model="gemini-3-1-pro-preview",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "audio_url", "audio_url": {"url": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/audio/DoOrDoNot.m4a"}},
+                {"type": "text", "text": "Transcribe this clip and summarize it in one sentence."},
+            ],
+        }
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-3-1-pro-preview",
+    "messages": [{
+      "role": "user",
+      "content": [
+        {"type": "audio_url", "audio_url": {"url": "https://hub.oxen.ai/api/repos/ox/Oxen-AI-Assets/file/main/audio/DoOrDoNot.m4a"}},
+        {"type": "text", "text": "Transcribe this clip and summarize it in one sentence."}
+      ]
+    }]
+  }'
+```
+
+To send a local file, base64-encode it into a `data:` URL:
+
+```python Python theme={null}
+import base64
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+with open("clip.mp3", "rb") as f:
+    audio_url = "data:audio/mp3;base64," + base64.standard_b64encode(f.read()).decode()
+
+response = client.chat.completions.create(
+    model="gemini-3-1-pro-preview",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "audio_url", "audio_url": {"url": audio_url}},
+                {"type": "text", "text": "What is said in this clip?"},
+            ],
+        }
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+### Streaming
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+stream = client.chat.completions.create(
+    model="gemini-3-1-flash-lite-preview",
+    messages=[{"role": "user", "content": "Say hello"}],
+    stream=True,
+)
+
+for chunk in stream:
+    content = chunk.choices[0].delta.content
+    if content:
+        print(content, end="", flush=True)
+print()
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-3-1-flash-lite-preview",
+    "messages": [{"role": "user", "content": "Say hello"}],
+    "stream": true
+  }'
+```
+
+Returns server-sent events. Each chunk has a `delta` instead of a full `message`:
+
+```
+data: {"choices":[{"delta":{"content":"Hello"},"finish_reason":null,"index":0}],"created":1775090334,"id":"chatcmpl-...","model":"gemini-3-1-flash-lite-preview","object":"chat.completion.chunk"}
+
+data: {"choices":[{"delta":{"content":" there"},"finish_reason":null,"index":0}],...}
+
+data: [DONE]
+```
+
+### Tool calling
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+response = client.chat.completions.create(
+    model="gpt-5-4-2026-03-05",
+    messages=[
+        {"role": "system", "content": "Use tools when appropriate."},
+        {"role": "user", "content": "What is the weather in San Francisco?"},
+    ],
+    tools=[{
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Get current weather",
+            "parameters": {
+                "type": "object",
+                "properties": {"location": {"type": "string"}},
+                "required": ["location"],
+            },
+        },
+    }],
+)
+
+tool_call = response.choices[0].message.tool_calls[0]
+print(f"{tool_call.function.name}({tool_call.function.arguments})")
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-4-2026-03-05",
+    "messages": [
+      {"role": "system", "content": "Use tools when appropriate."},
+      {"role": "user", "content": "What is the weather in San Francisco?"}
+    ],
+    "tools": [{
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Get current weather",
+        "parameters": {
+          "type": "object",
+          "properties": {"location": {"type": "string"}},
+          "required": ["location"]
+        }
+      }
+    }]
+  }'
+```
+
+When the model uses a tool, `finish_reason` is `"tool_calls"`:
+
+```json theme={null}
+{
+  "choices": [{
+    "finish_reason": "tool_calls",
+    "message": {
+      "content": null,
+      "role": "assistant",
+      "tool_calls": [{
+        "id": "call_GRNwPXnbuQW4Sa3QNB3FYkYw",
+        "index": 0,
+        "type": "function",
+        "function": {
+          "name": "get_weather",
+          "arguments": "{\"location\":\"San Francisco\"}"
+        }
+      }]
+    }
+  }]
+}
+```
+
+### Structured output (JSON mode)
+
+```python Python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://hub.oxen.ai/api/ai",
+    api_key="YOUR_API_KEY",
+)
+
+response = client.chat.completions.create(
+    model="gpt-5-4-2026-03-05",
+    messages=[{"role": "user", "content": "List 3 colors as a JSON array"}],
+    response_format={"type": "json_object"},
+    max_tokens=100,
+)
+
+print(response.choices[0].message.content)
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/chat/completions \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-4-2026-03-05",
+    "messages": [{"role": "user", "content": "List 3 colors as a JSON array"}],
+    "response_format": {"type": "json_object"},
+    "max_tokens": 100
+  }'
+```
+
+## Errors
+
+| Condition | Error |
+| - | - |
+| No model specified | `"You must specify a model to call"` |
+| Model not found | `"Model not found: <name>"` |
+| Empty messages | `"Messages array cannot be empty"` |
+| Insufficient credits | Credit-related error message |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

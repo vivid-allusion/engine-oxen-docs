@@ -1,0 +1,348 @@
+---
+title: "Seedance 2.0: Reference to Video"
+source: https://docs.oxen.ai/inference-api/reference/models/walkthroughs/seedance_2_reference_to_video
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Seedance 2.0: Reference to Video
+
+> Generate videos from text prompts guided by reference images, videos, and audio
+
+ByteDance Seedance 2.0 reference-to-video generates video from a text prompt guided by reference images, videos, and/or audio. Reference media are addressed in the prompt as `@Image1`, `@Image2`, `@Video1`, `@Video2`, `@Audio1`, etc. Supports resolutions up to 720p, durations from 4–15 seconds, and synchronized audio generation including sound effects, ambient sounds, and lip-synced speech.
+
+**Model name:** `bytedance-seedance-2-0-reference-to-video`
+
+## Endpoint
+
+```
+POST /api/ai/videos/generate
+```
+
+Video generation is synchronous — the request blocks until the video is ready (typically 1–5 minutes).
+
+It is recommended to use [`/ai/queue`](https://docs.oxen.ai/inference-api/reference/async_queue) instead for long-running jobs, so that you don't have long running http requests.
+
+## Request Parameters
+
+| Parameter | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `model` | string | **yes** | -- | `"bytedance-seedance-2-0-reference-to-video"` |
+| `prompt` | string | **yes** | -- | Text prompt. Use `@Image1`, `@Video1`, `@Audio1`, etc. to reference input media. |
+| `input_images` | array of URIs | no | -- | Reference images (JPEG, PNG, WebP). Max 30 MB each. Up to 9. Use `@Image1`, `@Image2`, … in the prompt. |
+| `input_videos` | array of URIs | no | -- | Reference videos (MP4, MOV). Up to 3. Combined duration must be 2–15 s, total size \< 50 MB. Resolution between \~480p and \~720p. Use `@Video1`, `@Video2`, … in the prompt. |
+| `input_audios` | array of URIs | no | -- | Reference audio (MP3, WAV). Up to 3 files. Combined duration ≤ 15 s. Max 15 MB each. Requires at least one reference image or video. Use `@Audio1`, `@Audio2`, … in the prompt. |
+| `resolution` | string | no | `"720p"` | `"480p"` for faster generation, `"720p"` for higher quality. |
+| `duration` | string | no | `"auto"` | Duration in seconds: `"auto"`, or `"4"` through `"15"`. |
+| `generate_audio` | boolean | no | `true` | Generate synchronized audio (sound effects, ambient sounds, lip-synced speech). Cost is the same either way. |
+| `aspect_ratio` | string | no | `"auto"` | `"auto"`, `"21:9"`, `"16:9"`, `"4:3"`, `"1:1"`, `"3:4"`, or `"9:16"`. |
+| `seed` | integer | no | -- | Random seed for reproducibility. Results may still vary slightly. |
+| `response_format` | string | no | `"url"` | `"url"` returns a hosted URL. `"b64_json"` returns base64-encoded video bytes inline. |
+| `target_namespace` | string | no | current user | Namespace to save results and bill to. Can be an organization name. |
+
+### Reference Media Limits
+
+| Modality | Max Count | Size Limit | Other Constraints |
+| - | - | - | - |
+| Images | 9 | 30 MB each | JPEG, PNG, WebP |
+| Videos | 3 | 50 MB total | MP4, MOV. Combined duration 2–15 s. Resolution \~480p to \~720p. |
+| Audio | 3 | 15 MB each | MP3, WAV. Combined duration ≤ 15 s. Requires ≥ 1 image or video. |
+
+Total files across all modalities must not exceed 12.
+
+### Duration
+
+| Value | Behavior |
+| - | - |
+| `"auto"` | Model decides based on prompt and references |
+| `"4"` – `"15"` | Fixed duration in seconds |
+
+## Examples
+
+### Text-only prompt
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "bytedance-seedance-2-0-reference-to-video",
+        "prompt": "A serene mountain lake at sunrise with mist rolling across the water",
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "bytedance-seedance-2-0-reference-to-video",
+    "prompt": "A serene mountain lake at sunrise with mist rolling across the water"
+  }'
+```
+
+### With reference images
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "bytedance-seedance-2-0-reference-to-video",
+        "prompt": "@Image1 walks through a crowded market, browsing the stalls",
+        "input_images": ["https://example.com/character.jpg"],
+        "duration": "8",
+        "aspect_ratio": "16:9",
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "bytedance-seedance-2-0-reference-to-video",
+    "prompt": "@Image1 walks through a crowded market, browsing the stalls",
+    "input_images": ["https://example.com/character.jpg"],
+    "duration": "8",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+### With reference video and audio
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "bytedance-seedance-2-0-reference-to-video",
+        "prompt": "@Image1 dances to the rhythm of @Audio1 in the style of @Video1",
+        "input_images": ["https://example.com/dancer.jpg"],
+        "input_videos": ["https://example.com/dance-reference.mp4"],
+        "input_audios": ["https://example.com/music.mp3"],
+        "resolution": "720p",
+        "duration": "10",
+        "generate_audio": True,
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "bytedance-seedance-2-0-reference-to-video",
+    "prompt": "@Image1 dances to the rhythm of @Audio1 in the style of @Video1",
+    "input_images": ["https://example.com/dancer.jpg"],
+    "input_videos": ["https://example.com/dance-reference.mp4"],
+    "input_audios": ["https://example.com/music.mp3"],
+    "resolution": "720p",
+    "duration": "10",
+    "generate_audio": true
+  }'
+```
+
+### Portrait video at 480p
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/videos/generate",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "bytedance-seedance-2-0-reference-to-video",
+        "prompt": "@Image1 speaks directly to camera, warm studio lighting",
+        "input_images": ["https://example.com/speaker.jpg"],
+        "resolution": "480p",
+        "aspect_ratio": "9:16",
+        "duration": "6",
+        "generate_audio": True,
+    },
+)
+
+data = response.json()
+print("Video URL:", data["videos"][0]["url"])
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/videos/generate \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "bytedance-seedance-2-0-reference-to-video",
+    "prompt": "@Image1 speaks directly to camera, warm studio lighting",
+    "input_images": ["https://example.com/speaker.jpg"],
+    "resolution": "480p",
+    "aspect_ratio": "9:16",
+    "duration": "6",
+    "generate_audio": true
+  }'
+```
+
+### Response (`response_format: "url"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "bytedance-seedance-2-0-reference-to-video",
+  "videos": [
+    {
+      "url": "https://hub.oxen.ai/api/repos/.../files/.../video.mp4?..."
+    }
+  ]
+}
+```
+
+The URL is a temporary link that expires after a period of time.
+
+### Response (`response_format: "b64_json"`)
+
+```json theme={null}
+{
+  "created": 1775090723,
+  "model": "bytedance-seedance-2-0-reference-to-video",
+  "videos": [
+    {
+      "b64_json": "<base64-encoded mp4 bytes>"
+    }
+  ]
+}
+```
+
+## Using with /ai/queue
+
+Recommended for video generation. Returns immediately, processes in the background.
+
+### Enqueue
+
+```python Python theme={null}
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/queue",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "bytedance-seedance-2-0-reference-to-video",
+        "prompt": "@Image1 waves at the camera and smiles",
+        "input_images": ["https://example.com/person.jpg"],
+        "duration": "5",
+        "num_generations": 2,
+    },
+)
+
+generations = response.json()["generations"]
+for g in generations:
+    print(f"ID: {g['generation_id']}, Status: {g['status']}")
+```
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/queue \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "bytedance-seedance-2-0-reference-to-video",
+    "prompt": "@Image1 waves at the camera and smiles",
+    "input_images": ["https://example.com/person.jpg"],
+    "duration": "5",
+    "num_generations": 2
+  }'
+```
+
+### Poll
+
+```python Python theme={null}
+import requests
+import time
+
+generation_id = "4ef840a4-..."
+while True:
+    data = requests.get(
+        f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"},
+    ).json()
+    if data["status"] in {"succeeded", "failed", "cancelled"}:
+        break
+    time.sleep(10)
+
+if data["status"] == "succeeded":
+    print(f"Result: {data['result_url']}")
+else:
+    print(f"Generation {data['status']}: {data.get('error_message')}")
+```
+
+```bash cURL theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+A generation is done when its `status` is `succeeded`, `failed`, or `cancelled`. On success, `result_url` points to the output file.
+
+### Cancel
+
+```python Python theme={null}
+import requests
+
+generation_id = "4ef840a4-..."
+response = requests.delete(
+    f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+)
+
+print(response.json())
+```
+
+```bash cURL theme={null}
+curl -X DELETE -H "Authorization: Bearer $OXEN_API_KEY" \
+  "https://hub.oxen.ai/api/ai/queue/4ef840a4-..."
+```
+
+## Errors
+
+| Error | Cause | Fix |
+| - | - | - |
+| `Field required` | Missing `prompt` | Provide a text prompt |
+| `Too many input files` | Total files across images, videos, audio > 12 | Reduce the number of reference files |
+| `Audio requires at least one image or video` | `input_audios` provided without `input_images` or `input_videos` | Add at least one reference image or video |
+| `Invalid duration` | Duration not `"auto"` or `"4"`–`"15"` | Use a supported duration value |
+| `Invalid resolution` | Resolution not `"480p"` or `"720p"` | Use `"480p"` or `"720p"` |
+| `num_generations must be an integer between 1 and 4` | Invalid count (via `/ai/queue`) | Use 1–4 |
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

@@ -1,0 +1,76 @@
+---
+source: https://docs.oxen.ai/inference-api/reference/models/gemini-3-1-pro-preview
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Gemini 3.1 Pro Preview
+
+> Multimodal reasoning over text, audio, video
+
+> [card] [Try Gemini 3.1 Pro Preview in the Workbench](https://www.oxen.ai/ai/workbench?model=gemini-3-1-pro-preview)
+>
+> Run this model interactively, tune parameters, and compare outputs.
+
+**Model ID:** `gemini-3-1-pro-preview`
+
+Gemini 3.1 Pro Preview is Google's Pro-tier multimodal reasoning model in the Gemini 3 series. It is built for complex, multi-step tasks where stronger planning, deeper synthesis, and reliable tool use are required.
+
+Some other noteworthy features of Gemini 3.1 Pro Preview include improved token efficiency, structured outputs, function calling, code execution, search grounding, and support for multimodal inputs (text, image, video, audio, and PDF).
+
+| Metric | Value |
+| - | - |
+| Context Length | 1,048,576 tokens |
+| Multilingual | Yes |
+
+## Example request
+
+> [!TIP]
+>
+> Use the [Workbench](https://www.oxen.ai/ai/workbench?model=gemini-3-1-pro-preview) as a request builder: configure parameters for this model in the UI, then open the **API** tab to copy the exact cURL or Python call.
+
+```bash cURL theme={null}
+curl -X POST https://hub.oxen.ai/api/ai/audio/transcriptions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OXEN_API_KEY" \
+  -d '{
+  "model": "gemini-3-1-pro-preview",
+  "audio_url": "https://example.com/audio.mp3"
+}'
+```
+
+```python Python theme={null}
+import os
+import requests
+
+response = requests.post(
+    "https://hub.oxen.ai/api/ai/audio/transcriptions",
+    headers={
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.environ['OXEN_API_KEY']}",
+    },
+    json={
+        "model": "gemini-3-1-pro-preview",
+        "audio_url": "https://example.com/audio.mp3"
+    },
+)
+response.raise_for_status()
+print(response.json())
+```
+
+## Fetch model details
+
+The [models endpoint](https://docs.oxen.ai/inference-api/reference/models/overview.md) returns the full model object, including its `json_request_schema`.
+
+```bash theme={null}
+curl -H "Authorization: Bearer $OXEN_API_KEY" https://hub.oxen.ai/api/ai/models/gemini-3-1-pro-preview
+```
+
+## Request parameters
+
+This model follows the standard OpenAI chat completions request body. See the [chat completions reference](../inference-api.mdx) for the full parameter list.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.

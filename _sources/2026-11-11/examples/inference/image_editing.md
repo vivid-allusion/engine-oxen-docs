@@ -1,0 +1,119 @@
+---
+title: "\ud83c\udfa8 Image Editing"
+source: https://docs.oxen.ai/examples/inference/image_editing
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.oxen.ai/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# 🎨 Image Editing
+
+> How to edit an image, or make a new one from reference images, with the Oxen.ai API.
+
+### Image Editing
+
+Editing works like [image generation](https://docs.oxen.ai/examples/inference/image_generation.md) with images added to
+the request. Pass their URLs in `input_image` along with your prompt.
+
+Some models edit the image directly, while others generate images with optional image references. To
+see all image generation models that can take input images, visit the
+[Models](https://www.oxen.ai/ai/models?modalities=image-to-image) page and filter by "Image to image".
+
+> [tab] cURL
+>
+> ```bash Start the edit theme={null}
+> GEN_ID=$(curl -s -X POST \
+>   https://hub.oxen.ai/api/ai/queue \
+>   -H "Content-Type: application/json" \
+>   -H "Authorization: Bearer $OXEN_API_KEY" \
+>   -d '{
+>     "model": "gpt-image-2-5-sunburst",
+>     "input_image": ["https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"],
+>     "prompt": "Add a funny hat to the ox"
+>   }' | jq -r '.generations[0].generation_id')
+> ```
+>
+> ```bash Wait for it to finish theme={null}
+> while true; do
+>   STATUS=$(curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+>     "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.status')
+>   case $STATUS in succeeded|failed|cancelled) break;; esac
+>   sleep 3
+> done
+>
+> curl -s -H "Authorization: Bearer $OXEN_API_KEY" \
+>   "https://hub.oxen.ai/api/ai/queue/$GEN_ID" | jq -r '.result_url'
+> ```
+
+> [tab] Python
+>
+> ```python theme={null}
+> import os
+> import requests
+> import time
+>
+> HEADERS = {
+>     "Authorization": f"Bearer {os.getenv('OXEN_API_KEY')}",
+>     "Content-Type": "application/json",
+> }
+>
+> enqueue = requests.post(
+>     "https://hub.oxen.ai/api/ai/queue",
+>     headers=HEADERS,
+>     json={
+>         "model": "gpt-image-2-5-sunburst",
+>         "input_image": ["https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png"],
+>         "prompt": "Add a funny hat to the ox",
+>     },
+> )
+> enqueue.raise_for_status()
+> generation_id = enqueue.json()["generations"][0]["generation_id"]
+>
+> while True:
+>     data = requests.get(
+>         f"https://hub.oxen.ai/api/ai/queue/{generation_id}",
+>         headers=HEADERS,
+>     ).json()
+>     if data["status"] in {"succeeded", "failed", "cancelled"}:
+>         break
+>     time.sleep(3)
+>
+> print(f"Edited image: {data['result_url']}")
+> ```
+
+Pass more than one image to combine them:
+
+```json theme={null}
+{
+  "model": "gpt-image-2-5-sunburst",
+  "input_image": [
+    "https://hub.oxen.ai/api/repos/elau/assets/file/main/bloxy/bloxy_cropped_512x512.png",
+    "https://hub.oxen.ai/api/repos/elau/assets/file/main/paintings/Wanderer_above_the_Sea_of_Fog_Caspar_David_Friedrich_399x512.jpeg"
+  ],
+  "prompt": "Put the character from the first image into the scene from the second"
+}
+```
+
+Image URLs must be public, since the model downloads them.
+
+## Parameters
+
+* **model**: Model name, for example `gpt-image-2-5-sunburst`
+* **input\_image**: Image URL, or an array of URLs
+* **prompt**: What to change or create
+
+Models can take more parameters, listed in each model's
+[API reference](https://docs.oxen.ai/inference-api/reference/model-references.md). The
+[queue reference](https://docs.oxen.ai/inference-api/reference/async_queue.md) covers the rest of the queue API.
+
+## Playground Interface
+
+The model playground allows you to quickly test out the boundaries of any model in the UI. This is a great way to experiment with different prompts and see how the model performs before integrating it into your application.
+
+![Image editing playground](https://mintcdn.com/oxenai/ww25tVPcZSq1nsp-/images/inference/image-editing/playground.png?fit=max\&auto=format\&n=ww25tVPcZSq1nsp-\&q=85\&s=be8ec68abd60bb7b5029f603320f3429)
+
+The generated images automatically get saved to a dataset that you can share with your team, download and use to train your own model, or use in your application.
+
+
+This documentation is built and hosted on [Mintlify](https://mintlify.com), a developer documentation platform.
